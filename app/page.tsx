@@ -9,13 +9,10 @@ export default async function Index() {
             Slick - a better way to mend your car
           </h2>
           <div className={"flex gap-4 justify-center"}>
-            <Link className={"border-2 p-4 bg-blue-800"} href="/browse">
+            <Link className={"p-4 bg-green text-white"} href="/browse">
               Browse repair shops
             </Link>
-            <Link
-              className={"border-2 p-4 bg-white text-black"}
-              href="/user-dashboard"
-            >
+            <Link className={"p-4 bg-grey"} href="/user-dashboard">
               Go to your dashboard
             </Link>
           </div>
