@@ -33,11 +33,11 @@ export default async function AuthButton() {
         Hey, {user.email}!
       </Link>
       <form action={signOut}>
-        <button className="py-2 px-4 rounded-md bg-grey">Logout</button>
+        <button className="btn btn-secondary">Logout</button>
       </form>
     </div>
   ) : (
-    <Link href="/login" className="py-2 px-3 flex rounded-md bg-grey">
+    <Link href="/login" className="btn btn-primary">
       Login
     </Link>
   );

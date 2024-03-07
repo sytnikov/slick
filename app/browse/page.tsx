@@ -1,32 +1,43 @@
 import { createClient } from "@/utils/supabase/server";
 
+import BrowseSearch from "@/components/BrowseSearch";
+import RepairShopCard from "@/components/RepairShopCard";
+
+import { RepairShop } from "@/types";
+import BrowseMap from "@/components/BrowseMap";
+
 export default async function Browse() {
   const supabase = createClient();
   const { data: shops } = await supabase.from("Repair Shops").select();
 
   return (
-    <main className="flex-1 flex flex-col justify-center">
-      <div className={"animate-in"}>
-        <h1 className={"text-2xl"}>All of the repair shops: </h1>
-        <div className={"flex flex-col gap-4"}>
-          {shops && shops.length > 0 ? (
-            shops.map((shop) => (
-              <div
-                key={shop.id}
-                className={
-                  "flex flex-col justify-center items-center gap-2 border-2 mt-4 p-4 rounded-md"
-                }
-              >
-                <div className={"mb-4 p-2 bg-green text-white rounded-md"}>
-                  <p>{shop.status}</p>
+    <main>
+      <div className="grid grid-cols-6 ">
+        <div className="col-span-2 flex items-start flex-col pl-4 pr-4 pt-4">
+          <div className={"animate-in h-screen gap-4 overflow-y-scroll"}>
+            <h1 className={"text-2xl mb-6"}>Browse repair shops</h1>
+            <div className={"flex flex-row flex-wrap"}>
+              {shops?.map((shop: RepairShop) => (
+                <div className={"w-1/2 mb-4"} key={shop.id}>
+                  <RepairShopCard
+                    name={shop.name}
+                    status={shop.status}
+                    description={shop.description}
+                  />
                 </div>
-                <h2 className={"text-2xl mb-2"}>{shop.name}</h2>
-                <p>{shop.address}</p>
-              </div>
-            ))
-          ) : (
-            <div>No results found</div>
-          )}
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className={"relative col-span-4 h-screen"}>
+          <div
+            className={
+              "animate-in absolute top-5 left-0 right-0 mx-auto z-10 max-w-[65%]"
+            }
+          >
+            <BrowseSearch />
+          </div>
+          <BrowseMap />
         </div>
       </div>
     </main>
