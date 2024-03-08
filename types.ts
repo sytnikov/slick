@@ -32,3 +32,8 @@ export interface UserProfile {
   phone_number: string;
   shop_owner: boolean;
 }
+
+export interface Service {
+  id: number;
+  name: string;
+}

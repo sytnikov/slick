@@ -19,7 +19,7 @@ interface Location {
 }
 
 interface MapComponentProps {
-  shops: RepairShop[];
+  shops: RepairShop[] | null;
 }
 
 function MapComponent({ shops }: MapComponentProps) {
@@ -41,7 +41,8 @@ function MapComponent({ shops }: MapComponentProps) {
       setCoordinates(filteredCoords);
 
       if (filteredCoords.length > 0) {
-        setCenter(filteredCoords[0]);
+        // setCenter(filteredCoords[0]);
+        setCenter(center);
       }
     };
 
@@ -52,7 +53,7 @@ function MapComponent({ shops }: MapComponentProps) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={7.5}
+      zoom={10}
       options={mapOptions}
     >
       {coordinates.map((location, index) => (

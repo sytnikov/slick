@@ -1,7 +1,7 @@
 import { RepairShop } from "@/types";
 
-export default async function getGeolocation(shops: RepairShop[]) {
-  const coordinatesPromises = shops.map(async (shop) => {
+export default async function getGeolocation(shops: RepairShop[] | null) {
+  const coordinatesPromises = shops?.map(async (shop) => {
     const address = encodeURIComponent(
       shop.street_address + " " + shop.postal_code + " " + shop.city
     );
@@ -24,6 +24,7 @@ export default async function getGeolocation(shops: RepairShop[]) {
     }
   });
 
+  // @ts-ignore
   const coordinates = (await Promise.all(coordinatesPromises)).filter(
     (coord) => coord !== null
   );
