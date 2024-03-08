@@ -2,7 +2,7 @@ import { FinnishTowns } from "@/utils/towns";
 
 export default function BrowseSearch() {
   return (
-    <div className={"bg-white p-4 rounded-xl"}>
+    <div className={"bg-green p-4 rounded-xl"}>
       <div className={"flex flex-row gap-1"}>
         <input
           type="text"

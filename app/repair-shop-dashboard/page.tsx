@@ -1,6 +1,9 @@
-import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+
+import { createClient } from "@/utils/supabase/server";
+
+import { RepairShop } from "@/types";
 
 export default async function RepairShopDashboard() {
   const supabase = createClient();
@@ -32,11 +35,10 @@ export default async function RepairShopDashboard() {
 
   // get the repair shops that are owned by the user
 
-  const { data: repairshop } = await supabase
+  const { data: repairshops } = await supabase
     .from("Repair Shops")
     .select("*")
-    .eq("associated_user", user.id)
-    .single();
+    .eq("associated_user", user.id);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -55,9 +57,12 @@ export default async function RepairShopDashboard() {
           <div>
             <h1>Here are your repairshops</h1>
             <div className={"mt-4 border-2 p-6"}>
-              <p>{repairshop.name}</p>
-              <p>{repairshop.address}</p>
-              <p>{repairshop.status}</p>
+              {repairshops?.map((shop: RepairShop) => (
+                <div key={shop.id}>
+                  <h1>{shop.name}</h1>
+                  <p>{shop.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className={"w-full flex justify-center mb-8"}>
