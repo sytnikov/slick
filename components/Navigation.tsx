@@ -27,9 +27,7 @@ export default function Navigation() {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
+            <Link href={"/browse"}>Browse</Link>
 
             <li>
               <a>Item 3</a>
@@ -41,14 +39,14 @@ export default function Navigation() {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
+        <div className={"flex flex-row gap-4"}>
+          <Link className={"p-2 "} href={"/"}>
+            Home
+          </Link>
+          <Link className={"p-2"} href={"/browse"}>
+            Browse
+          </Link>
+        </div>
       </div>
       <div className="navbar-end">
         <AuthButton />

@@ -8,9 +8,12 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 
-import { containerStyle, mapOptions } from "./mapStyles";
-import { RepairShop } from "@/types";
 import getGeolocation from "@/services/geolocationService";
+
+import { RepairShop } from "@/types";
+
+import { containerStyle, mapOptions } from "./mapStyles";
+import PreviewCard from "../PreviewCard";
 
 interface Location {
   name: string;
@@ -53,7 +56,7 @@ function MapComponent({ shops }: MapComponentProps) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={7}
       options={mapOptions}
     >
       {coordinates.map((location, index) => (
@@ -62,7 +65,11 @@ function MapComponent({ shops }: MapComponentProps) {
           position={{ lat: location.lat, lng: location.lng }}
         >
           <InfoWindow position={{ lat: location.lat, lng: location.lng }}>
-            <div>{location.name}</div>
+            <PreviewCard
+              repairShop={
+                shops?.find((shop) => shop.name === location.name) || null
+              }
+            />
           </InfoWindow>
         </MarkerF>
       ))}

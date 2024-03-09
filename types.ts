@@ -4,6 +4,8 @@ export interface RepairShop {
   description: string;
   street_address: string;
   postal_code: string;
+  opening_time: string;
+  closing_time: string;
   city: string;
   status: string;
 }
@@ -36,4 +38,18 @@ export interface UserProfile {
 export interface Service {
   id: number;
   name: string;
+}
+
+export interface ShopService {
+  id: number;
+  service_id: number;
+  duration: number;
+  price: number;
+}
+
+export interface Booking {
+  id: number;
+  user_id: number;
+  shop_service_id: number;
+  booking_date: string;
 }
