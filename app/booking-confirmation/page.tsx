@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import Button from "@/components/Button";
 
 export default async function BookingConfirmation({ searchParams }: any) {
   const supabase = createClient();
@@ -30,14 +31,20 @@ export default async function BookingConfirmation({ searchParams }: any) {
     const shop_service_id = searchParams.service;
     const user_id = user.id;
     const booking_date = searchParams.slot;
+    const shop_id = searchParams.shop;
 
     const { data, error } = await supabase.from("Bookings").insert({
       shop_service_id,
       user_id,
       booking_date,
+      shop_id,
     });
 
-    return { data, error };
+    if (error) {
+      return redirect("/booking-confirmation?message=Could not create booking");
+    }
+
+    return redirect("/user-dashboard");
   };
 
   return (
@@ -59,9 +66,12 @@ export default async function BookingConfirmation({ searchParams }: any) {
           </div>
           <div className={"mt-4"}>
             <form action={createBooking}>
-              <button className={"btn btn-primary text-white"} type={"submit"}>
-                Confirm booking
-              </button>
+              <Button
+                text={"Confirm booking"}
+                submittingText={"Making your booking..."}
+                style={"primary"}
+                type={"submit"}
+              />
             </form>
           </div>
         </div>

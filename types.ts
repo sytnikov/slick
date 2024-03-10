@@ -50,6 +50,30 @@ export interface ShopService {
 export interface Booking {
   id: number;
   user_id: number;
+  shop_id: number;
   shop_service_id: number;
   booking_date: string;
+}
+
+export interface BookingWithShopDetails {
+  id: number;
+  user_id: number;
+  shop_id: number;
+  shop_service_id: number;
+  booking_date: string;
+  shop: {
+    id: number;
+    name: string;
+    street_address: string;
+    postal_code: string;
+    opening_time: string;
+    closing_time: string;
+    city: string;
+    service: {
+      id: number;
+      name: string;
+      duration: number;
+      price: number;
+    };
+  };
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButton from "@/components/AuthButton";
 
 export default async function Index() {
   return (
@@ -12,9 +13,7 @@ export default async function Index() {
             <Link className={"p-4 bg-green text-white"} href="/browse">
               Browse repair shops
             </Link>
-            <Link className={"p-4 bg-grey"} href="/user-dashboard">
-              Go to your dashboard
-            </Link>
+            <AuthButton />
           </div>
         </main>
       </div>

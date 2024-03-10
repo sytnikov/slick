@@ -40,6 +40,15 @@ export default async function RepairShopDashboard() {
     .select("*")
     .eq("associated_user", user.id);
 
+  // get the bookings that the repair shop has
+
+  const shopIds = repairshops?.map((shop: RepairShop) => shop.id);
+
+  const { data: bookings } = await supabase
+    .from("Bookings")
+    .select("*")
+    .in("shop_id", shopIds as number[]);
+
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <div className="w-full">
@@ -56,14 +65,24 @@ export default async function RepairShopDashboard() {
           <p>{userProfile.phone_number}</p>
           <div>
             <h1>Here are your repairshops</h1>
-            <div className={"mt-4 border-2 p-6"}>
-              {repairshops?.map((shop: RepairShop) => (
+            {repairshops?.map((shop: RepairShop) => (
+              <div className={"mt-4 border-2 p-6"}>
                 <div key={shop.id}>
                   <h1>{shop.name}</h1>
                   <p>{shop.description}</p>
+                  <p>{shop.street_address}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <h1>Here are you bookings</h1>
+            {bookings?.map((booking) => (
+              <div key={booking.id} className={"border-2 p-4"}>
+                <h3>Booking at {booking.shop_id}</h3>
+                <p>Booking date: {booking.booking_date}</p>
+              </div>
+            ))}
           </div>
           <div className={"w-full flex justify-center mb-8"}>
             <Link className={"border-2 p-4 bg-blue-800"} href="/browse">
