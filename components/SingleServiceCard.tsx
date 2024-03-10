@@ -5,6 +5,7 @@ interface SingleServiceCardProps {
   name: string;
   duration: number;
   price: number;
+  shopID: number;
 }
 
 export default function SingleServiceCard({
@@ -12,6 +13,7 @@ export default function SingleServiceCard({
   name,
   duration,
   price,
+  shopID,
 }: SingleServiceCardProps) {
   return (
     <div className={"flex flex-row p-4 mb-4 border-2 rounded-md"}>
@@ -19,7 +21,7 @@ export default function SingleServiceCard({
         <h1>{name}</h1>
         <p>Duration: {duration} minutes</p>
         <p>Price: {price} €</p>
-        <MakeBookingModal id={serviceID} serviceName={name} />
+        <MakeBookingModal id={serviceID} serviceName={name} shopID={shopID} />
       </div>
     </div>
   );
