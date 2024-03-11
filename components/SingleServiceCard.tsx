@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 
-import MakeBookingModal from "./MakeBookingModal";
+import BookServiceModal from "./MakeBookingModal";
 
 interface SingleServiceCardProps {
   serviceID: number;
@@ -36,9 +36,9 @@ export default async function SingleServiceCard({
         <h1>{name}</h1>
         <p>Duration: {duration} minutes</p>
         <p>Price: {price} €</p>
-        <MakeBookingModal
+        <BookServiceModal
           id={serviceID}
-          serviceName={name}
+          selectedService={name}
           shopID={shopID}
           openingTime={repairShop.opening_time}
           closingTime={repairShop.closing_time}

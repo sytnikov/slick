@@ -2,28 +2,12 @@ export interface RepairShop {
   id: number;
   name: string;
   description: string;
+  number_of_employees: number;
   street_address: string;
   postal_code: string;
   opening_time: string;
   closing_time: string;
   city: string;
-  status: string;
-}
-
-export interface Inquiry {
-  id: number;
-  shop_id: number;
-  customer_id: number;
-  message: string;
-}
-
-export interface Proposal {
-  id: number;
-  inquiry_id: number;
-  price_estimate: number;
-  service_description: string;
-  work_start_date: string;
-  work_end_date: string;
   status: string;
 }
 
@@ -52,7 +36,8 @@ export interface Booking {
   user_id: number;
   shop_id: number;
   shop_service_id: number;
-  booking_date: string;
+  booking_start_date: string;
+  booking_end_date: string;
   duration: number;
 }
 

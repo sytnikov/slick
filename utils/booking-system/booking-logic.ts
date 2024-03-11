@@ -8,11 +8,20 @@ export const getNextWeekDates = () => {
   return dates;
 };
 
+/**
+ * TODO: We need to make the following improvements to the booking system:
+ * 1. We need to change the booking table to have a start and end time for the booking, the duration is what we will use to calculate the end time...
+ * 2. We need to add how many employees are at a repair shop...we can call them seats, this will allow for multiple bookings at the same time...
+ * 3. We need to do a major cleanup of the make booking modal, it is a mess...
+ * 4. Let's combine the getNextWeekDates and generateTimeSlots functions into a single function that takes the opening and closing times, the bookings, and the number of seats as arguments...
+ */
+
 export const generateTimeSlots = (
   openingTime: string,
   closingTime: string,
   bookings: any[],
-  targetDate: Date
+  targetDate: Date, // this might be dumb...double check this...
+  seats: number
 ) => {
   const interval = 30;
   const timeSlots = [];
@@ -56,12 +65,6 @@ export const generateTimeSlots = (
 
     currentTime = new Date(currentTime.getTime() + interval * 60000);
   }
-
-  // console log the booked time slots
-  console.log(
-    "BOOKED SLOTS: ",
-    timeSlots.filter((slot) => slot.isBooked)
-  );
 
   return timeSlots;
 };

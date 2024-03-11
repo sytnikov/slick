@@ -1,26 +1,27 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getNextWeekDates, generateTimeSlots } from "@/utils/helper-functions";
 
-interface MakeBookingModalProps {
+import {} from "@/utils/booking-system/booking-logic";
+
+interface BookServiceModalProps {
   id: number;
-  serviceName: string;
+  selectedService: string;
   shopID: any;
   openingTime: string;
   closingTime: string;
   bookings: any[];
 }
 
-export default function MakeBookingModal({
+export default function BookServiceModal({
   id,
-  serviceName,
+  selectedService,
   shopID,
   openingTime,
   closingTime,
   bookings,
-}: MakeBookingModalProps) {
+}: BookServiceModalProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
   const formatDate = (date: Date) => {
@@ -57,60 +58,17 @@ export default function MakeBookingModal({
       <dialog id={id.toString()} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">
-            Pick an available time for {serviceName}
+            Pick an available time for {selectedService}
           </h3>
-          {getNextWeekDates().map((date) => {
-            const filteredBookings = bookings.filter(
-              (booking) =>
-                formatDate(new Date(booking.booking_date)) === formatDate(date)
-            );
-            const daySlots = generateTimeSlots(
-              openingTime,
-              closingTime,
-              filteredBookings,
-              date
-            );
-            const formattedDate = formatDate(date);
-            return (
-              <div key={formattedDate} className="mb-6">
-                <p className="mb-2">
-                  Available time slots for:{" "}
-                  {date.toLocaleDateString("en-US", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "numeric",
-                  })}
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  {daySlots.map(({ time, isBooked }, index) => (
-                    <button
-                      key={`${formattedDate}-${time}-${index}`}
-                      className={`p-2 rounded-md cursor-pointer ${
-                        selectedSlot === `${formattedDate} ${time}`
-                          ? "bg-green text-white"
-                          : isBooked
-                          ? "border-2 border-red-500 bg-gray-200"
-                          : "bg-gray-200"
-                      }`}
-                      onClick={() => !isBooked && handleSelection(date, time)}
-                      disabled={isBooked}
-                    >
-                      {time}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
           {selectedSlot && (
-            <div className="sticky bottom-0 flex items-center justify-center">
+            <div className="sticky bottom-0 bg-black p-4 text-white rounded-md flex items-center justify-center">
               <Link
                 href={`/booking-confirmation?service=${encodeURIComponent(
                   id
                 )}&slot=${encodeURIComponent(
                   selectedSlot
                 )}&name=${encodeURIComponent(
-                  serviceName
+                  selectedService
                 )}&shop=${encodeURIComponent(shopID)}`}
               >
                 Book: {selectedSlot}
@@ -118,15 +76,6 @@ export default function MakeBookingModal({
             </div>
           )}
         </div>
-        <form method="dialog" className="modal-action">
-          <button
-            className="btn"
-            // @ts-ignore
-            onClick={() => document.getElementById(id.toString())?.close()}
-          >
-            Close
-          </button>
-        </form>
       </dialog>
     </>
   );
