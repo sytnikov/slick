@@ -1,3 +1,5 @@
+import { createClient } from "@/utils/supabase/server";
+
 import MakeBookingModal from "./MakeBookingModal";
 
 interface SingleServiceCardProps {
@@ -8,20 +10,41 @@ interface SingleServiceCardProps {
   shopID: number;
 }
 
-export default function SingleServiceCard({
+export default async function SingleServiceCard({
   serviceID,
   name,
   duration,
   price,
   shopID,
 }: SingleServiceCardProps) {
+  const supabase = createClient();
+
+  const { data: repairShop } = await supabase
+    .from("Repair Shops")
+    .select("*")
+    .eq("id", shopID)
+    .single();
+
+  const { data: bookings } = await supabase
+    .from("Bookings")
+    .select("*")
+    .eq("shop_id", repairShop.id);
+
   return (
     <div className={"flex flex-row p-4 mb-4 border-2 rounded-md"}>
       <div className={"flex flex-col gap-2"}>
         <h1>{name}</h1>
         <p>Duration: {duration} minutes</p>
         <p>Price: {price} €</p>
-        <MakeBookingModal id={serviceID} serviceName={name} shopID={shopID} />
+        <MakeBookingModal
+          id={serviceID}
+          serviceName={name}
+          shopID={shopID}
+          openingTime={repairShop.opening_time}
+          closingTime={repairShop.closing_time}
+          // @ts-ignore
+          bookings={bookings}
+        />
       </div>
     </div>
   );

@@ -1,24 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getNextWeekDates, generateTimeSlots } from "@/utils/helper-functions";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { getNextWeekDates, generateTimeSlots } from "@/utils/helper-functions";
 
 interface MakeBookingModalProps {
   id: number;
   serviceName: string;
   shopID: any;
+  openingTime: string;
+  closingTime: string;
+  bookings: any[];
 }
 
 export default function MakeBookingModal({
   id,
   serviceName,
   shopID,
+  openingTime,
+  closingTime,
+  bookings,
 }: MakeBookingModalProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-
-  const openingTime = "10:00";
-  const closingTime = "19:00";
 
   const formatDate = (date: Date) => {
     return date.toISOString().split("T")[0];
@@ -29,13 +32,9 @@ export default function MakeBookingModal({
     setSelectedSlot(selected);
   };
 
-  // reset the modal when it's closed
-
   useEffect(() => {
     const modal = document.getElementById(id.toString());
-    const handleClose = () => {
-      setSelectedSlot(null);
-    };
+    const handleClose = () => setSelectedSlot(null);
 
     if (modal instanceof HTMLDialogElement) {
       modal.addEventListener("close", handleClose);
@@ -49,9 +48,8 @@ export default function MakeBookingModal({
         className="btn btn-primary"
         onClick={() => {
           const modal = document.getElementById(id.toString());
-          if (modal instanceof HTMLDialogElement) {
-            modal.showModal();
-          }
+          // @ts-ignore
+          modal?.showModal();
         }}
       >
         Book service
@@ -62,7 +60,16 @@ export default function MakeBookingModal({
             Pick an available time for {serviceName}
           </h3>
           {getNextWeekDates().map((date) => {
-            const slots = generateTimeSlots(openingTime, closingTime);
+            const filteredBookings = bookings.filter(
+              (booking) =>
+                formatDate(new Date(booking.booking_date)) === formatDate(date)
+            );
+            const daySlots = generateTimeSlots(
+              openingTime,
+              closingTime,
+              filteredBookings,
+              date
+            );
             const formattedDate = formatDate(date);
             return (
               <div key={formattedDate} className="mb-6">
@@ -75,15 +82,18 @@ export default function MakeBookingModal({
                   })}
                 </p>
                 <div className="grid grid-cols-2 gap-4">
-                  {slots.map((time, index) => (
+                  {daySlots.map(({ time, isBooked }, index) => (
                     <button
-                      key={`${formattedDate} ${time}`}
+                      key={`${formattedDate}-${time}-${index}`}
                       className={`p-2 rounded-md cursor-pointer ${
                         selectedSlot === `${formattedDate} ${time}`
                           ? "bg-green text-white"
+                          : isBooked
+                          ? "border-2 border-red-500 bg-gray-200"
                           : "bg-gray-200"
                       }`}
-                      onClick={() => handleSelection(date, time)}
+                      onClick={() => !isBooked && handleSelection(date, time)}
+                      disabled={isBooked}
                     >
                       {time}
                     </button>
@@ -93,7 +103,7 @@ export default function MakeBookingModal({
             );
           })}
           {selectedSlot && (
-            <div className={"sticky bottom-0 flex items-center justify-center"}>
+            <div className="sticky bottom-0 flex items-center justify-center">
               <Link
                 href={`/booking-confirmation?service=${encodeURIComponent(
                   id
@@ -103,9 +113,7 @@ export default function MakeBookingModal({
                   serviceName
                 )}&shop=${encodeURIComponent(shopID)}`}
               >
-                <button className="btn btn-secondary text-white">
-                  Book: {selectedSlot}
-                </button>
+                Book: {selectedSlot}
               </Link>
             </div>
           )}
@@ -113,10 +121,8 @@ export default function MakeBookingModal({
         <form method="dialog" className="modal-action">
           <button
             className="btn"
-            onClick={() => {
-              setSelectedSlot(null);
-              const modal = document.getElementById(id.toString());
-            }}
+            // @ts-ignore
+            onClick={() => document.getElementById(id.toString())?.close()}
           >
             Close
           </button>

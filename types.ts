@@ -53,6 +53,7 @@ export interface Booking {
   shop_id: number;
   shop_service_id: number;
   booking_date: string;
+  duration: number;
 }
 
 export interface BookingWithShopDetails {
