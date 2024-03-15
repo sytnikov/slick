@@ -1,70 +1,75 @@
-export const getNextWeekDates = () => {
-  const dates = [];
-  for (let i = 0; i < 7; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() + i);
-    dates.push(date);
-  }
-  return dates;
-};
+import { Booking } from "@/types";
 
-/**
- * TODO: We need to make the following improvements to the booking system:
- * 1. We need to change the booking table to have a start and end time for the booking, the duration is what we will use to calculate the end time...
- * 2. We need to add how many employees are at a repair shop...we can call them seats, this will allow for multiple bookings at the same time...
- * 3. We need to do a major cleanup of the make booking modal, it is a mess...
- * 4. Let's combine the getNextWeekDates and generateTimeSlots functions into a single function that takes the opening and closing times, the bookings, and the number of seats as arguments...
- */
-
-export const generateTimeSlots = (
+export const getTimeSlotsAndBookingsForRepairShop = (
+  intendedBookingDate: Date,
   openingTime: string,
   closingTime: string,
-  bookings: any[],
-  targetDate: Date, // this might be dumb...double check this...
+  bookings: Booking[],
   seats: number
 ) => {
   const interval = 30;
-  const timeSlots = [];
-  const [openHours, openMinutes] = openingTime.split(":");
-  const [closeHours, closeMinutes] = closingTime.split(":");
+  const daysToGenerate = 7;
+  const weeklyTimeSlots = [];
 
-  let slotDate = new Date(targetDate);
-
-  slotDate.setHours(Number(openHours), Number(openMinutes), 0, 0);
-  let currentTime = new Date(slotDate.getTime());
-
-  const closingTimeDate = new Date(slotDate.getTime());
-  closingTimeDate.setHours(Number(closeHours), Number(closeMinutes), 0, 0);
-
-  const bookingTimes = bookings.map((booking) => {
-    const startDate = new Date(booking.booking_date);
-    const endDate = new Date(startDate.getTime() + booking.duration * 60000);
-    return { start: startDate, end: endDate };
-  });
-
-  while (currentTime < closingTimeDate) {
-    const slotStartTime = new Date(currentTime.getTime());
-    const slotEndTime = new Date(currentTime.getTime() + interval * 60000);
-
-    const formattedTime = `${slotStartTime
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${slotStartTime
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
-
-    const isBooked = bookingTimes.some(
-      ({ start, end }) =>
-        slotStartTime < end &&
-        slotEndTime > start &&
-        slotStartTime.toDateString() === start.toDateString()
+  for (let day = 0; day < daysToGenerate; day++) {
+    const daySlots = [];
+    const currentDate = new Date(
+      Date.UTC(
+        intendedBookingDate.getUTCFullYear(),
+        intendedBookingDate.getUTCMonth(),
+        intendedBookingDate.getUTCDate() + day
+      )
     );
 
-    timeSlots.push({ time: formattedTime, isBooked });
+    let currentTime = new Date(currentDate.getTime());
+    currentTime.setUTCHours(
+      parseInt(openingTime.split(":")[0]),
+      parseInt(openingTime.split(":")[1]),
+      0,
+      0
+    );
 
-    currentTime = new Date(currentTime.getTime() + interval * 60000);
+    const closingDateTime = new Date(currentDate.getTime());
+    closingDateTime.setUTCHours(
+      parseInt(closingTime.split(":")[0]),
+      parseInt(closingTime.split(":")[1]),
+      0,
+      0
+    );
+
+    while (
+      new Date(currentTime.getTime() + interval * 60000) <= closingDateTime
+    ) {
+      const slotTime =
+        currentTime.getUTCHours().toString().padStart(2, "0") +
+        ":" +
+        currentTime.getUTCMinutes().toString().padStart(2, "0");
+
+      const overlappingBookings = bookings.filter((booking) => {
+        const bookingStartDate = new Date(booking.booking_start_date);
+        const bookingEndDate = new Date(booking.booking_end_date);
+
+        // Checking overlap considering the slots and bookings are in UTC
+        return (
+          booking.shop_id === booking.shop_id &&
+          currentDate.getUTCDate() === bookingStartDate.getUTCDate() &&
+          currentTime < bookingEndDate &&
+          new Date(currentTime.getTime() + interval * 60000) > bookingStartDate
+        );
+      });
+
+      const isAvailable = overlappingBookings.length < seats;
+      daySlots.push({ slotTime, isAvailable });
+
+      currentTime.setUTCMinutes(currentTime.getUTCMinutes() + interval);
+    }
+
+    weeklyTimeSlots.push({
+      date: currentDate.toISOString().split("T")[0], // Use UTC date for consistency
+      slots: daySlots,
+    });
   }
 
-  return timeSlots;
+  // console.log(JSON.stringify(weeklyTimeSlots, null, 2));
+  return weeklyTimeSlots;
 };

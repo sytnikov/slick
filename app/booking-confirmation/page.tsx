@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import Button from "@/components/Button";
+import calculateBookingEndDate from "@/utils/booking-system/booking-duration";
 
 export default async function BookingConfirmation({ searchParams }: any) {
   const supabase = createClient();
@@ -25,27 +26,45 @@ export default async function BookingConfirmation({ searchParams }: any) {
     .eq("user_id", user.id)
     .single();
 
-  const createBooking = async () => {
+  const { data: shopServices } = await supabase
+    .from("Shop Services")
+    .select("*")
+    .eq("shop_id", searchParams.shop);
+
+  console.log("SHOP SERVICES", shopServices);
+
+  async function newBooking() {
     "use server";
     const supabase = createClient();
-    const shop_service_id = searchParams.service;
-    const user_id = user.id;
-    const booking_date = searchParams.slot;
-    const shop_id = searchParams.shop;
 
-    const { data, error } = await supabase.from("Bookings").insert({
-      shop_service_id,
-      user_id,
-      booking_date,
-      shop_id,
-    });
+    const shop_id = searchParams.shop;
+    const shop_service_id = searchParams.service;
+    const user_id = user?.id;
+    const booking_start_date = searchParams.slot;
+    const booking_end_date = endDate;
+    const duration = bookingDuration;
+
+    const { error } = await supabase.from("Bookings").insert([
+      {
+        shop_service_id,
+        user_id,
+        booking_start_date,
+        shop_id,
+      },
+    ]);
 
     if (error) {
       return redirect("/booking-confirmation?message=Could not create booking");
     }
 
     return redirect("/user-dashboard");
-  };
+  }
+
+  // TODO: We now have the booking logic in place, now we need to calculate the end date and then post the booking to the database...
+  // Get the service data from the Shop Services table...
+  // booking-duration is returning a date that is two hours behind the booking start date...
+
+  calculateBookingEndDate(new Date(searchParams.slot), 30);
 
   return (
     <main className={"flex-1"}>
@@ -65,7 +84,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
             <p>{userProfile.surname}</p>
           </div>
           <div className={"mt-4"}>
-            <form action={createBooking}>
+            <form action={newBooking}>
               <Button
                 text={"Confirm booking"}
                 submittingText={"Making your booking..."}

@@ -54,6 +54,7 @@ export default async function RepairShopPage({
               duration={service.duration}
               price={service.price}
               shopID={params.id}
+              seats={shop.number_of_employees}
             />
           ))}
         </main>

@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import {} from "@/utils/booking-system/booking-logic";
+import { getTimeSlotsAndBookingsForRepairShop } from "@/utils/booking-system/booking-logic";
 
 interface BookServiceModalProps {
   id: number;
   selectedService: string;
-  shopID: any;
+  shopID: number;
   openingTime: string;
   closingTime: string;
   bookings: any[];
+  seats: number;
 }
 
 export default function BookServiceModal({
@@ -21,15 +22,29 @@ export default function BookServiceModal({
   openingTime,
   closingTime,
   bookings,
+  seats,
 }: BookServiceModalProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [weeklyTimeSlots, setWeeklyTimeSlots] = useState<any[]>([]);
 
-  const formatDate = (date: Date) => {
-    return date.toISOString().split("T")[0];
-  };
+  useEffect(() => {
+    const slots = getTimeSlotsAndBookingsForRepairShop(
+      new Date(),
+      openingTime,
+      closingTime,
+      bookings,
+      seats
+    );
+    setWeeklyTimeSlots(slots);
+  }, [openingTime, closingTime, bookings, seats]);
 
-  const handleSelection = (date: Date, time: string) => {
-    const selected = `${formatDate(date)} ${time}`;
+  const handleSelection = (
+    date: string,
+    time: string,
+    isAvailable: boolean
+  ) => {
+    if (!isAvailable) return;
+    const selected = `${date} ${time}`;
     setSelectedSlot(selected);
   };
 
@@ -60,15 +75,52 @@ export default function BookServiceModal({
           <h3 className="text-lg font-bold">
             Pick an available time for {selectedService}
           </h3>
+          {weeklyTimeSlots.map((day) => (
+            <div key={day.date} className="mb-4">
+              <h4 className="text-md font-bold">
+                {new Date(day.date).toLocaleDateString("en-US", {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </h4>
+              <div className="grid grid-cols-3 gap-4">
+                {day.slots.map((slot: any, index: number) => {
+                  const isSelected =
+                    `${day.date} ${slot.slotTime}` === selectedSlot;
+                  return (
+                    <button
+                      key={`${day.date}-${index}`}
+                      className={`p-2 ${
+                        isSelected
+                          ? "bg-green text-white"
+                          : slot.isAvailable
+                          ? "border-gray-400 hover:bg-gray-100"
+                          : "border-grey-200 text-gray-200 cursor-not-allowed"
+                      } border-2`}
+                      onClick={() =>
+                        handleSelection(
+                          day.date,
+                          slot.slotTime,
+                          slot.isAvailable
+                        )
+                      }
+                      disabled={!slot.isAvailable}
+                    >
+                      {slot.slotTime}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
           {selectedSlot && (
-            <div className="sticky bottom-0 bg-black p-4 text-white rounded-md flex items-center justify-center">
+            <div className="animate-in sticky bottom-0 bg-black p-4 text-white rounded-xl flex items-center justify-center">
               <Link
                 href={`/booking-confirmation?service=${encodeURIComponent(
-                  id
+                  selectedService
                 )}&slot=${encodeURIComponent(
                   selectedSlot
-                )}&name=${encodeURIComponent(
-                  selectedService
                 )}&shop=${encodeURIComponent(shopID)}`}
               >
                 Book: {selectedSlot}
