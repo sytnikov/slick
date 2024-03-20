@@ -13,12 +13,12 @@ export default async function Browse() {
   return (
     <main>
       <div className="grid grid-cols-6 ">
-        <div className="col-span-2 flex items-start flex-col pl-4 pt-4">
+        <div className="col-span-2 flex flex-col items-start pl-4 pt-4">
           <div className={"animate-in h-screen gap-4 overflow-y-scroll"}>
-            <h1 className={"text-2xl mb-6"}>Browse repair shops</h1>
+            <h1 className={"mb-6 text-2xl"}>Browse repair shops</h1>
             <div className={"flex flex-row flex-wrap"}>
               {shops?.map((shop: RepairShop) => (
-                <div className={"w-1/2 mb-4"} key={shop.id}>
+                <div className={"mb-4 w-1/2"} key={shop.id}>
                   <RepairShopCard
                     name={shop.name}
                     status={shop.status}
@@ -32,7 +32,7 @@ export default async function Browse() {
         <div className={"relative col-span-4 h-screen"}>
           <div
             className={
-              "animate-in absolute top-5 left-0 right-0 mx-auto z-10 max-w-[65%]"
+              "animate-in absolute left-0 right-0 top-5 z-10 mx-auto max-w-[65%]"
             }
           >
             <BrowseSearch />

@@ -24,8 +24,8 @@ export default function Button({
         style === "primary"
           ? "btn btn-primary"
           : style === "secondary"
-          ? "btn btn-secondary"
-          : "btn btn-tertiary"
+            ? "btn btn-secondary"
+            : "btn-tertiary btn"
       }
       title={"primary button"}
       type={type}

@@ -8,6 +8,7 @@ import { getTimeSlotsAndBookingsForRepairShop } from "@/utils/booking-system/boo
 interface BookServiceModalProps {
   id: number;
   selectedService: string;
+  selectedServiceID: number;
   shopID: number;
   openingTime: string;
   closingTime: string;
@@ -18,6 +19,7 @@ interface BookServiceModalProps {
 export default function BookServiceModal({
   id,
   selectedService,
+  selectedServiceID,
   shopID,
   openingTime,
   closingTime,
@@ -33,7 +35,7 @@ export default function BookServiceModal({
       openingTime,
       closingTime,
       bookings,
-      seats
+      seats,
     );
     setWeeklyTimeSlots(slots);
   }, [openingTime, closingTime, bookings, seats]);
@@ -41,7 +43,7 @@ export default function BookServiceModal({
   const handleSelection = (
     date: string,
     time: string,
-    isAvailable: boolean
+    isAvailable: boolean,
   ) => {
     if (!isAvailable) return;
     const selected = `${date} ${time}`;
@@ -95,14 +97,14 @@ export default function BookServiceModal({
                         isSelected
                           ? "bg-green text-white"
                           : slot.isAvailable
-                          ? "border-gray-400 hover:bg-gray-100"
-                          : "border-grey-200 text-gray-200 cursor-not-allowed"
+                            ? "border-gray-400 hover:bg-gray-100"
+                            : "border-grey-200 cursor-not-allowed text-gray-200"
                       } border-2`}
                       onClick={() =>
                         handleSelection(
                           day.date,
                           slot.slotTime,
-                          slot.isAvailable
+                          slot.isAvailable,
                         )
                       }
                       disabled={!slot.isAvailable}
@@ -115,12 +117,12 @@ export default function BookServiceModal({
             </div>
           ))}
           {selectedSlot && (
-            <div className="animate-in sticky bottom-0 bg-black p-4 text-white rounded-xl flex items-center justify-center">
+            <div className="animate-in sticky bottom-0 flex items-center justify-center rounded-xl bg-black p-4 text-white">
               <Link
                 href={`/booking-confirmation?service=${encodeURIComponent(
-                  selectedService
+                  selectedServiceID,
                 )}&slot=${encodeURIComponent(
-                  selectedSlot
+                  selectedSlot,
                 )}&shop=${encodeURIComponent(shopID)}`}
               >
                 Book: {selectedSlot}

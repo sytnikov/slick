@@ -33,7 +33,7 @@ export default async function RepairShopPage({
 
   const combinedServices = shopServices?.map((shopService: ShopService) => {
     const service = allServices?.find(
-      (service: Service) => service.id === shopService.service_id
+      (service: Service) => service.id === shopService.service_id,
     );
     return {
       ...shopService,
@@ -42,10 +42,10 @@ export default async function RepairShopPage({
   });
 
   return (
-    <main className="flex-1 w-full flex flex-col gap-20 items-center">
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col justify-center">
-          <h2 className="font-bold text-4xl mb-4">{shop.name}</h2>
+    <main className="flex w-full flex-1 flex-col items-center gap-20">
+      <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+        <main className="flex flex-1 flex-col justify-center">
+          <h2 className="mb-4 text-4xl font-bold">{shop.name}</h2>
           {combinedServices?.map((service: ShopService & { name: string }) => (
             <SingleServiceCard
               key={service.id}

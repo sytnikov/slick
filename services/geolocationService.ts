@@ -3,11 +3,11 @@ import { RepairShop } from "@/types";
 export default async function getGeolocation(shops: RepairShop[] | null) {
   const coordinatesPromises = shops?.map(async (shop) => {
     const address = encodeURIComponent(
-      shop.street_address + " " + shop.postal_code + " " + shop.city
+      shop.street_address + " " + shop.postal_code + " " + shop.city,
     );
 
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
     );
 
     const data = await response.json();
@@ -26,7 +26,7 @@ export default async function getGeolocation(shops: RepairShop[] | null) {
 
   // @ts-ignore
   const coordinates = (await Promise.all(coordinatesPromises)).filter(
-    (coord) => coord !== null
+    (coord) => coord !== null,
   );
 
   return coordinates;

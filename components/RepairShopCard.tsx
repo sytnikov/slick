@@ -12,7 +12,7 @@ export default function RepairShopCard({
   description,
 }: RepairShopCardProps) {
   return (
-    <div className="card bg-grey rounded-xl overflow-hidden mr-6 h-full">
+    <div className="card mr-6 h-full overflow-hidden rounded-xl bg-grey">
       <figure>
         <img
           src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"

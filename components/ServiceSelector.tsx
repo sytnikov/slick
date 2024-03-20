@@ -15,7 +15,7 @@ export default function ServiceSelector({ services }: ServiceSelectorProps) {
   const router = useRouter();
 
   const handleSelectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const serviceName = event.target.value;
     setSelectedService(serviceName);

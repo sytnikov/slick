@@ -5,7 +5,7 @@ export const getTimeSlotsAndBookingsForRepairShop = (
   openingTime: string,
   closingTime: string,
   bookings: Booking[],
-  seats: number
+  seats: number,
 ) => {
   const interval = 30;
   const daysToGenerate = 7;
@@ -17,8 +17,8 @@ export const getTimeSlotsAndBookingsForRepairShop = (
       Date.UTC(
         intendedBookingDate.getUTCFullYear(),
         intendedBookingDate.getUTCMonth(),
-        intendedBookingDate.getUTCDate() + day
-      )
+        intendedBookingDate.getUTCDate() + day,
+      ),
     );
 
     let currentTime = new Date(currentDate.getTime());
@@ -26,7 +26,7 @@ export const getTimeSlotsAndBookingsForRepairShop = (
       parseInt(openingTime.split(":")[0]),
       parseInt(openingTime.split(":")[1]),
       0,
-      0
+      0,
     );
 
     const closingDateTime = new Date(currentDate.getTime());
@@ -34,7 +34,7 @@ export const getTimeSlotsAndBookingsForRepairShop = (
       parseInt(closingTime.split(":")[0]),
       parseInt(closingTime.split(":")[1]),
       0,
-      0
+      0,
     );
 
     while (

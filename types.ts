@@ -33,12 +33,12 @@ export interface ShopService {
 
 export interface Booking {
   id: number;
+  shop_id: number;
   shop_service_id: number;
   user_id: string;
   booking_start_date: string;
-  shop_id: number;
-  duration: number;
   booking_end_date: string;
+  duration: number;
 }
 
 export interface BookingWithShopDetails {

@@ -50,15 +50,15 @@ export default async function RepairShopDashboard() {
     .in("shop_id", shopIds as number[]);
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
+    <div className="flex w-full flex-1 flex-col items-center gap-20">
       <div className="w-full">
-        <div className="py-6 font-bold bg-purple-950 text-center">
+        <div className="bg-purple-950 py-6 text-center font-bold">
           This is a protected page that you can only see as an authenticated
           user
         </div>
       </div>
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col gap-6">
+      <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+        <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>
             {userProfile.first_name} {userProfile.surname}
           </h1>
@@ -84,8 +84,8 @@ export default async function RepairShopDashboard() {
               </div>
             ))}
           </div>
-          <div className={"w-full flex justify-center mb-8"}>
-            <Link className={"border-2 p-4 bg-blue-800"} href="/browse">
+          <div className={"mb-8 flex w-full justify-center"}>
+            <Link className={"border-2 bg-blue-800 p-4"} href="/browse">
               Browse repair shops
             </Link>
           </div>

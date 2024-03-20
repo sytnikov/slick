@@ -38,7 +38,7 @@ function MapComponent({ shops }: MapComponentProps) {
     const fetchCoordinates = async () => {
       let coords = await getGeolocation(shops);
       const filteredCoords: Location[] = coords.filter(
-        (coord): coord is Location => coord !== null
+        (coord): coord is Location => coord !== null,
       );
 
       setCoordinates(filteredCoords);

@@ -11,7 +11,7 @@ export default function CitySelector() {
   const router = useRouter();
 
   const handleSelectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const city = event.target.value;
     setSelectedCity(city);

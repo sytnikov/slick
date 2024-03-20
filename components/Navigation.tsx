@@ -4,7 +4,7 @@ import AuthButton from "./AuthButton";
 
 export default function Navigation() {
   return (
-    <div className="navbar bg-base-100 border-b border-gray-300">
+    <div className="navbar border-b border-gray-300 bg-base-100">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -25,7 +25,7 @@ export default function Navigation() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <Link href={"/browse"}>Browse</Link>
 

@@ -8,12 +8,12 @@ export default async function BrowseSearch() {
   const { data: services } = await supabase.from("Services").select();
 
   return (
-    <div className={"flex flex-row gap-1 bg-green p-4 rounded-xl"}>
+    <div className={"flex flex-row gap-1 rounded-xl bg-green p-4"}>
       <input
         type="text"
         title={"Search box"}
         placeholder={"Masan paja"}
-        className={"w-full p-2 border-2 rounded-xl border-accent"}
+        className={"w-full rounded-xl border-2 border-accent p-2"}
       />
       <ServiceSelector services={services} />
       <CitySelector />

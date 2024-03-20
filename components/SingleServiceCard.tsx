@@ -33,7 +33,7 @@ export default async function SingleServiceCard({
     .eq("shop_id", repairShop.id);
 
   return (
-    <div className={"flex flex-row p-4 mb-4 border-2 rounded-md"}>
+    <div className={"mb-4 flex flex-row rounded-md border-2 p-4"}>
       <div className={"flex flex-col gap-2"}>
         <h1>{name}</h1>
         <p>Duration: {duration} minutes</p>
@@ -41,6 +41,7 @@ export default async function SingleServiceCard({
         <BookServiceModal
           id={serviceID}
           selectedService={name}
+          selectedServiceID={serviceID}
           shopID={shopID}
           openingTime={repairShop.opening_time}
           closingTime={repairShop.closing_time}

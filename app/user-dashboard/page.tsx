@@ -26,7 +26,7 @@ export default async function UserDashboard() {
     .select("*")
     .eq(
       "id",
-      bookings?.map((booking: Booking) => booking.shop_service_id)
+      bookings?.map((booking: Booking) => booking.shop_service_id),
     );
 
   const { data: services } = await supabase
@@ -34,7 +34,7 @@ export default async function UserDashboard() {
     .select("*")
     .eq(
       "id",
-      shopServices?.map((shopService) => shopService.service_id)
+      shopServices?.map((shopService) => shopService.service_id),
     );
 
   const { data: repairShops } = await supabase
@@ -42,18 +42,18 @@ export default async function UserDashboard() {
     .select("*")
     .eq(
       "id",
-      bookings?.map((booking: Booking) => booking.shop_id)
+      bookings?.map((booking: Booking) => booking.shop_id),
     );
 
   const bookingWithRepairShopDetails = bookings?.map((booking: Booking) => {
     const shop = repairShops?.find(
-      (repairShop) => repairShop.id === booking.shop_id
+      (repairShop) => repairShop.id === booking.shop_id,
     );
     const shopService = shopServices?.find(
-      (shopService) => shopService.id === booking.shop_service_id
+      (shopService) => shopService.id === booking.shop_service_id,
     );
     const service = services?.find(
-      (service) => service.id === shopService?.service_id
+      (service) => service.id === shopService?.service_id,
     );
     return {
       ...booking,
@@ -68,15 +68,15 @@ export default async function UserDashboard() {
   });
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
+    <div className="flex w-full flex-1 flex-col items-center gap-20">
       <div className="w-full">
-        <div className="py-6 font-bold bg-purple-950 text-center">
+        <div className="bg-purple-950 py-6 text-center font-bold">
           This is a protected page that you can only see as an authenticated
           user
         </div>
       </div>
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col gap-6">
+      <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+        <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>Welcome user: {user.email}</h1>
 
           <h3>Here are your bookings: </h3>
@@ -87,9 +87,9 @@ export default async function UserDashboard() {
                 <p>Service: {booking.shop.service.name}</p>
                 <p>Time: {booking.booking_date}</p>
               </div>
-            )
+            ),
           )}
-          <div className={"w-full flex justify-center mb-8"}>
+          <div className={"mb-8 flex w-full justify-center"}>
             <Link href="/browse">
               <button className={"btn btn-primary text-white"}>
                 Browse repair shops
