@@ -9,8 +9,8 @@ export default async function Index() {
           <h2 className="mb-4 text-4xl font-bold">
             Slick - a better way to fix your car
           </h2>
-          <div className={"flex justify-center gap-4"}>
-            <Link className={"bg-green p-4 text-white"} href="/browse">
+          <div className="flex justify-center gap-4">
+            <Link href="/browse" className="bg-green p-4 text-white" >
               Browse repair shops
             </Link>
             <AuthButton />
