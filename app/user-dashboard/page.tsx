@@ -70,7 +70,7 @@ export default async function UserDashboard() {
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-20">
       <div className="w-full">
-        <div className="bg-purple-950 py-6 text-center font-bold">
+        <div className="bg-purple-950 text-white py-6 text-center font-bold">
           This is a protected page that you can only see as an authenticated
           user
         </div>

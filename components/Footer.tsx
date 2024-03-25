@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t-foreground/10 flex w-full justify-center border-t p-8 text-center text-xs">
-      <p>
+      <p className="flex gap-1">
         Powered by
         <Link
           href="https://orionmc.fi"
