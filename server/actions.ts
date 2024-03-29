@@ -41,10 +41,10 @@ export async function getServicesByIds(serviceIds: string[]) {
 
 // this function isn't used anywhere at the moment but we can use it to get the user profile details later on
 
-export async function getUserProfileDetail(
+export async function getUserProfileDetail<T extends keyof UserProfile>(
   userProfile: UserProfile,
-  detail: keyof UserProfile,
-): Promise<UserProfile[keyof UserProfile]> {
+  detail: T,
+): Promise<UserProfile[T]> {
   return userProfile[detail];
 }
 

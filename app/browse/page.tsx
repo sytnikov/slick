@@ -16,7 +16,7 @@ export default async function Browse() {
           <div className={"animate-in h-screen gap-4 overflow-y-scroll"}>
             <h1 className={"mb-6 text-2xl"}>Browse repair shops</h1>
             <div className={"flex flex-row flex-wrap"}>
-              {shops?.map((shop: RepairShop) => (
+              {shops.map((shop: RepairShop) => (
                 <div className={"mb-4 w-1/2"} key={shop.id}>
                   <RepairShopCard
                     name={shop.name}
