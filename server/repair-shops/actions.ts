@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 
 const supabase = createClient();
 
-export async function getShopById(shopId: string) {
+export async function getShopById(shopId: number) {
   const { data: shop } = await supabase
     .from("Repair Shops")
     .select("*")

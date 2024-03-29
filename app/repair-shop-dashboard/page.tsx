@@ -2,10 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getUser } from "@/server/users/actions";
-import {
-  getRepairShopsAssociatedWithUser,
-} from "@/server/repair-shops/actions";
-import {getBookingsForUsersShops} from "@/server/bookings/actions";
+import { getRepairShopsAssociatedWithUser } from "@/server/repair-shops/actions";
+import { getBookingsForUsersShops } from "@/server/bookings/actions";
 
 import { RepairShop } from "@/types";
 

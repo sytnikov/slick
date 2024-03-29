@@ -8,7 +8,6 @@ interface SingleServiceCardProps {
   duration: number;
   price: number;
   shopID: number;
-  seats: number;
 }
 
 export default async function SingleServiceCard({
@@ -17,7 +16,6 @@ export default async function SingleServiceCard({
   duration,
   price,
   shopID,
-  seats,
 }: SingleServiceCardProps) {
   const supabase = createClient();
 
@@ -47,7 +45,6 @@ export default async function SingleServiceCard({
           closingTime={repairShop.closing_time}
           // @ts-ignore
           bookings={bookings}
-          seats={seats}
         />
       </div>
     </div>

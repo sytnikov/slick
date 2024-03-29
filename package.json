@@ -8,7 +8,6 @@
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
     "@supabase/ssr": "latest",
-    "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
     "geist": "^1.2.1",
     "next": "latest",

@@ -4,11 +4,16 @@ import { createClient } from "@/utils/supabase/server";
 
 const supabase = createClient();
 
-export async function getShopServices(shopId: string) {
+export async function getSpecificShopServices(shopId: number) {
   const { data: shopServices } = await supabase
     .from("Shop Services")
     .select("*")
     .eq("shop_id", shopId);
+
+  if (!shopServices) {
+    throw new Error("No shop services found.");
+  }
+
   return shopServices || [];
 }
 
