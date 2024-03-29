@@ -3,15 +3,6 @@ import { createClient } from "@/utils/supabase/server";
 
 import Button from "@/components/Button";
 
-/**
- * Information we need to create the booking:
- * Shop accepting the booking [DONE]
- * The user that's making the booking [DONE]
- * Booking start time/date [DONE]
- * Get the service that is being booked
- * Duration
- */
-
 export default async function BookingConfirmation({ searchParams }: any) {
   const supabase = createClient();
 
