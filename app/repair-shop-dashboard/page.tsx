@@ -1,58 +1,30 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/server";
+import {
+  getBookingsForUsersShops,
+  getRepairShopsAssociatedWithUser,
+  getUser,
+} from "@/server/actions";
 
 import { RepairShop } from "@/types";
 
 export default async function RepairShopDashboard() {
-  const supabase = createClient();
+  const user = await getUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const repairShops = await getRepairShopsAssociatedWithUser(user.user_id);
 
-  if (!user) {
+  const usersShopIds = repairShops.map((shop: RepairShop) => shop.id);
+  const userRepairShopBookings = await getBookingsForUsersShops(usersShopIds);
+
+  if (user.shop_owner === false) {
     return redirect("/login");
   }
-
-  // check if the user is a shop owner, if not then redirect to user dashboard
-
-  const { data: userProfile, error } = await supabase
-    .from("User Profiles")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
-
-  if (error) {
-    console.error("Error fetching user profile:", error);
-    return redirect("/login");
-  }
-
-  if (userProfile.shop_owner !== true) {
-    return redirect("/user-dashboard"); // Redirect to user dashboard if not a shop owner
-  }
-
-  // get the repair shops that are owned by the user
-
-  const { data: repairshops } = await supabase
-    .from("Repair Shops")
-    .select("*")
-    .eq("associated_user", user.id);
-
-  // get the bookings that the repair shop has
-
-  const shopIds = repairshops?.map((shop: RepairShop) => shop.id);
-
-  const { data: bookings } = await supabase
-    .from("Bookings")
-    .select("*")
-    .in("shop_id", shopIds as number[]);
 
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-20">
       <div className="w-full">
-        <div className="bg-purple-950 text-white py-6 text-center font-bold">
+        <div className="bg-purple-950 py-6 text-center font-bold text-white">
           This is a protected page that you can only see as an authenticated
           user
         </div>
@@ -60,25 +32,25 @@ export default async function RepairShopDashboard() {
       <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
         <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>
-            {userProfile.first_name} {userProfile.surname}
+            {user.first_name} {user.surname}
           </h1>
-          <p>{userProfile.phone_number}</p>
+          <p>{user.phone_number}</p>
           <div>
             <h1>Here are your repairshops</h1>
-            {repairshops?.map((shop: RepairShop) => (
-              <div className={"mt-4 border-2 p-6"}>
-                <div key={shop.id}>
-                  <h1>{shop.name}</h1>
-                  <p>{shop.description}</p>
-                  <p>{shop.street_address}</p>
+            {repairShops.map((repairshop: RepairShop) => (
+              <div className={"mt-4 border-2 p-6"} key={repairshop.id}>
+                <div>
+                  <h1>{repairshop.name}</h1>
+                  <p>{repairshop.description}</p>
+                  <p>{repairshop.street_address}</p>
                 </div>
               </div>
             ))}
           </div>
           <div>
             <h1>Here are you bookings</h1>
-            {bookings?.map((booking) => (
-              <div key={booking.id} className={"border-2 p-4"}>
+            {userRepairShopBookings.map((booking) => (
+              <div className={"border-2 p-4"} key={booking.id}>
                 <h3>Booking at {booking.shop_id}</h3>
                 <p>Booking date: {booking.booking_date}</p>
               </div>

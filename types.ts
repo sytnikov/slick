@@ -13,6 +13,7 @@ export interface RepairShop {
 
 export interface UserProfile {
   id: number;
+  user_id: string;
   first_name: string;
   surname: string;
   phone_number: string;

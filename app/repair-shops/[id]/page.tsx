@@ -17,7 +17,6 @@ export default async function RepairShopPage({
     .select("*")
     .eq("shop_id", params.id);
 
-  // @ts-ignore
   const serviceIds = shopServices.map((service) => service.service_id);
 
   const { data: allServices } = await supabase

@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { getAllRepairShops } from "@/server/actions";
 
 import BrowseSearch from "@/components/BrowseSearch";
 import RepairShopCard from "@/components/RepairShopCard";
@@ -7,8 +7,7 @@ import BrowseMap from "@/components/browse-map/BrowseMap";
 import { RepairShop } from "@/types";
 
 export default async function Browse() {
-  const supabase = createClient();
-  const { data: shops } = await supabase.from("Repair Shops").select();
+  const shops = await getAllRepairShops();
 
   return (
     <main>
