@@ -1,4 +1,4 @@
-import { getAllRepairShops } from "@/server/actions";
+import { getAllRepairShops } from "@/server/users/actions";
 
 import BrowseSearch from "@/components/BrowseSearch";
 import RepairShopCard from "@/components/RepairShopCard";

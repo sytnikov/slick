@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { getUser } from "@/server/users/actions";
 import {
-  getBookingsForUsersShops,
   getRepairShopsAssociatedWithUser,
-  getUser,
-} from "@/server/actions";
+} from "@/server/repair-shops/actions";
+import {getBookingsForUsersShops} from "@/server/bookings/actions";
 
 import { RepairShop } from "@/types";
 
@@ -17,7 +17,7 @@ export default async function RepairShopDashboard() {
   const usersShopIds = repairShops.map((shop: RepairShop) => shop.id);
   const userRepairShopBookings = await getBookingsForUsersShops(usersShopIds);
 
-  if (user.shop_owner === false) {
+  if (!user.shop_owner) {
     return redirect("/login");
   }
 
