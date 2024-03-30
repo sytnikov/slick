@@ -45,6 +45,7 @@ export interface RepairShopBooking {
   booking_date: string;
   shop_name: string;
   service_booked: string;
+  customer_name: string;
 }
 
 export interface Booking {
