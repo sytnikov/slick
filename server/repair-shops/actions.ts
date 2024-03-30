@@ -1,8 +1,9 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-const supabase = createClient();
+const supabase = createServerComponentClient({ cookies });
 
 export async function getShopById(shopId: number) {
   const { data: shop } = await supabase

@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
-import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import { UserProfile } from "@/types";
 
-const supabase = createClient();
+const supabase = createServerComponentClient({ cookies });
 
 // this function isn't used anywhere at the moment, but we can use it to get the user profile details later on
 export async function getUserProfileDetail<T extends keyof UserProfile>(
