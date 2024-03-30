@@ -32,6 +32,21 @@ export interface ShopService {
   price: number;
 }
 
+export interface ShopServiceWithDetails {
+  id: number;
+  name: string;
+  duration: number;
+  price: number;
+}
+
+export interface RepairShopBooking {
+  id: number;
+  shop_id: number;
+  booking_date: string;
+  shop_name: string;
+  service_booked: string;
+}
+
 export interface Booking {
   id: number;
   shop_id: number;

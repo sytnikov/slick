@@ -46,11 +46,13 @@ export default async function RepairShopDashboard() {
             ))}
           </div>
           <div>
-            <h1>Here are you bookings</h1>
+            <h1>Here are upcoming bookings for your shops: </h1>
             {userRepairShopBookings.map((booking) => (
               <div className={"border-2 p-4"} key={booking.id}>
-                <h3>Booking at {booking.shop_id}</h3>
+                <h3>Booking at {booking.shop_name}</h3>
+                <p>Service booked: {booking.service_booked}</p>
                 <p>Booking date: {booking.booking_date}</p>
+                <p>Customer: {booking.customer_name}</p>
               </div>
             ))}
           </div>
