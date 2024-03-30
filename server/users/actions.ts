@@ -16,6 +16,11 @@ export async function getUserProfileDetail<T extends keyof UserProfile>(
   return userProfile[detail];
 }
 
+/**
+ * We are now getting a warning for Using supabase.auth.getSession() is potentially insecure...
+ * It seems that the createServerComponentClient is doing something internally, but we should investigate this further eventually...
+ */
+
 export async function getUser(): Promise<UserProfile> {
   const {
     data: { user },
