@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 
 export default async function BookingConfirmation({ searchParams }: any) {
   const supabase = createClient();
@@ -70,12 +69,9 @@ export default async function BookingConfirmation({ searchParams }: any) {
           </div>
           <div className={"mt-4"}>
             <form action={newBooking}>
-              <Button
-                text={"Confirm booking"}
-                submittingText={"Making your booking..."}
-                style={"primary"}
-                type={"submit"}
-              />
+              <Button asChild variant="default" size="default">
+                Confirm booking
+              </Button>
             </form>
           </div>
         </div>

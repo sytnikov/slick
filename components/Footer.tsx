@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t-foreground/10 flex w-full justify-center border-t p-8 text-center text-xs">
+    <footer className="flex w-full justify-center border-t border-t-foreground/10 p-8 text-center text-xs">
       <p className="flex gap-1">
         Powered by
         <Link
@@ -11,7 +11,7 @@ export default function Footer() {
           className="font-bold hover:underline"
           rel="noreferrer"
         >
-          Matti Sirokov
+          The Slick project
         </Link>
       </p>
     </footer>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import AuthButton from "@/components/AuthButton";
 
 import { Button } from "@/components/ui/button";
 
@@ -11,11 +10,13 @@ export default async function Index() {
           <h2 className="mb-4 text-4xl font-bold">
             Slick - a better way to fix your car
           </h2>
-          <div className="flex justify-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <Button asChild variant="default" size="default">
               <Link href="/browse">Browse Shops</Link>
             </Button>
-            <AuthButton />
+            <Button asChild variant="secondary" size="default">
+              <Link href="/user-dashboard">Log in</Link>
+            </Button>
           </div>
         </main>
       </div>

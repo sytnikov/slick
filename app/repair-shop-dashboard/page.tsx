@@ -6,6 +6,7 @@ import { getRepairShopsAssociatedWithUser } from "@/server/repair-shops/actions"
 import { getBookingsForUsersShops } from "@/server/bookings/actions";
 
 import { RepairShop } from "@/types";
+import { Button } from "@/components/ui/button";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
@@ -27,7 +28,7 @@ export default async function RepairShopDashboard() {
           user
         </div>
       </div>
-      <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+      <div className="animate-fadeInUp flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
         <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>
             {user.first_name} {user.surname}
@@ -57,9 +58,9 @@ export default async function RepairShopDashboard() {
             ))}
           </div>
           <div className={"mb-8 flex w-full justify-center"}>
-            <Link className={"border-2 bg-blue-800 p-4"} href="/browse">
-              Browse repair shops
-            </Link>
+            <Button asChild variant="default" size="lg">
+              <Link href="/browse">Browse Shops</Link>
+            </Button>
           </div>
         </main>
       </div>
