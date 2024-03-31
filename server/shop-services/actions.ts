@@ -1,10 +1,11 @@
 "use server";
 
 import { ShopServiceWithDetails } from "@/types";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createClient();
 
 export async function getSpecificShopServices(
   shopId: number,

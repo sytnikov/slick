@@ -1,12 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import { UserProfile } from "@/types";
+import { createClient } from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createClient();
 
 // this function isn't used anywhere at the moment, but we can use it to get the user profile details later on
 export async function getUserProfileDetail<T extends keyof UserProfile>(
@@ -15,11 +14,6 @@ export async function getUserProfileDetail<T extends keyof UserProfile>(
 ): Promise<UserProfile[T]> {
   return userProfile[detail];
 }
-
-/**
- * We are now getting a warning for Using supabase.auth.getSession() is potentially insecure...
- * It seems that the createServerComponentClient is doing something internally, but we should investigate this further eventually...
- */
 
 export async function getUser(): Promise<UserProfile> {
   const {

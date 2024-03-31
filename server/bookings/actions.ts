@@ -2,10 +2,11 @@
 
 import { cookies } from "next/headers";
 
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { BookingWithDetails, RepairShopBooking } from "@/types";
+import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createClient();
 
 export async function getBookingsForUsersShops(
   shopIds: number[],
