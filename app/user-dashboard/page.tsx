@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getUser } from "@/server/users/actions";
-import { getUsersBookings } from "@/server/bookings/actions";
 import { BookingWithDetails } from "@/types";
 import { Button } from "@/components/ui/button";
+import { getUser, getUsersBookings } from "@/server/actions";
 
 export default async function UserDashboard() {
   const user = await getUser();
-  const userBookings = await getUsersBookings(user.user_id);
+  const userBookings = await getUsersBookings();
 
   if (!user) {
     return redirect("/login");
@@ -22,7 +21,7 @@ export default async function UserDashboard() {
           user
         </div>
       </div>
-      <div className="animate-fadeInUp flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+      <div className="flex max-w-4xl flex-1 animate-fadeInUp flex-col gap-20 px-3 opacity-0">
         <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>
             Welcome user: {user.first_name} {user.surname}

@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getUser } from "@/server/users/actions";
-import { getRepairShopsAssociatedWithUser } from "@/server/repair-shops/actions";
-import { getBookingsForUsersShops } from "@/server/bookings/actions";
-
 import { RepairShop } from "@/types";
 import { Button } from "@/components/ui/button";
+import {
+  getUser,
+  getRepairShopsAssociatedWithUser,
+  getBookingsForUsersShops,
+} from "@/server/actions";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
 
-  const repairShops = await getRepairShopsAssociatedWithUser(user.user_id);
+  const repairShops = await getRepairShopsAssociatedWithUser();
 
   const usersShopIds = repairShops.map((shop: RepairShop) => shop.id);
   const userRepairShopBookings = await getBookingsForUsersShops(usersShopIds);
@@ -28,7 +29,7 @@ export default async function RepairShopDashboard() {
           user
         </div>
       </div>
-      <div className="animate-fadeInUp flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+      <div className="flex max-w-4xl flex-1 animate-fadeInUp flex-col gap-20 px-3 opacity-0">
         <main className="flex flex-1 flex-col gap-6">
           <h1 className={"text-center text-2xl"}>
             {user.first_name} {user.surname}

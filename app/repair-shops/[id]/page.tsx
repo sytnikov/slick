@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { getShopById } from "@/server/repair-shops/actions";
-import { getSpecificShopServices } from "@/server/shop-services/actions";
+import { getShopById } from "@/server/actions";
+import { getSpecificShopServices } from "@/server/actions";
 import { Button } from "@/components/ui/button";
 
 export default async function RepairShopPage({
@@ -14,7 +14,7 @@ export default async function RepairShopPage({
 
   return (
     <main className="flex w-full flex-1 flex-col items-center gap-20">
-      <div className="animate-fadeInUp flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
+      <div className="flex max-w-4xl flex-1 animate-fadeInUp flex-col gap-20 px-3 opacity-0">
         <main className="flex flex-1 flex-col justify-center">
           <h2>Welcome to {shop.name}</h2>
           <p>{shop.description}</p>
