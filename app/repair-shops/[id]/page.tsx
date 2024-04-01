@@ -1,8 +1,10 @@
 import Link from "next/link";
 
-import { getShopById } from "@/server/actions";
-import { getSpecificShopServices } from "@/server/actions";
 import { Button } from "@/components/ui/button";
+import {
+  getShopById,
+  getSpecificShopServices,
+} from "@/server/repair-shops/actions";
 
 export default async function RepairShopPage({
   params,
