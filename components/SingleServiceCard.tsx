@@ -17,7 +17,7 @@ export default async function SingleServiceCard({
   price,
   shopID,
 }: SingleServiceCardProps) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: repairShop } = await supabase
     .from("Repair Shops")
