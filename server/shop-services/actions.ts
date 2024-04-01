@@ -7,7 +7,7 @@ import { ShopServiceWithDetails } from "@/types";
 export async function getServicesByIds(
   serviceIds: string[],
 ): Promise<ShopServiceWithDetails[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: allServices } = await supabase
     .from("Services")
     .select("*")
