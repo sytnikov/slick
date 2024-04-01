@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { RepairShop } from "@/types";
-import { Button } from "@/components/ui/button";
+import { getBookingsForUsersShops } from "@/server/bookings/actions";
 import {
   getUser,
   getRepairShopsAssociatedWithUser,
-  getBookingsForUsersShops,
-} from "@/server/actions";
+} from "@/server/user-authentication/actions";
+
+import { Button } from "@/components/ui/button";
+
+import { RepairShop } from "@/types";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();

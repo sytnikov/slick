@@ -3,7 +3,10 @@ import { redirect } from "next/navigation";
 
 import { BookingWithDetails } from "@/types";
 import { Button } from "@/components/ui/button";
-import { getUser, getUsersBookings } from "@/server/actions";
+import {
+  getUser,
+  getUsersBookings,
+} from "@/server/user-authentication/actions";
 
 export default async function UserDashboard() {
   const user = await getUser();
