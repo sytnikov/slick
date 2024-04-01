@@ -106,7 +106,6 @@ export async function getShopById(shopId: number): Promise<RepairShop> {
 
 export async function getAllRepairShops(): Promise<RepairShop[]> {
   const { data: repairShops } = await supabase.from("Repair Shops").select("*");
-  console.log("getting all repair shops");
   return repairShops || [];
 }
 
