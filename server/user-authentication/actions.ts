@@ -6,9 +6,8 @@ import { BookingWithDetails, UserProfile } from "@/types";
 
 import { createClient } from "@/utils/supabase/server";
 
-const supabase = createClient();
-
 export async function getUser(): Promise<UserProfile> {
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -25,6 +24,7 @@ export async function getUser(): Promise<UserProfile> {
 }
 
 export async function getRepairShopsAssociatedWithUser() {
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -42,6 +42,7 @@ export async function getRepairShopsAssociatedWithUser() {
 // this is ugly, but we'll get back to this later...
 
 export async function getUsersBookings(): Promise<BookingWithDetails[]> {
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

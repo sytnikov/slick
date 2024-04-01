@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Button } from "@/components/ui/button";
 
 export default async function BookingConfirmation({ searchParams }: any) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: shop } = await supabase
     .from("Repair Shops")
