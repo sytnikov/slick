@@ -5,6 +5,7 @@ import {
   getShopById,
   getSpecificShopServices,
 } from "@/server/repair-shops/actions";
+import SelectTimeModal from "@/components/SelectTimeModal";
 
 export default async function RepairShopPage({
   params,
@@ -29,13 +30,7 @@ export default async function RepairShopPage({
                     <h4>{service.name}</h4>
                     <p>Duration: {service.duration} minutes</p>
                     <p>Price: {service.price} EUR</p>
-                    <Button asChild variant="default" size="default">
-                      <Link
-                        href={`/repair-shops/${shop.id}/book/${service.id}`}
-                      >
-                        Book
-                      </Link>
-                    </Button>
+                    <SelectTimeModal shop={shop} service={service} />
                   </div>
                 </li>
               ))}
