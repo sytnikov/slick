@@ -5,13 +5,13 @@ import { RepairShop, ShopServiceWithDetails } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 
 export async function getAllRepairShops(): Promise<RepairShop[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: repairShops } = await supabase.from("Repair Shops").select("*");
   return repairShops || [];
 }
 
 export async function getShopById(shopId: number): Promise<RepairShop> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: shop } = await supabase
     .from("Repair Shops")
     .select("*")
@@ -23,7 +23,7 @@ export async function getShopById(shopId: number): Promise<RepairShop> {
 export async function getSpecificShopServices(
   shopId: number,
 ): Promise<ShopServiceWithDetails[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: shopServices } = await supabase
     .from("Shop Services")
     .select("*")

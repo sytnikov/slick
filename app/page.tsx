@@ -14,9 +14,6 @@ export default async function Index() {
             <Button asChild variant="default" size="default">
               <Link href="/browse">Browse Shops</Link>
             </Button>
-            <Button asChild variant="secondary" size="default">
-              <Link href="/user-dashboard">Log in</Link>
-            </Button>
           </div>
         </main>
       </div>
