@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { SubmitButton } from "./submit-button";
 
-export default function Login({
+import { SubmitButton } from "@/components/SubmitButton";
+import { Button } from "@/components/ui/button";
+
+export default function LogIn({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const signIn = async (formData: FormData) => {
+  const logIn = async (formData: FormData) => {
     "use server";
 
     const email = formData.get("email") as string;
@@ -31,7 +33,7 @@ export default function Login({
     <div className="relative flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
       <Link
         href="/"
-        className="text-foreground bg-btn-background hover:bg-btn-background-hover group z-[1] absolute left-8 top-12 flex items-center rounded-md text-sm no-underline"
+        className="group absolute left-8 top-12 z-[1] flex items-center text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -50,12 +52,13 @@ export default function Login({
         Back
       </Link>
 
-      <form className="animate-in text-foreground flex w-full flex-1 flex-col justify-center gap-2">
+      <form className="flex w-full flex-1 flex-col justify-center gap-2 animate-in">
         <label className="text-md" htmlFor="email">
           Email
         </label>
         <input
           className="mb-6 rounded-md border bg-inherit px-4 py-2"
+          type="email"
           name="email"
           placeholder="you@example.com"
           required
@@ -71,19 +74,19 @@ export default function Login({
           required
         />
         <SubmitButton
-          formAction={signIn}
-          className="bg-green-700 text-foreground mb-2 rounded-md px-4 py-2"
-          pendingText="Signing In..."
+          formAction={logIn}
+          className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+          pendingText="Logging in..."
         >
-          Sign In
+          Log in
         </SubmitButton>
         <div className={"mt-8 flex items-center justify-center"}>
-          <Link href="/sign-up" className="text-foreground">
-            No account? Sign up
-          </Link>
+          <Button variant={"link"} size={"lg"}>
+            <Link href="/signup">No account yet? Sign up</Link>
+          </Button>
         </div>
         {searchParams?.message && (
-          <p className="bg-foreground/10 text-foreground mt-4 p-4 text-center">
+          <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
             {searchParams.message}
           </p>
         )}

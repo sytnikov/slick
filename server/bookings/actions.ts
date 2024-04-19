@@ -2,13 +2,12 @@
 
 import { RepairShopBooking } from "@/types";
 
-import { createClient } from "@/utils/supabase/client";
-
-const supabase = createClient();
+import { createClient } from "@/utils/supabase/server";
 
 export async function getBookingsForUsersShops(
   shopIds: number[],
 ): Promise<RepairShopBooking[]> {
+  const supabase = await createClient();
   const { data: bookings } = await supabase
     .from("Bookings")
     .select("*")
