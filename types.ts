@@ -54,7 +54,6 @@ export interface Booking {
   shop_service_id: number;
   user_id: string;
   booking_start_date: string;
-  booking_end_date: string;
   duration: number;
 }
 
