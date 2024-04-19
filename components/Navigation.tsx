@@ -6,7 +6,7 @@ export default function Navigation() {
   return (
     <nav
       className={
-        "flex w-full flex-row justify-between border-2 pb-4 pl-12 pr-12 pt-4"
+        "flex w-full flex-row items-center justify-between border-b-2 px-12 py-4"
       }
     >
       <Link href={"/"}>

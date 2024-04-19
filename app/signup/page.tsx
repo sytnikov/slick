@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { SubmitButton } from "../login/submit-button";
 
-export default function SignIn({
+import { createClient } from "@/utils/supabase/server";
+import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/SubmitButton";
+
+export default function SignUp({
   searchParams,
 }: {
   searchParams: { message: string };
@@ -29,14 +31,16 @@ export default function SignIn({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect(
+      "/login?message=Check email to continue registration process",
+    );
   };
 
   return (
-    <div className="flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
+    <div className="relative flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
       <Link
         href="/"
-        className="text-foreground bg-btn-background hover:bg-btn-background-hover group absolute left-8 top-8 flex items-center rounded-md px-4 py-2 text-sm no-underline"
+        className="group absolute left-8 top-12 z-[1] flex items-center text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,12 +59,13 @@ export default function SignIn({
         Back
       </Link>
 
-      <form className="animate-in text-foreground flex w-full flex-1 flex-col justify-center gap-2">
+      <form className="flex w-full flex-1 flex-col justify-center gap-2 animate-in">
         <label className="text-md" htmlFor="email">
           Email
         </label>
         <input
           className="mb-6 rounded-md border bg-inherit px-4 py-2"
+          type="email"
           name="email"
           placeholder="you@example.com"
           required
@@ -78,18 +83,20 @@ export default function SignIn({
 
         <SubmitButton
           formAction={signUp}
-          className="border-foreground/20 text-foreground mb-2 rounded-md border px-4 py-2"
-          pendingText="Signing Up..."
+          className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+          pendingText="Signing up..."
         >
-          Sign Up
+          Sign up
         </SubmitButton>
         <div className={"mt-8 flex items-center justify-center"}>
-          <Link href="/login" className="text-foreground">
-            Already have an account? Sign in
-          </Link>
+          <Button variant={"link"} size={"lg"}>
+            <Link href="/login" className="text-foreground">
+              Already have an account? Log in
+            </Link>
+          </Button>
         </div>
         {searchParams?.message && (
-          <p className="bg-foreground/10 text-foreground mt-4 p-4 text-center">
+          <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
             {searchParams.message}
           </p>
         )}
