@@ -3,7 +3,6 @@
 import { createClient } from "@/utils/supabase/client";
 
 import { ShopServiceWithDetails } from "@/types";
-import { format } from "path";
 
 export async function getServicesByIds(
   serviceIds: string[],
