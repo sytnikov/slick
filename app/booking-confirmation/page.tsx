@@ -1,26 +1,54 @@
+import { redirect } from "next/navigation";
+import { formatDateTime } from "@/utils/booking-system/date-utils";
+
+import { createClient } from "@/utils/supabase/server";
+
 import { getShopById } from "@/server/repair-shops/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
 import {
   getShopServiceById,
-  createNewBooking,
+  getSingleShopServicTitle,
 } from "@/server/shop-services/actions";
+
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function BookingConfirmation({ searchParams }: any) {
   const shop = await getShopById(searchParams.shop);
   const user = await getUser();
   const service = await getShopServiceById(searchParams.service);
 
-  const handleBookingConfirmation = async (formData: FormData) => {
+  const shopServiceTitle = getSingleShopServicTitle(searchParams.service);
+
+  const createNewBooking = async (formData: FormData) => {
     "use server";
-    await createNewBooking(formData);
+
+    const supabase = await createClient();
+
+    const shopServiceID = formData.get("shop_service_id") as string;
+    const userID = formData.get("user_id") as string;
+    const bookingStart = formatDateTime(
+      formData.get("booking_start") as string,
+    );
+    const shopID = formData.get("shop_id") as string;
+    const duration = formData.get("duration") as string;
+
+    await supabase.from("Bookings").insert({
+      shop_service_id: shopServiceID,
+      user_id: userID,
+      booking_start_date: bookingStart,
+      shop_id: shopID,
+      duration: duration,
+    });
+
+    return redirect("/user-dashboard");
   };
 
   return (
     <main className={"flex-1"}>
       <div className={"flex h-screen items-center justify-center"}>
         <div className={"flex flex-col items-center"}>
-          {/* <h1 className={"mb-4 text-2xl"}>
+          <h1 className={"mb-4 text-2xl"}>
             Booking confirmation for {user.first_name}
           </h1>
           <p>Booking time: {searchParams.slot}</p>
@@ -29,28 +57,52 @@ export default async function BookingConfirmation({ searchParams }: any) {
             Address: {shop.street_address}, {shop.city}, {shop.postal_code}
           </p>
           <>
-            Service being booked: {service.name} for {service.price} euros
-          </> */}
-          <form
-            action={handleBookingConfirmation}
-            className={"flex flex-col border-2"}
-          >
+            Service being booked: {shopServiceTitle} for {service.price} euros
+          </>
+          *
+          <form className={"flex flex-col border-2"}>
+            <p>shop service id</p>
             <input
+              title={""}
               type="text"
-              title={"shop service"}
+              name={"shop_service_id"}
               value={searchParams.service}
             />
-            <input type="text" title={"use id"} value={user.id} />
+            <p>user id</p>
             <input
+              title={""}
               type="text"
-              title={"booking start"}
-              value={"2024-04-05 14:00:00+00:00"}
+              name={"user_id"}
+              value={user.user_id}
             />
-            <input type="text" title={"shop id"} value={searchParams.shop} />
-            <input type="text" title={"duration"} value={service.duration} />
-            <button type="submit" className={"bg-black p-2 text-white"}>
-              Confirm Booking
-            </button>
+            <p>booking start</p>
+            <input
+              title={""}
+              type="text"
+              name={"booking_start"}
+              value={searchParams.slot}
+            />
+            <p>shop id</p>
+            <input
+              title={""}
+              type="text"
+              name={"shop_id"}
+              value={searchParams.shop}
+            />
+            <p>booking duration</p>
+            <input
+              title={""}
+              type="text"
+              name={"duration"}
+              value={service.duration}
+            />
+            <SubmitButton
+              formAction={createNewBooking}
+              className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+              pendingText="Signing up..."
+            >
+              Make booking
+            </SubmitButton>
           </form>
         </div>
       </div>

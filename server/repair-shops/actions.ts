@@ -2,7 +2,7 @@
 
 import { RepairShop, ShopServiceWithDetails } from "@/types";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 export async function getAllRepairShops(): Promise<RepairShop[]> {
   const supabase = await createClient();

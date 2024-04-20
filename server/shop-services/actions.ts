@@ -17,6 +17,18 @@ export async function getServicesByIds(
   return allServices || [];
 }
 
+export async function getSingleShopServicTitle(
+  id: string,
+): Promise<ShopServiceWithDetails> {
+  const supabase = await createClient();
+  const { data: service } = await supabase
+    .from("Services")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return service.name;
+}
+
 export async function getShopServiceById(
   serviceId: string,
 ): Promise<ShopServiceWithDetails> {
@@ -28,13 +40,4 @@ export async function getShopServiceById(
     .single();
 
   return service || {};
-}
-
-export async function createNewBooking(formData: FormData): Promise<void> {
-  const supabase = await createClient();
-  await supabase.from("Bookings").insert({
-    formData,
-  });
-
-  console.log("Booking created with info: ", formData.values);
 }

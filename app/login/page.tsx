@@ -81,9 +81,11 @@ export default function LogIn({
           Log in
         </SubmitButton>
         <div className={"mt-8 flex items-center justify-center"}>
-          <Button variant={"link"} size={"lg"}>
-            <Link href="/signup">No account yet? Sign up</Link>
-          </Button>
+          <Link href="/signup">
+            <Button variant={"link"} size={"lg"}>
+              No account yet? Sign up
+            </Button>
+          </Link>
         </div>
         {searchParams?.message && (
           <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
