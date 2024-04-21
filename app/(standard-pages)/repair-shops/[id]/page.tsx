@@ -5,7 +5,7 @@ import {
   getShopById,
   getSpecificShopServices,
 } from "@/server/repair-shops/actions";
-import SelectTimeModal from "@/components/SelectTimeModal";
+import SelectTimeModal from "@/components/booking/SelectTimeModal";
 
 export default async function RepairShopPage({
   params,

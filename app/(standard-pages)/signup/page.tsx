@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 import { Button } from "@/components/ui/button";
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButton } from "@/components/buttons/SubmitButton";
 
 export default function SignUp({
   searchParams,

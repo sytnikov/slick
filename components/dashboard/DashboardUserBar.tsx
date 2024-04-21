@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { UserProfile } from "@/types";
 
 interface DashboardUserBarProps {

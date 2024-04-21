@@ -7,7 +7,7 @@ import {
   makeBooking,
 } from "@/server/shop-services/actions";
 
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButton } from "@/components/buttons/SubmitButton";
 
 export default async function BookingConfirmation({ searchParams }: any) {
   const shop = await getShopById(searchParams.shop);

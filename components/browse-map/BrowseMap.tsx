@@ -13,7 +13,7 @@ import getGeolocation from "@/services/geolocationService";
 import { RepairShop } from "@/types";
 
 import { containerStyle, mapOptions } from "./mapStyles";
-import PreviewCard from "../PreviewCard";
+import PreviewCard from "../cards/PreviewCard";
 
 interface Location {
   name: string;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import AuthButton from "./AuthButton";
+import AuthButton from "../buttons/AuthButton";
 
 export default function Navigation() {
   return (

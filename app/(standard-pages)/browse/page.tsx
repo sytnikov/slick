@@ -1,7 +1,7 @@
 import { getAllRepairShops } from "@/server/repair-shops/actions";
 
-import BrowseSearch from "@/components/BrowseSearch";
-import RepairShopCard from "@/components/RepairShopCard";
+import BrowseSearch from "@/components/browse-page/BrowseSearch";
+import RepairShopCard from "@/components/browse-page/RepairShopCard";
 import BrowseMap from "@/components/browse-map/BrowseMap";
 
 import { RepairShop } from "@/types";

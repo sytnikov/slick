@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import Navigation from "@/components/Navigation";
+import Footer from "@/components/navigation/Footer";
+import Navigation from "@/components/navigation/Navigation";
 
 import React from "react";
 

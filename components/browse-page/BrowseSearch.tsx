@@ -1,6 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
-
-import ServiceSelector from "./ServiceSelector";
 import CitySelector from "./CitySelector";
 
 export default async function BrowseSearch() {
@@ -12,7 +9,6 @@ export default async function BrowseSearch() {
         placeholder={"Masan paja"}
         className={"w-full rounded-xl border-2 border-accent p-2"}
       />
-      {/* <ServiceSelector services={services} /> */}
       <CitySelector />
     </div>
   );

@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { RepairShop } from "@/types";
-import DashboardUserBar from "@/components/DashboardUserBar";
+import DashboardUserBar from "@/components/dashboard/DashboardUserBar";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
@@ -32,7 +32,7 @@ export default async function RepairShopDashboard() {
     >
       <div
         className={
-          "flex h-full w-full flex-col items-center justify-start border-2  pb-12 pl-12 pr-12 pt-12"
+          "flex h-full w-full flex-col items-center justify-start border-2 pb-12 pl-12 pr-12 pt-12"
         }
       >
         <div className={"mb-12 w-full"}>

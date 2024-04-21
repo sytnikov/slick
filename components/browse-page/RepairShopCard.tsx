@@ -1,4 +1,4 @@
-import CardBadge from "./CardBadge";
+import CardBadge from "../cards/CardBadge";
 
 interface RepairShopCardProps {
   name: string;
