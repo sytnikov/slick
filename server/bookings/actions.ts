@@ -2,7 +2,7 @@
 
 import { RepairShopBooking } from "@/types";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 export async function getBookingsForUsersShops(
   shopIds: number[],
@@ -13,8 +13,8 @@ export async function getBookingsForUsersShops(
     .select("*")
     .in("shop_id", shopIds);
 
-  if (!bookings || bookings.length === 0) {
-    throw new Error("No bookings found.");
+  if (!bookings) {
+    return [];
   }
 
   const shopServiceIds = bookings.map((booking) => booking.shop_service_id);

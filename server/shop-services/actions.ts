@@ -1,6 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 import { createClient } from "@/utils/supabase/client";
+import { formatDateTime } from "@/utils/booking-system/date-utils";
 
 import { ShopServiceWithDetails } from "@/types";
 
@@ -39,4 +42,30 @@ export async function getShopServiceById(
     .single();
 
   return service || {};
+}
+
+export async function makeBooking(formData: FormData) {
+  const shopServiceID = formData.get("shop_service_id");
+  const userID = formData.get("user_id");
+  const bookingStart = formatDateTime(formData.get("booking_start") as string);
+  const shopID = formData.get("shop_id");
+  const duration = formData.get("duration");
+
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("Bookings").insert([
+    {
+      shop_service_id: shopServiceID,
+      user_id: userID,
+      booking_start_date: bookingStart,
+      shop_id: shopID,
+      duration: duration,
+    },
+  ]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return redirect("/user-dashboard");
 }

@@ -1,14 +1,10 @@
-import { redirect } from "next/navigation";
-import { formatDateTime } from "@/utils/booking-system/date-utils";
-
-import { createClient } from "@/utils/supabase/server";
-
 import { getShopById } from "@/server/repair-shops/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
 import {
   getShopServiceById,
   getSingleShopServicTitle,
+  makeBooking,
 } from "@/server/shop-services/actions";
 
 import { SubmitButton } from "@/components/SubmitButton";
@@ -22,26 +18,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
 
   const createNewBooking = async (formData: FormData) => {
     "use server";
-
-    const supabase = await createClient();
-
-    const shopServiceID = formData.get("shop_service_id") as string;
-    const userID = formData.get("user_id") as string;
-    const bookingStart = formatDateTime(
-      formData.get("booking_start") as string,
-    );
-    const shopID = formData.get("shop_id") as string;
-    const duration = formData.get("duration") as string;
-
-    await supabase.from("Bookings").insert({
-      shop_service_id: shopServiceID,
-      user_id: userID,
-      booking_start_date: bookingStart,
-      shop_id: shopID,
-      duration: duration,
-    });
-
-    return redirect("/user-dashboard");
+    await makeBooking(formData);
   };
 
   return (
