@@ -28,14 +28,14 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       <Link
-        href={
-          userProfile?.shop_owner ? "/repair-shop-dashboard" : "/user-dashboard"
-        }
+        href={userProfile?.shop_owner ? "/shop-dashboard" : "/user-dashboard"}
       >
         Hey, {user.email}!
       </Link>
       <form action={signOut}>
-        <Button variant={"secondary"} size={"sm"}>Log out</Button>
+        <Button variant={"secondary"} size={"sm"}>
+          Log out
+        </Button>
       </form>
     </div>
   ) : (
