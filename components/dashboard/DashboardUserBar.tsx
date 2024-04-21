@@ -11,7 +11,7 @@ export default function DashboardUserBar({ user }: DashboardUserBarProps) {
   return (
     <div
       className={
-        "flex w-full flex-row items-center justify-between border-2 p-4"
+        "flex w-full flex-row items-center justify-between border-2 bg-white p-4"
       }
     >
       <div className={"flex flex-row items-center gap-4"}>
