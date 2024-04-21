@@ -67,6 +67,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
               type="text"
               name={"shop_service_id"}
               value={searchParams.service}
+              readOnly={true}
             />
             <p>user id</p>
             <input
@@ -74,6 +75,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
               type="text"
               name={"user_id"}
               value={user.user_id}
+              readOnly={true}
             />
             <p>booking start</p>
             <input
@@ -81,6 +83,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
               type="text"
               name={"booking_start"}
               value={searchParams.slot}
+              readOnly={true}
             />
             <p>shop id</p>
             <input
@@ -88,6 +91,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
               type="text"
               name={"shop_id"}
               value={searchParams.shop}
+              readOnly={true}
             />
             <p>booking duration</p>
             <input
@@ -95,6 +99,7 @@ export default async function BookingConfirmation({ searchParams }: any) {
               type="text"
               name={"duration"}
               value={service.duration}
+              readOnly={true}
             />
             <SubmitButton
               formAction={createNewBooking}

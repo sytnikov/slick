@@ -74,8 +74,3 @@ export function formatDateTime(input: string) {
 
   return formattedDate;
 }
-
-// Example usage
-const dateString = "Saturday, April 20 13:00";
-const formattedDate = formatDateTime(dateString);
-console.log(formattedDate); // Outputs: "2024-04-20 13:00:00+00" (assuming the current year is 2024)
