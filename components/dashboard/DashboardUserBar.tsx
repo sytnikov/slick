@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 import { Button } from "../ui/button";
+import { BellIcon } from "@radix-ui/react-icons";
+
 import { UserProfile } from "@/types";
 
 interface DashboardUserBarProps {
@@ -26,7 +28,7 @@ export default function DashboardUserBar({ user }: DashboardUserBarProps) {
       </div>
 
       <div className={"flex flex-row items-center gap-6"}>
-        <div>notification</div>
+        <BellIcon />
         <Button>Log out</Button>
       </div>
     </div>

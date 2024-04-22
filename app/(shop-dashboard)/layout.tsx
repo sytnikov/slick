@@ -13,14 +13,14 @@ const repairShopDashboardLayout = ({
         "flex h-screen w-screen flex-row items-center justify-start bg-gray-100"
       }
     >
-      <div className={"flex h-full flex-col items-center bg-white p-10"}>
+      <div className={"flex h-full flex-col items-center bg-white p-16"}>
         <div
           className={"flex h-full w-full flex-col items-start justify-between"}
         >
           <div
             className={"flex w-full flex-col items-start justify-center gap-12"}
           >
-            <Link href={"/"}>
+            <Link href={"/"} className={"text-xl font-bold"}>
               <h1>Slick</h1>
             </Link>
             <div
@@ -30,8 +30,7 @@ const repairShopDashboardLayout = ({
             >
               <Link href={"/shop-dashboard"}>Dashboard</Link>
               <div>Inbox</div>
-              <div>Item</div>
-              <div>Item</div>
+              <Link href={"/shop-bookings"}>Bookings</Link>
             </div>
           </div>
           <div
