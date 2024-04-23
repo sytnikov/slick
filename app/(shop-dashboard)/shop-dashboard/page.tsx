@@ -10,6 +10,7 @@ import CurrentMonthEarnings from "@/components/dashboard/CurrentMonthEarnings";
 import EarningsOverTimeChart from "@/components/dashboard/EarningsOverTimeChart";
 import LatestReviews from "@/components/dashboard/LatestReviews";
 import ShopPerformance from "@/components/dashboard/ShopPerformance";
+import OpenSlots from "@/components/dashboard/OpenSlots";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
@@ -22,13 +23,13 @@ export default async function RepairShopDashboard() {
   }
 
   return (
-    <div className={"flex h-screen w-screen flex-col items-center p-10"}>
-      <div className={"fade-up mb-12 w-full animate-fadeInUp"}>
+    <div className={"flex h-screen w-screen flex-col items-center p-4"}>
+      <div className={"fade-up mb-4 w-full animate-fadeInUp"}>
         <DashboardUserBar user={user} />
       </div>
       <div
         className={
-          "mb-8 flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
+          "mb-4 flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
         }
       >
         <CurrentMonthEarnings shopID={repairShop.id} />
@@ -36,18 +37,19 @@ export default async function RepairShopDashboard() {
       </div>
       <div
         className={
-          "mb-8 flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
+          "mb-4 flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
         }
       >
-        <EarningsOverTimeChart />
+        <EarningsOverTimeChart bookings={bookings} />
         <LatestReviews />
       </div>
       <div
         className={
-          "flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
+          "flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
         }
       >
         <ShopPerformance />
+        <OpenSlots />
       </div>
     </div>
   );

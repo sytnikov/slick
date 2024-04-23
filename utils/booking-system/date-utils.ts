@@ -1,5 +1,3 @@
-// dateUtils.ts
-
 export function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
@@ -73,4 +71,30 @@ export function formatDateTime(input: string) {
   const formattedDate = isoString.replace("T", " ").slice(0, 19) + "+00";
 
   return formattedDate;
+}
+
+export function generatePast12Months(): string[] {
+  const currentMonth = new Date().getMonth();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  let result = [];
+  for (let i = 0; i < 12; i++) {
+    const monthIndex = (currentMonth - i + 12) % 12;
+    result.push(months[monthIndex].slice(0, 3));
+  }
+
+  return result;
 }

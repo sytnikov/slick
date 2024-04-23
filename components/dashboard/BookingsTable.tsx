@@ -63,7 +63,7 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
           <p className={"font-bold"}>Price</p>
         </div>
       </div>
-      {bookings.map((booking) => (
+      {bookings.slice(0, 3).map((booking) => (
         <div
           key={booking.id}
           className={
@@ -113,7 +113,9 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
         </div>
       ))}
       <div className={"flex w-full flex-row items-center justify-center"}>
-        <Button variant={"ghost"}>Load more</Button>
+        <Link href={"/shop-bookings"}>
+          <Button variant={"ghost"}>Load more</Button>
+        </Link>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ const repairShopDashboardLayout = ({
         "flex h-screen w-screen flex-row items-center justify-start bg-gray-100"
       }
     >
-      <div className={"flex h-full flex-col items-center bg-white p-16"}>
+      <div className={"flex h-full flex-col items-center bg-white p-12"}>
         <div
           className={"flex h-full w-full flex-col items-start justify-between"}
         >
