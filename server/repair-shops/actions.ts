@@ -59,3 +59,43 @@ export async function getSpecificShopServices(
 
   return servicesWithDetails;
 }
+
+export async function getShopsMonthlyEarnings(shopId: number) {
+  const supabase = await createClient();
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  const { data: bookings, error: bookingError } = await supabase
+    .from("Bookings")
+    .select("*, shop_service_id (price)")
+    .eq("shop_id", shopId)
+    .gte(
+      "booking_start_date",
+      new Date(currentYear, currentMonth, 1).toISOString(),
+    )
+    .lt(
+      "booking_start_date",
+      new Date(currentYear, currentMonth + 1, 1).toISOString(),
+    );
+
+  if (bookingError) {
+    console.error("Error fetching bookings:", bookingError);
+    return 0;
+  }
+
+  if (!bookings || bookings.length === 0) {
+    console.log("No bookings found for the current month.");
+    return 0;
+  }
+
+  let totalEarnings = 0;
+  bookings.forEach((booking) => {
+    if (booking.shop_service_id && booking.shop_service_id.price) {
+      totalEarnings += booking.shop_service_id.price;
+    }
+  });
+
+  return totalEarnings;
+}

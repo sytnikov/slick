@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { BookingWithDetails, UserProfile } from "@/types";
+import { BookingWithDetails, RepairShop, UserProfile } from "@/types";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -23,7 +23,7 @@ export async function getUser(): Promise<UserProfile> {
   return userProfile;
 }
 
-export async function getRepairShopsAssociatedWithUser() {
+export async function getRepairShopAssociatedWithUser(): Promise<RepairShop> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -31,12 +31,16 @@ export async function getRepairShopsAssociatedWithUser() {
   if (!user) {
     return redirect("/login");
   }
-  const { data: repairShops } = await supabase
+  const { data: repairShop } = await supabase
     .from("Repair Shops")
     .select("*")
     .eq("associated_user", user.id);
 
-  return repairShops || [];
+  if (!repairShop) {
+    throw new Error("No repair shop found.");
+  }
+
+  return repairShop[0] || null;
 }
 
 // this is ugly, but we'll get back to this later...

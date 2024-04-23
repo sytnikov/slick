@@ -1,73 +1,64 @@
 "use server";
 
 import { RepairShopBooking } from "@/types";
-
 import { createClient } from "@/utils/supabase/client";
 
-export async function getBookingsForUsersShops(
-  shopIds: number[],
+export async function getBookingsForUserShop(
+  shopId: number,
 ): Promise<RepairShopBooking[]> {
   const supabase = await createClient();
-  const { data: bookings } = await supabase
+  const { data: bookings, error: bookingError } = await supabase
     .from("Bookings")
-    .select("*")
-    .in("shop_id", shopIds);
+    .select(
+      `
+      *,
+      shop_service_id (
+        *,
+        service_id (name)
+      )
+    `,
+    )
+    .eq("shop_id", shopId);
 
-  if (!bookings) {
+  if (bookingError || !bookings || bookings.length === 0) {
+    console.error(
+      "Failed to fetch bookings or no bookings found:",
+      bookingError,
+    );
     return [];
   }
 
-  const shopServiceIds = bookings.map((booking) => booking.shop_service_id);
-  const { data: shopServices } = await supabase
-    .from("Shop Services")
-    .select("*")
-    .in("id", shopServiceIds);
-
-  if (!shopServices) {
-    throw new Error("No shop services found.");
-  }
-
-  const serviceIds = shopServices.map((ss) => ss.service_id);
-  const { data: services } = await supabase
-    .from("Services")
-    .select("*")
-    .in("id", serviceIds);
-
-  const { data: shops } = await supabase
-    .from("Repair Shops")
-    .select("*")
-    .in("id", shopIds);
-
-  if (!shops) {
-    throw new Error("No shops found.");
-  }
-
   const userIds = bookings.map((booking) => booking.user_id);
-  const { data: userProfiles } = await supabase
+
+  const { data: userProfiles, error: userProfilesError } = await supabase
     .from("User Profiles")
-    .select("*")
+    .select("user_id, first_name, surname")
     .in("user_id", userIds);
 
-  const bookingWithDetails = bookings.map((booking) => {
-    const shopService = shopServices.find(
-      (shopService) => shopService.id === booking.shop_service_id,
-    );
-    const service = services?.find((s) => s.id === shopService?.service_id);
-    const shop = shops.find((shop) => shop.id === booking.shop_id);
-    const userProfile = userProfiles?.find(
-      (user) => user.user_id === booking.user_id,
-    );
+  if (userProfilesError) {
+    console.error("Failed to fetch user profiles:", userProfilesError);
+    return [];
+  }
 
-    const customerName = userProfile
-      ? `${userProfile.first_name} ${userProfile.surname}`
-      : "Unknown Customer";
+  const userIdToName = userProfiles.reduce((acc, profile) => {
+    //@ts-ignore
+    acc[profile.user_id] = `${profile.first_name} ${profile.surname}`;
+    return acc;
+  }, {});
+
+  // Map each booking to include detailed information including customer name
+  const bookingWithDetails = bookings.map((booking) => {
+    const shopService = booking.shop_service_id;
+    const service = shopService.service_id;
+    //@ts-ignore
+    const customerName = userIdToName[booking.user_id] || "Unknown Customer";
 
     return {
       id: booking.id,
       shop_id: booking.shop_id,
       booking_date: booking.booking_start_date,
-      shop_name: shop?.name || "Unknown Shop",
-      service_booked: service?.name || "Unknown Service",
+      service_booked: service.name || "Unknown Service",
+      service_price: shopService.price || 0,
       customer_name: customerName,
     };
   });

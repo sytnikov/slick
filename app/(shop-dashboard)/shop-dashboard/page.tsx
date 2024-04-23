@@ -1,28 +1,23 @@
 import { redirect } from "next/navigation";
 
-import { getBookingsForUsersShops } from "@/server/bookings/actions";
-import {
-  getUser,
-  getRepairShopsAssociatedWithUser,
-} from "@/server/user-authentication/actions";
+import { getBookingsForUserShop } from "@/server/bookings/actions";
+import { getRepairShopAssociatedWithUser } from "@/server/user-authentication/actions";
+import { getUser } from "@/server/user-authentication/actions";
 
 import DashboardUserBar from "@/components/dashboard/DashboardUserBar";
-import BookingsTable from "@/components/dashboard/BookingsTable";
-
-import { RepairShop } from "@/types";
+import IncomingBookings from "@/components/dashboard/BookingsTable";
 import CurrentMonthEarnings from "@/components/dashboard/CurrentMonthEarnings";
 import EarningsOverTimeChart from "@/components/dashboard/EarningsOverTimeChart";
 import LatestReviews from "@/components/dashboard/LatestReviews";
+import ShopPerformance from "@/components/dashboard/ShopPerformance";
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
 
-  const repairShops = await getRepairShopsAssociatedWithUser();
-  const usersShopIds = repairShops.map((shop: RepairShop) => shop.id);
+  const repairShop = await getRepairShopAssociatedWithUser();
+  const bookings = await getBookingsForUserShop(repairShop.id);
 
-  const bookings = await getBookingsForUsersShops(usersShopIds);
-
-  if (!user.shop_owner) {
+  if (!user.shop_owner || !repairShop) {
     return redirect("/login");
   }
 
@@ -36,16 +31,23 @@ export default async function RepairShopDashboard() {
           "mb-8 flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
         }
       >
-        <CurrentMonthEarnings />
-        <BookingsTable bookings={bookings} />
+        <CurrentMonthEarnings shopID={repairShop.id} />
+        <IncomingBookings bookings={bookings} />
+      </div>
+      <div
+        className={
+          "mb-8 flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
+        }
+      >
+        <EarningsOverTimeChart />
+        <LatestReviews />
       </div>
       <div
         className={
           "flex w-full animate-fadeInUp flex-row items-start justify-between gap-8"
         }
       >
-        <EarningsOverTimeChart />
-        <LatestReviews />
+        <ShopPerformance />
       </div>
     </div>
   );
