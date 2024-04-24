@@ -44,6 +44,16 @@ export async function getShopServiceById(
   return service || {};
 }
 
+export async function getShopServices(shopId: number) {
+  const supabase = await createClient();
+  const { data: shopServices } = await supabase
+    .from("Shop Services")
+    .select("*")
+    .eq("shop_id", shopId);
+
+  return shopServices || [];
+}
+
 export async function makeBooking(formData: FormData) {
   const shopServiceID = formData.get("shop_service_id");
   const userID = formData.get("user_id");

@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 import { Button } from "../ui/button";
+import { Avatar } from "./Avatar";
 
-export default async function AuthButton() {
+export default async function TopNavigationMenu() {
   const supabase = await createClient();
 
   const {
@@ -26,22 +27,19 @@ export default async function AuthButton() {
     return redirect("/login");
   };
 
-  return user ? (
-    <div className="flex items-center gap-4">
-      <Link
-        href={userProfile.shop_owner ? "/shop-dashboard" : "/user-dashboard"}
-      >
-        Hey, {user.email}!
-      </Link>
-      <form action={signOut}>
-        <Button variant={"secondary"} size={"sm"}>
-          Log out
-        </Button>
-      </form>
-    </div>
-  ) : (
-    <Button size={"sm"}>
-      <Link href="/login">Log in</Link>
-    </Button>
+  return (
+    <>
+      {userProfile.shop_owner ? (
+        <Link href={"/shop-dashboard"}>
+          <Button variant={"secondary"} size={"sm"}>
+            Shop Dashboard
+          </Button>
+        </Link>
+      ) : (
+        <>
+          <Avatar user={userProfile} onLogOut={signOut} />
+        </>
+      )}
+    </>
   );
 }

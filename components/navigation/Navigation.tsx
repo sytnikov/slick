@@ -1,12 +1,13 @@
 import Link from "next/link";
 
 import AuthButton from "../buttons/AuthButton";
+import TopNavigationMenu from "./TopNavigationMenu";
 
 export default function Navigation() {
   return (
     <nav
       className={
-        "flex w-full flex-row items-center justify-between border-b-2 px-12 py-4"
+        "flex w-full flex-row items-center justify-between border-b-2 px-16 py-4"
       }
     >
       <Link href={"/"}>
@@ -17,7 +18,8 @@ export default function Navigation() {
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>
       </div>
-      <AuthButton />
+      {/* <AuthButton /> */}
+      <TopNavigationMenu />
     </nav>
   );
 }

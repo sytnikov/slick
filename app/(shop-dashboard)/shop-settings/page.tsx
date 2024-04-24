@@ -5,10 +5,12 @@ import {
 
 import EditShopInfoForm from "@/components/dashboard/EditShopInfoForm";
 import EditUserInfo from "@/components/dashboard/EditUserInfo";
+import { getShopServices } from "@/server/shop-services/actions";
 
 export default async function ShopSettings() {
   const user = await getUser();
   const repairShop = await getRepairShopAssociatedWithUser();
+  const repairShopServices = await getShopServices(repairShop.id);
 
   return (
     <div

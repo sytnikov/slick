@@ -9,8 +9,6 @@ interface EditUserInfoProps {
   user: UserProfile;
 }
 export default function EditUserInfo({ user }: EditUserInfoProps) {
-  console.log(user);
-
   const saveUserChanges = async (formData: FormData) => {
     "use server";
     await saveChangesMadeToUserProfile(formData, user.id);
