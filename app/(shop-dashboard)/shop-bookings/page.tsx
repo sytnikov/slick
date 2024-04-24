@@ -18,8 +18,6 @@ export default async function Page() {
     return redirect("/login");
   }
 
-  console.log("bookings", bookings);
-
   return (
     <div
       className={"flex h-full w-full flex-col items-start justify-start p-12"}
