@@ -29,8 +29,8 @@ const repairShopDashboardLayout = ({
               }
             >
               <Link href={"/shop-dashboard"}>Dashboard</Link>
-              <div>Inbox</div>
               <Link href={"/shop-bookings"}>Bookings</Link>
+              <div>Inbox</div>
             </div>
           </div>
           <div

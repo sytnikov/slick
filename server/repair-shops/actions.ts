@@ -99,3 +99,30 @@ export async function getShopsMonthlyEarnings(shopId: number) {
 
   return totalEarnings;
 }
+
+export async function saveChangesMadeToRepairShop(
+  formData: FormData,
+  shopID: number,
+) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("Repair Shops")
+    .update({
+      name: formData.get("name"),
+      description: formData.get("description"),
+      street_address: formData.get("street_address"),
+      postal_code: formData.get("postal_code"),
+      city: formData.get("city"),
+      opening_time: formData.get("opening_time"),
+      closing_time: formData.get("closing_time"),
+      number_of_employees: formData.get("number_of_employees"),
+    })
+    .eq("id", shopID);
+
+  if (error) {
+    console.error("Error updating user profile:", error);
+    return false;
+  }
+
+  return data;
+}
