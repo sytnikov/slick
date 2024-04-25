@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { createClient } from "@/utils/supabase/server";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,21 +16,37 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserProfile } from "@/types";
-import Link from "next/link";
+import { SubmitButton } from "../buttons/SubmitButton";
+import { Button } from "../ui/button";
 
-interface AvatarProps {
-  user: UserProfile;
-  onLogOut: () => void;
-}
+export async function Avatar() {
+  const supabase = await createClient();
 
-export function Avatar({ user, onLogOut }: AvatarProps) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: userProfile } = await supabase
+    .from("User Profiles")
+    .select("*")
+    .eq("user_id", user?.id)
+    .single();
+
+  const signOut = async () => {
+    "use server";
+
+    console.log("signing out");
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+    return redirect("/login");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex flex-row items-center justify-center rounded-full bg-purple-400 p-2">
-          <p>{user.first_name[0]}</p>
-          <p>{user.surname[0]}</p>
+          <p>{userProfile.first_name[0]}</p>
+          <p>{userProfile.surname[0]}</p>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -65,10 +84,13 @@ export function Avatar({ user, onLogOut }: AvatarProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onLogOut}>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <form action={signOut}>
+          <DropdownMenuItem>
+            <Button variant={"secondary"} size={"sm"}>
+              Log out
+            </Button>
+          </DropdownMenuItem>
+        </form>
       </DropdownMenuContent>
     </DropdownMenu>
   );

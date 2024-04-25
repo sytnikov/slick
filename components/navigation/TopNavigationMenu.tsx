@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -19,17 +18,15 @@ export default async function TopNavigationMenu() {
     .eq("user_id", user?.id)
     .single();
 
-  const signOut = async () => {
-    "use server";
-
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
-
   return (
     <>
-      {userProfile.shop_owner ? (
+      {!userProfile ? (
+        <Link href={"/login"}>
+          <Button variant={"secondary"} size={"sm"}>
+            Log In
+          </Button>
+        </Link>
+      ) : userProfile.shop_owner ? (
         <Link href={"/shop-dashboard"}>
           <Button variant={"secondary"} size={"sm"}>
             Shop Dashboard
@@ -37,7 +34,7 @@ export default async function TopNavigationMenu() {
         </Link>
       ) : (
         <>
-          <Avatar user={userProfile} onLogOut={signOut} />
+          <Avatar />
         </>
       )}
     </>

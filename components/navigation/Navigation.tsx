@@ -18,7 +18,6 @@ export default function Navigation() {
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>
       </div>
-      {/* <AuthButton /> */}
       <TopNavigationMenu />
     </nav>
   );
