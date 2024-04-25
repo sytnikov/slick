@@ -16,7 +16,6 @@ export default function EditUserInfo({ user }: EditUserInfoProps) {
 
   return (
     <div>
-      {" "}
       <form className="mb-8 grid grid-cols-3 gap-4">
         <div className="flex flex-col">
           <label htmlFor="first_name">First name</label>
@@ -30,7 +29,7 @@ export default function EditUserInfo({ user }: EditUserInfoProps) {
         </div>
         <div className="flex flex-col">
           <label htmlFor="surname">Surname</label>
-          <textarea
+          <input
             id="surname"
             name="surname"
             defaultValue={user.surname}

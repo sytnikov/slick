@@ -64,3 +64,21 @@ export interface BookingWithDetails {
   shopName: string;
   serviceName: string;
 }
+
+export interface CustomerVehicle {
+  id: number;
+  associated_user: string;
+  user_id: string;
+  description: string;
+  make: string;
+  model: string;
+  year_manufactured: number;
+  registration_number: string;
+}
+
+export interface CustomerReview {
+  repair_shop_id: number;
+  customer_id: number;
+  service_booked: string;
+  review: string;
+}
