@@ -4,10 +4,10 @@ import Chart from "react-apexcharts";
 
 import { generatePast12Months } from "@/utils/booking-system/date-utils";
 
-import { RepairShopBooking } from "@/types";
+import { BookingWithDetails } from "@/types";
 
 interface EarningsOverTimeChartProps {
-  bookings: RepairShopBooking[];
+  bookings: BookingWithDetails[];
 }
 
 export default function EarningsOverTimeChart({

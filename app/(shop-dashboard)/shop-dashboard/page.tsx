@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getBookingsForUserShop } from "@/server/bookings/actions";
+import { getBookingsForRepairShop } from "@/server/bookings/actions";
 import { getRepairShopAssociatedWithUser } from "@/server/user-authentication/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
@@ -16,7 +16,7 @@ export default async function RepairShopDashboard() {
   const user = await getUser();
 
   const repairShop = await getRepairShopAssociatedWithUser();
-  const bookings = await getBookingsForUserShop(repairShop.id);
+  const bookings = await getBookingsForRepairShop(repairShop.id);
 
   if (!user.shop_owner || !repairShop) {
     return redirect("/login");
@@ -32,7 +32,7 @@ export default async function RepairShopDashboard() {
           "mb-4 flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
         }
       >
-        <CurrentMonthEarnings shopID={repairShop.id} />
+        <CurrentMonthEarnings repairShopID={repairShop.id} />
         <IncomingBookings bookings={bookings} />
       </div>
       <div

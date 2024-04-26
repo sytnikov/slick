@@ -3,11 +3,11 @@ import { getShopsMonthlyEarnings } from "@/server/repair-shops/actions";
 import { Button } from "../ui/button";
 
 interface CurrentMonthEarningsProps {
-  shopID: number;
+  repairShopID: number;
 }
 
 export default function CurrentMonthEarnings({
-  shopID,
+  repairShopID: shopID,
 }: CurrentMonthEarningsProps) {
   const totalEarnings = getShopsMonthlyEarnings(shopID);
   return (

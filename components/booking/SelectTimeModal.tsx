@@ -18,11 +18,11 @@ import {
 import generateSlots from "@/utils/booking-system/generate-slots";
 import { groupTimeSlots } from "@/utils/booking-system/date-utils";
 
-import { RepairShop, Service } from "@/types";
+import { RepairShop, ShopService } from "@/types";
 
 interface SelectTimeModalProps {
   shop: RepairShop;
-  service: Service;
+  service: ShopService;
 }
 
 export default function SeletTimeModal({
@@ -46,7 +46,9 @@ export default function SeletTimeModal({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Select time for {service.name}</AlertDialogTitle>
+          <AlertDialogTitle>
+            Select time for {service.service_name}
+          </AlertDialogTitle>
           <AlertDialogDescription>
             {Object.entries(groupedSlots).map(([date, slots], index) => (
               <div key={index} className={"mb-2 overflow-scroll"}>

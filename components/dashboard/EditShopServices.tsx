@@ -1,8 +1,6 @@
 import { ShopService } from "@/types";
 import { SubmitButton } from "../buttons/SubmitButton";
 
-import { getSingleShopServicTitle } from "@/server/shop-services/actions";
-
 interface EditShopServicesProps {
   shopServices: ShopService[];
 }
@@ -10,15 +8,9 @@ interface EditShopServicesProps {
 export default function EditShopServices({
   shopServices,
 }: EditShopServicesProps) {
-  const serviceNames = Promise.all(
-    shopServices.map((service) =>
-      getSingleShopServicTitle(service.id.toString()),
-    ),
-  );
-
   return (
     <div className="space-y-8">
-      {shopServices.map((service, index) => (
+      {shopServices.map((service) => (
         <form key={service.id} className="grid grid-cols-3 items-end gap-4">
           <div className="flex flex-col">
             <label htmlFor={`serviceName-${service.id}`}>Service Name</label>
@@ -26,7 +18,7 @@ export default function EditShopServices({
               type="text"
               id={`serviceName-${service.id}`}
               name="serviceName"
-              defaultValue={service.price}
+              defaultValue={service.service_name}
               placeholder="Service Name"
               readOnly
             />

@@ -1,6 +1,6 @@
 "use server";
 
-import { RepairShop, ShopServiceWithDetails } from "@/types";
+import { RepairShop, ShopService } from "@/types";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -22,7 +22,7 @@ export async function getShopById(shopId: number): Promise<RepairShop> {
 
 export async function getSpecificShopServices(
   shopId: number,
-): Promise<ShopServiceWithDetails[]> {
+): Promise<ShopService[]> {
   const supabase = await createClient();
   const { data: shopServices } = await supabase
     .from("Shop Services")

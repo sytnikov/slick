@@ -1,67 +1,73 @@
 "use server";
 
-import { RepairShopBooking } from "@/types";
+import { BookingWithDetails } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
-export async function getBookingsForUserShop(
-  shopId: number,
-): Promise<RepairShopBooking[]> {
+export async function getBookingsForRepairShop(
+  shopID: number,
+): Promise<BookingWithDetails[]> {
   const supabase = await createClient();
-  const { data: bookings, error: bookingError } = await supabase
+  const { data: bookings, error: bookingsError } = await supabase
     .from("Bookings")
-    .select(
-      `
-      *,
-      shop_service_id (
-        *,
-        service_id (name)
-      )
-    `,
-    )
-    .eq("shop_id", shopId);
+    .select("*")
+    .eq("shop_id", shopID);
 
-  if (bookingError || !bookings || bookings.length === 0) {
-    console.error(
-      "Failed to fetch bookings or no bookings found:",
-      bookingError,
-    );
+  if (bookingsError || !bookings) {
+    console.error("Error fetching bookings:", bookingsError);
     return [];
   }
 
-  const userIds = bookings.map((booking) => booking.user_id);
+  const enhancedBookings = await Promise.all(
+    bookings.map(async (booking) => {
+      // Fetch service name
+      const { data: shopService, error: serviceError } = await supabase
+        .from("Shop Services")
+        .select("service_name")
+        .eq("id", booking.shop_service_id)
+        .single();
 
-  const { data: userProfiles, error: userProfilesError } = await supabase
-    .from("User Profiles")
-    .select("user_id, first_name, surname")
-    .in("user_id", userIds);
+      if (serviceError) {
+        console.error("Error fetching service details:", serviceError);
+        return { ...booking, service_booked: "Unknown Service" };
+      }
 
-  if (userProfilesError) {
-    console.error("Failed to fetch user profiles:", userProfilesError);
-    return [];
-  }
+      // Fetch user profile
+      const { data: userProfile, error: profileError } = await supabase
+        .from("User Profiles")
+        .select("first_name, surname")
+        .eq("user_id", booking.user_id)
+        .single();
 
-  const userIdToName = userProfiles.reduce((acc, profile) => {
-    //@ts-ignore
-    acc[profile.user_id] = `${profile.first_name} ${profile.surname}`;
-    return acc;
-  }, {});
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        return { ...booking, customer_name: "Unknown Customer" };
+      }
 
-  // Map each booking to include detailed information including customer name
-  const bookingWithDetails = bookings.map((booking) => {
-    const shopService = booking.shop_service_id;
-    const service = shopService.service_id;
-    //@ts-ignore
-    const customerName = userIdToName[booking.user_id] || "Unknown Customer";
+      // Fetch repair shop details
 
-    return {
-      id: booking.id,
-      shop_id: booking.shop_id,
-      booking_date: booking.booking_start_date,
-      service_booked: service.name || "Unknown Service",
-      service_price: shopService.price || 0,
-      customer_name: customerName,
-    };
-  });
+      const { data: repairShop, error: shopError } = await supabase
+        .from("Repair Shops")
+        .select("name")
+        .eq("id", shopID)
+        .single();
 
-  return bookingWithDetails;
+      if (shopError) {
+        console.error("Error fetching repair shop details:", shopError);
+        return { ...booking, shop_name: "Unknown Shop" };
+      }
+
+      return {
+        ...booking,
+        shop_name: repairShop ? repairShop.name : "Shop details not found",
+        service_booked: shopService
+          ? shopService.service_name
+          : "Service details not found",
+        customer_name: userProfile
+          ? `${userProfile.first_name} ${userProfile.surname}`
+          : "Profile details not found",
+      };
+    }),
+  );
+
+  return enhancedBookings;
 }

@@ -20,49 +20,27 @@ export interface UserProfile {
   shop_owner: boolean;
 }
 
-export interface Service {
-  id: number;
-  name: string;
-}
-
 export interface ShopService {
   id: number;
-  service_id: number;
-  duration: number;
-  price: number;
-}
-
-export interface ShopServiceWithDetails {
-  id: number;
-  name: string;
-  duration: number;
-  price: number;
-}
-
-export interface RepairShopBooking {
-  id: number;
+  service_name: string;
   shop_id: number;
-  booking_date: string;
-  service_booked: string;
-  customer_name: string;
-  service_price: number;
+  duration: number;
+  price: number;
 }
 
 export interface Booking {
   id: number;
   shop_id: number;
-  shop_service_id: number;
   user_id: string;
+  shop_service_id: number;
   booking_start_date: string;
-  duration: number;
+  price: string;
 }
 
-export interface BookingWithDetails {
-  id: number;
-  booking_start_date: string;
-  duration: number;
-  shopName: string;
-  serviceName: string;
+export interface BookingWithDetails extends Booking {
+  service_booked: string;
+  customer_name: string;
+  shop_name: string;
 }
 
 export interface CustomerVehicle {

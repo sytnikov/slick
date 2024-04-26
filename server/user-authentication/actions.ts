@@ -79,7 +79,7 @@ export async function getUsersBookings(): Promise<BookingWithDetails[]> {
     .in("id", serviceIds);
 
   if (!services) {
-    throw new Error("No services found.");
+    return [];
   }
 
   const shopLookup = shops.reduce((acc, shop) => {

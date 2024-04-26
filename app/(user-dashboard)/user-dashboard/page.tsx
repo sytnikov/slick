@@ -33,9 +33,9 @@ export default async function UserDashboard() {
           <h3>Here are your bookings: </h3>
           {userBookings.map((booking: BookingWithDetails) => (
             <div className={"border-2 p-4"} key={booking.id}>
-              <h3>Booking at {booking.shopName}</h3>
+              <h3>Booking at {booking.shop_name}</h3>
               <p>Booking date: {booking.booking_start_date}</p>
-              <p>Service booking: {booking.serviceName}</p>
+              <p>Service booking: {booking.service_booked}</p>
             </div>
           ))}
           <div className={"mb-8 flex w-full justify-center"}>

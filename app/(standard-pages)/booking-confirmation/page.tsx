@@ -3,7 +3,6 @@ import { getUser } from "@/server/user-authentication/actions";
 
 import {
   getShopServiceById,
-  getSingleShopServicTitle,
   makeBooking,
 } from "@/server/shop-services/actions";
 
@@ -13,8 +12,6 @@ export default async function BookingConfirmation({ searchParams }: any) {
   const shop = await getShopById(searchParams.shop);
   const user = await getUser();
   const service = await getShopServiceById(searchParams.service);
-
-  const shopServiceTitle = getSingleShopServicTitle(searchParams.service);
 
   const createNewBooking = async (formData: FormData) => {
     "use server";
@@ -34,7 +31,8 @@ export default async function BookingConfirmation({ searchParams }: any) {
             Address: {shop.street_address}, {shop.city}, {shop.postal_code}
           </p>
           <>
-            Service being booked: {shopServiceTitle} for {service.price} euros
+            Service being booked: {service.service_name} for {service.price}{" "}
+            euros
           </>
           *
           <form className={"flex flex-col border-2"}>

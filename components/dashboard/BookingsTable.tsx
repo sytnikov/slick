@@ -10,12 +10,12 @@ import {
 
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
-import { RepairShopBooking } from "@/types";
+import { BookingWithDetails } from "@/types";
 import Link from "next/link";
 import { formatDate } from "@/utils/booking-system/date-utils";
 
 interface BookingsTableProps {
-  bookings: RepairShopBooking[];
+  bookings: BookingWithDetails[];
 }
 
 function Minimenu() {
@@ -82,7 +82,7 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
               "text-md flex w-[20%] items-center justify-center border-b-2 p-2"
             }
           >
-            {formatDate(booking.booking_date)}
+            {formatDate(booking.booking_start_date)}
           </div>
           <div
             className={
@@ -103,7 +103,7 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
               "text-md flex w-[20%] items-center justify-center border-b-2 p-2"
             }
           >
-            {booking.service_price}€
+            {booking.price}€
           </div>
           <div
             className={"absolute right-0 top-1/2 -translate-y-1/2 transform"}

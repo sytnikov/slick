@@ -27,7 +27,7 @@ export default async function RepairShopPage({
               {services.map((service) => (
                 <li key={service.id}>
                   <div className={"mb-3 border-2 p-4"}>
-                    <h4>{service.name}</h4>
+                    <h4>{service.service_name}</h4>
                     <p>Duration: {service.duration} minutes</p>
                     <p>Price: {service.price} EUR</p>
                     <SelectTimeModal shop={shop} service={service} />

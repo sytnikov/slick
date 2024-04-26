@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getBookingsForUserShop } from "@/server/bookings/actions";
+import { getBookingsForRepairShop } from "@/server/bookings/actions";
 import {
   getUser,
   getRepairShopAssociatedWithUser,
@@ -12,7 +12,7 @@ export default async function Page() {
   const user = await getUser();
 
   const repairShop = await getRepairShopAssociatedWithUser();
-  const bookings = await getBookingsForUserShop(repairShop.id);
+  const bookings = await getBookingsForRepairShop(repairShop.id);
 
   if (!user.shop_owner || !repairShop) {
     return redirect("/login");
