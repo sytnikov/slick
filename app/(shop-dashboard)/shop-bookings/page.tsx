@@ -26,7 +26,7 @@ export default async function Page() {
         <p className={"mb-6 animate-fadeInUp text-3xl  font-bold"}>Bookings</p>
       </div>
       <div className={"h-full w-full animate-fadeInUp "}>
-        <LargeBookingTable />
+        <LargeBookingTable bookings={bookings} />
       </div>
     </div>
   );

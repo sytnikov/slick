@@ -39,6 +39,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { BookingWithDetails } from "@/types";
+
+interface LargeBookingTableProps {
+  bookings: BookingWithDetails[];
+}
 
 const data: Payment[] = [
   {
@@ -134,7 +139,7 @@ export const columns: ColumnDef<Payment>[] = [
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "EUR",
       }).format(amount);
 
       return <div className="text-right font-medium">{formatted}</div>;
@@ -171,7 +176,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function LargeBookingTable() {
+export function LargeBookingTable({ bookings }: LargeBookingTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -179,6 +184,8 @@ export function LargeBookingTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  console.log("bookings from table", bookings);
 
   const table = useReactTable({
     data,

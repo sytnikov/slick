@@ -4,19 +4,16 @@ import Chart from "react-apexcharts";
 
 import { generatePast12Months } from "@/utils/booking-system/date-utils";
 
-import { BookingWithDetails } from "@/types";
-
 interface EarningsOverTimeChartProps {
-  bookings: BookingWithDetails[];
+  bookingRevenue: number[];
 }
 
-export default function EarningsOverTimeChart({
-  bookings,
+export default async function EarningsOverTimeChart({
+  bookingRevenue,
 }: EarningsOverTimeChartProps) {
   const series = [
     {
-      name: "Earnings",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148], // TODO: Decide what data to show here, perhaps the sum of earnings for each month?
+      data: bookingRevenue,
     },
   ];
 
@@ -36,6 +33,9 @@ export default function EarningsOverTimeChart({
     },
     xaxis: {
       categories: generatePast12Months(),
+      title: {
+        text: "Month",
+      },
     },
     yaxis: {
       title: {

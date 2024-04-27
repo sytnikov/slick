@@ -1,22 +1,30 @@
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
 import { getBookingsForRepairShop } from "@/server/bookings/actions";
 import { getRepairShopAssociatedWithUser } from "@/server/user-authentication/actions";
+import { calculateBookingRevenuesForPastYear } from "@/server/bookings/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
 import DashboardUserBar from "@/components/dashboard/DashboardUserBar";
 import IncomingBookings from "@/components/dashboard/BookingsTable";
 import CurrentMonthEarnings from "@/components/dashboard/CurrentMonthEarnings";
-import EarningsOverTimeChart from "@/components/dashboard/EarningsOverTimeChart";
 import LatestReviews from "@/components/dashboard/LatestReviews";
 import ShopPerformance from "@/components/dashboard/ShopPerformance";
 import OpenSlots from "@/components/dashboard/OpenSlots";
+
+const EarningsOverTimeChart = dynamic(
+  () => import("@/components/dashboard/EarningsOverTimeChart"),
+  { ssr: false },
+);
 
 export default async function RepairShopDashboard() {
   const user = await getUser();
 
   const repairShop = await getRepairShopAssociatedWithUser();
   const bookings = await getBookingsForRepairShop(repairShop.id);
+  const bookingRevenueFromPastYear =
+    await calculateBookingRevenuesForPastYear(bookings);
 
   if (!user.shop_owner || !repairShop) {
     return redirect("/login");
@@ -44,7 +52,7 @@ export default async function RepairShopDashboard() {
           "mb-4 flex w-full animate-fadeInUp flex-row justify-between gap-4"
         }
       >
-        <EarningsOverTimeChart bookings={bookings} />
+        <EarningsOverTimeChart bookingRevenue={bookingRevenueFromPastYear} />
         <LatestReviews shopID={repairShop.id} />
       </div>
       <div

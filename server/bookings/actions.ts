@@ -1,6 +1,9 @@
 "use server";
 
 import { BookingWithDetails } from "@/types";
+import { startOfMonth, parseISO, differenceInCalendarMonths } from "date-fns";
+import { generatePast12Months } from "@/utils/booking-system/date-utils";
+
 import { createClient } from "@/utils/supabase/client";
 
 export async function getBookingsForRepairShop(
@@ -70,4 +73,30 @@ export async function getBookingsForRepairShop(
   );
 
   return enhancedBookings;
+}
+
+export async function calculateBookingRevenuesForPastYear(
+  bookings: BookingWithDetails[],
+) {
+  const now = new Date();
+  const currentMonthStart = startOfMonth(now);
+
+  const bookingRevenue = Array(12).fill(0);
+
+  bookings.forEach((booking) => {
+    const bookingDate = parseISO(booking.booking_start_date);
+    const bookingMonthStart = startOfMonth(bookingDate);
+
+    const monthDiff = differenceInCalendarMonths(
+      currentMonthStart,
+      bookingMonthStart,
+    );
+
+    if (monthDiff >= 0 && monthDiff < 12) {
+      bookingRevenue[11 - monthDiff] += booking.price;
+    }
+  });
+
+  // the only reason for reversing the array is to display the months in the correct order
+  return bookingRevenue.reverse();
 }

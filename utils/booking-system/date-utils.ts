@@ -1,3 +1,5 @@
+import { format, subMonths } from "date-fns";
+
 export function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
@@ -73,28 +75,15 @@ export function formatDateTime(input: string) {
   return formattedDate;
 }
 
-export function generatePast12Months(): string[] {
-  const currentMonth = new Date().getMonth();
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+export function generatePast12Months() {
+  const now = new Date();
+  const months = [];
 
-  let result = [];
-  for (let i = 0; i < 12; i++) {
-    const monthIndex = (currentMonth - i + 12) % 12;
-    result.push(months[monthIndex].slice(0, 3));
+  for (let i = 11; i >= 0; i--) {
+    const month = subMonths(now, i);
+    months.push(format(month, "MMMM yyyy"));
   }
 
-  return result;
+  // the only reason for reversing the array is to display the months in the correct order
+  return months.reverse();
 }
