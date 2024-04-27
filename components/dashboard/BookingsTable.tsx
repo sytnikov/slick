@@ -36,6 +36,13 @@ function Minimenu() {
 }
 
 export default function IncomingBookings({ bookings }: BookingsTableProps) {
+  const sortedBookingsByDate = [...bookings].sort((a, b) => {
+    return (
+      new Date(a.booking_start_date).getTime() -
+      new Date(b.booking_start_date).getTime()
+    );
+  });
+
   return (
     <div
       className={"h-full flex-grow rounded-md bg-white pb-6 pl-10 pr-10 pt-10"}
@@ -63,7 +70,7 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
           <p className={"font-bold"}>Price</p>
         </div>
       </div>
-      {bookings.slice(0, 3).map((booking) => (
+      {sortedBookingsByDate.slice(0, 3).map((booking) => (
         <div
           key={booking.id}
           className={

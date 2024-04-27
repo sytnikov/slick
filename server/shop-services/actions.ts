@@ -45,6 +45,7 @@ export async function makeBooking(formData: FormData) {
   const shopServiceID = formData.get("shop_service_id");
   const userID = formData.get("user_id");
   const bookingStart = formatDateTime(formData.get("booking_start") as string);
+  const price = formData.get("price");
   const shopID = formData.get("shop_id");
   const duration = formData.get("duration");
 
@@ -57,6 +58,7 @@ export async function makeBooking(formData: FormData) {
       booking_start_date: bookingStart,
       shop_id: shopID,
       duration: duration,
+      price: price,
     },
   ]);
 

@@ -36,11 +36,11 @@ const repairShopDashboardLayout = ({
           <div
             className={"flex w-full flex-col items-start justify-center gap-4"}
           >
-            <Link className={"text-black"} href={"/"}>
-              Home
-            </Link>
             <Link className={"text-black"} href={"/shop-settings"}>
               Settings
+            </Link>
+            <Link className={"text-black"} href={"/"}>
+              Home
             </Link>
           </div>
         </div>

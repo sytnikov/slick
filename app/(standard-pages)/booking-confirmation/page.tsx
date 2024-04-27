@@ -76,6 +76,14 @@ export default async function BookingConfirmation({ searchParams }: any) {
               value={service.duration}
               readOnly={true}
             />
+            <p>booking price</p>
+            <input
+              title={""}
+              type="text"
+              name={"price"}
+              value={service.price}
+              readOnly={true}
+            />
             <SubmitButton
               formAction={createNewBooking}
               className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"

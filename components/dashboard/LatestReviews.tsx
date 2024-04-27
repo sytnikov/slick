@@ -1,26 +1,12 @@
+import { getRepairShopReviews } from "@/server/customer-review/actions";
 import { Button } from "../ui/button";
 
-export default function LatestReviews() {
-  const data = [
-    {
-      id: 1,
-      name: "John Doe",
-      review: "Great service, would recommend to anyone!",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      review: "Very professional and friendly staff, will be returning!",
-      rating: 4,
-    },
-    {
-      id: 3,
-      name: "Alice Smith",
-      review: "Good service, but a bit pricey.",
-      rating: 3,
-    },
-  ];
+interface LatestReviewsProps {
+  shopID: number;
+}
+
+export default async function LatestReviews({ shopID }: LatestReviewsProps) {
+  const data = await getRepairShopReviews(shopID);
 
   return (
     <div className={"min-h-full flex-grow rounded-md bg-white p-10"}>
@@ -36,7 +22,7 @@ export default function LatestReviews() {
           }
         >
           <div className={"flex flex-col"}>
-            <p className={"text-md mb-2 font-bold"}>{review.name}</p>
+            <p className={"text-md mb-2 font-bold"}>{review.customer_name}</p>
             <p className={"text-md"}>{review.review}</p>
           </div>
           <div className={"flex flex-col"}>

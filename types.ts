@@ -34,7 +34,7 @@ export interface Booking {
   user_id: string;
   shop_service_id: number;
   booking_start_date: string;
-  price: string;
+  price: number;
   status: string;
 }
 
@@ -56,8 +56,14 @@ export interface CustomerVehicle {
 }
 
 export interface CustomerReview {
+  id: number;
   repair_shop_id: number;
   customer_id: number;
   service_booked: string;
   review: string;
+  rating: number;
+}
+
+export interface CustomerReviewWithDetails extends CustomerReview {
+  customer_name: string;
 }

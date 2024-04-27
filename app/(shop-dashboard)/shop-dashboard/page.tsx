@@ -41,7 +41,7 @@ export default async function RepairShopDashboard() {
         }
       >
         <EarningsOverTimeChart bookings={bookings} />
-        <LatestReviews />
+        <LatestReviews shopID={repairShop.id} />
       </div>
       <div
         className={
