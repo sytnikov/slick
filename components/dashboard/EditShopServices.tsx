@@ -1,5 +1,10 @@
-import { ShopService } from "@/types";
+import {
+  deleteShopService,
+  updateShopService,
+} from "@/server/shop-services/actions";
 import { SubmitButton } from "../buttons/SubmitButton";
+import { ShopService } from "@/types";
+import { Button } from "../ui/button";
 
 interface EditShopServicesProps {
   shopServices: ShopService[];
@@ -8,50 +13,70 @@ interface EditShopServicesProps {
 export default function EditShopServices({
   shopServices,
 }: EditShopServicesProps) {
+  const handleServiceUpdate = async (formData: FormData) => {
+    "use server";
+    updateShopService(formData);
+  };
+
+  const handleServiceDelete = async (formData: FormData) => {
+    "use server";
+    deleteShopService(formData);
+  };
+
   return (
-    <div className="space-y-8">
-      {shopServices.map((service) => (
-        <form key={service.id} className="grid grid-cols-3 items-end gap-4">
-          <div className="flex flex-col">
-            <label htmlFor={`serviceName-${service.id}`}>Service Name</label>
-            <input
-              type="text"
-              id={`serviceName-${service.id}`}
-              name="serviceName"
-              defaultValue={service.service_name}
-              placeholder="Service Name"
-              readOnly
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor={`servicePrice-${service.id}`}>Price</label>
-            <input
-              type="number"
-              id={`servicePrice-${service.id}`}
-              name="servicePrice"
-              defaultValue={service.price}
-              placeholder="Price"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor={`serviceDuration-${service.id}`}>
-              Duration (minutes)
-            </label>
-            <input
-              type="number"
-              id={`serviceDuration-${service.id}`}
-              name="serviceDuration"
-              defaultValue={service.duration}
-              placeholder="Duration"
-            />
-          </div>
-          <SubmitButton
-            className="hover:bg-primary-dark col-span-3 h-10 rounded-md bg-primary px-4 py-2 text-white"
-            pendingText="Saving changes..."
-          >
-            Save changes
-          </SubmitButton>
-        </form>
+    <div className="mb-12 space-y-8">
+      {shopServices.map((service, index) => (
+        <>
+          <form className={"flex flex-row items-center"} key={index}>
+            <div className="flex flex-row items-center gap-6">
+              <div className="flex flex-col">
+                <input type="hidden" name="service_id" value={service.id} />
+                <label htmlFor={`serviceName-${service.id}`}>
+                  Service Name
+                </label>
+                <input
+                  type="text"
+                  id="serviceName"
+                  name="service_name"
+                  defaultValue={service.service_name}
+                  placeholder="Service Name"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor={`servicePrice-${service.id}`}>Price</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  defaultValue={service.price}
+                  placeholder="Price"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor={`serviceDuration-${service.id}`}>
+                  Duration (minutes)
+                </label>
+                <input
+                  type="number"
+                  id="duration"
+                  name={"duration"}
+                  defaultValue={service.duration}
+                  placeholder="Duration"
+                />
+              </div>
+            </div>
+            <SubmitButton
+              formAction={handleServiceUpdate}
+              className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+              pendingText="Saving changes..."
+            >
+              Save changes
+            </SubmitButton>
+            <Button variant={"destructive"} formAction={handleServiceDelete}>
+              Delete
+            </Button>
+          </form>
+        </>
       ))}
     </div>
   );

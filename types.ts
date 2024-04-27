@@ -35,6 +35,7 @@ export interface Booking {
   shop_service_id: number;
   booking_start_date: string;
   price: string;
+  status: string;
 }
 
 export interface BookingWithDetails extends Booking {

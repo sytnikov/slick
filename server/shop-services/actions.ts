@@ -18,18 +18,6 @@ export async function getServicesByIds(
   return allServices || [];
 }
 
-export async function getSingleShopServicTitle(
-  id: string,
-): Promise<ShopService> {
-  const supabase = await createClient();
-  const { data: service } = await supabase
-    .from("Services")
-    .select("*")
-    .eq("id", id)
-    .single();
-  return service.name;
-}
-
 export async function getShopServiceById(
   serviceId: string,
 ): Promise<ShopService> {
@@ -77,4 +65,69 @@ export async function makeBooking(formData: FormData) {
   }
 
   return redirect("/user-dashboard");
+}
+
+export async function updateShopService(formData: FormData) {
+  const serviceName = formData.get("service_name");
+  const price = formData.get("price");
+  const duration = formData.get("duration");
+  const serviceID = formData.get("service_id");
+
+  console.log("forData", formData);
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("Shop Services")
+    .update({
+      service_name: serviceName,
+      duration: duration,
+      price: price,
+    })
+    .eq("id", serviceID);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function deleteShopService(formData: FormData) {
+  const serviceId = formData.get("service_id");
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("Shop Services")
+    .delete()
+    .eq("id", serviceId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function addNewService(formData: FormData) {
+  const serviceName = formData.get("service_name");
+  const price = formData.get("price");
+  const duration = formData.get("duration");
+  const shopID = formData.get("shop_id");
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("Shop Services").insert([
+    {
+      service_name: serviceName,
+      price: price,
+      duration: duration,
+      shop_id: shopID,
+    },
+  ]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }
