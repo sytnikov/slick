@@ -23,13 +23,17 @@ export default async function RepairShopDashboard() {
   }
 
   return (
-    <div className={"flex h-screen w-screen flex-col items-center p-4"}>
+    <div
+      className={
+        "flex min-h-screen w-screen flex-col items-center bg-gray-100 p-4"
+      }
+    >
       <div className={"fade-up mb-4 w-full animate-fadeInUp"}>
         <DashboardUserBar user={user} />
       </div>
       <div
         className={
-          "mb-4 flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
+          "mb-4 flex w-full animate-fadeInUp flex-row justify-between gap-4"
         }
       >
         <CurrentMonthEarnings repairShopID={repairShop.id} />
@@ -37,7 +41,7 @@ export default async function RepairShopDashboard() {
       </div>
       <div
         className={
-          "mb-4 flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
+          "mb-4 flex w-full animate-fadeInUp flex-row justify-between gap-4"
         }
       >
         <EarningsOverTimeChart bookings={bookings} />
@@ -45,7 +49,7 @@ export default async function RepairShopDashboard() {
       </div>
       <div
         className={
-          "flex w-full animate-fadeInUp flex-row items-start justify-between gap-4"
+          "flex w-full animate-fadeInUp flex-row justify-between gap-4"
         }
       >
         <ShopPerformance />

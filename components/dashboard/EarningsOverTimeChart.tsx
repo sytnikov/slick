@@ -56,12 +56,10 @@ export default function EarningsOverTimeChart({
 
   return (
     <div
-      className={
-        "flex h-full min-h-[400px] min-w-[50%] flex-col items-start rounded-md bg-white p-10"
-      }
+      className={"flex h-full min-w-[50%] flex-col rounded-md bg-white p-10"}
     >
       <p className={"text-md text-xl font-bold"}>Earnings</p>
-      <div className={"h-full w-full "}>
+      <div className={"h-full min-h-[300px] w-full"}>
         <Chart
           options={options as any}
           series={series}
