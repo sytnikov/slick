@@ -1,37 +1,40 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-import { FinnishTowns } from "@/utils/towns";
+interface TownSelectorFilterProps {
+  cities: string[];
+}
 
-export default function TownSelectorFilter() {
-  const [selectedCity, setSelectedCity] = useState("");
+export default function TownSelectorFilter({
+  cities,
+}: TownSelectorFilterProps) {
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const router = useRouter();
-
-  const handleSelectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const city = event.target.value;
-    setSelectedCity(city);
-
+  const handleSearch = (city: string) => {
+    const params = new URLSearchParams(searchParams);
     if (city) {
-      router.push(`/browse?city=${encodeURIComponent(city)}`, undefined);
+      params.set("city", city);
+    } else {
+      params.delete("city");
     }
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (
     <select
       title="Select town"
       className="rounded-md border-2 p-2"
-      value={selectedCity}
-      onChange={handleSelectionChange}
+      value={new URLSearchParams(searchParams).get("city") || ""}
+      onChange={(event) => handleSearch(event.target.value)}
     >
       <option value="" disabled>
         Filter by town
       </option>
-      {FinnishTowns.map((town) => (
+      {cities.map((town) => (
         <option key={town} value={town}>
           {town}
         </option>

@@ -90,3 +90,21 @@ export async function saveChangesMadeToRepairShop(
 
   return data;
 }
+
+export async function getAllCities(): Promise<string[]> {
+  try {
+    const supabase = createClient();
+    const { data: repairShops, error } = await supabase
+      .from("Repair Shops")
+      .select("city");
+
+    if (error) throw error;
+    if (!repairShops) return [];
+
+    const cities = repairShops.map((shop) => shop.city);
+    return Array.from(new Set(cities));
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    return [];
+  }
+}

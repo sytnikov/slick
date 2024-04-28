@@ -1,6 +1,7 @@
 import RepairShopCard from "../cards/RepairShopCard";
-import { RepairShop } from "@/types";
 import BrowseSearch from "./BrowseSearch";
+
+import { RepairShop } from "@/types";
 
 interface BrowsePageShopListProps {
   shops: RepairShop[];
