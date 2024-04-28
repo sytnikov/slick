@@ -10,6 +10,7 @@ export default function ClearFiltersButton() {
     const params = new URLSearchParams(searchParams);
     params.delete("city");
     params.delete("service");
+    params.delete("status");
     window.location.search = params.toString();
   };
 

@@ -108,3 +108,65 @@ export async function getAllCities(): Promise<string[]> {
     return [];
   }
 }
+
+// get all status types, no duplicates
+
+export async function getAllStatuses(): Promise<string[]> {
+  try {
+    const supabase = createClient();
+    const { data: repairShops, error } = await supabase
+      .from("Repair Shops")
+      .select("status");
+
+    if (error) throw error;
+    if (!repairShops) return [];
+
+    const statuses = repairShops.map((shop) => shop.status);
+    return Array.from(new Set(statuses));
+  } catch (error) {
+    console.error("Error fetching statuses:", error);
+    return [];
+  }
+}
+
+export async function getShopsByFilter(filters: {
+  city?: string;
+  status?: string;
+  service?: string;
+}): Promise<RepairShop[]> {
+  const supabase = createClient();
+
+  let repairShopQuery = supabase.from("Repair Shops").select("*");
+
+  if (filters.city) {
+    repairShopQuery = repairShopQuery.eq("city", filters.city);
+  }
+
+  if (filters.status) {
+    repairShopQuery = repairShopQuery.eq("status", filters.status);
+  }
+
+  if (filters.service) {
+    const { data: shopServices, error } = await supabase
+      .from("Shop Services")
+      .select("shop_id")
+      .eq("service_name", filters.service);
+
+    if (error) {
+      console.error("Error fetching shop services:", error);
+      return [];
+    }
+
+    const shopIds = shopServices.map((service) => service.shop_id);
+    repairShopQuery = repairShopQuery.in("id", shopIds);
+  }
+
+  const { data: repairShops, error } = await repairShopQuery;
+
+  if (error) {
+    console.error("Error fetching repair shops:", error);
+    return [];
+  }
+
+  return repairShops || [];
+}
