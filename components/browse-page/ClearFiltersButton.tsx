@@ -6,10 +6,12 @@ import { type VariantProps } from "class-variance-authority";
 
 interface ClearFiltersButtonProps {
   buttonVariant: VariantProps<typeof buttonVariants>["variant"];
+  buttonText: string;
 }
 
 export default function ClearFiltersButton({
   buttonVariant,
+  buttonText,
 }: ClearFiltersButtonProps) {
   const searchParams = useSearchParams();
 
@@ -24,7 +26,7 @@ export default function ClearFiltersButton({
 
   return (
     <Button variant={buttonVariant} onClick={handleClearSearch}>
-      Clear filters
+      {buttonText}
     </Button>
   );
 }

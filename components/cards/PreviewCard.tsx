@@ -1,5 +1,5 @@
-import { RepairShop } from "@/types";
 import Link from "next/link";
+import { RepairShop } from "@/types";
 
 interface PreviewCardProps {
   repairShop: RepairShop | null;
@@ -7,11 +7,13 @@ interface PreviewCardProps {
 
 export default function PreviewCard({ repairShop }: PreviewCardProps) {
   return repairShop ? (
-    <div className={"flex flex-col gap-4 border-2 p-4"}>
-      <h1>{repairShop.name}</h1>
-      <Link href={`/repair-shops/${repairShop.id}`}>
-        <button className={"btn btn-secondary"}>See details</button>
-      </Link>
-    </div>
+    <Link
+      href={`/repair-shops/${repairShop.id}`}
+      className={
+        "inline-block text-nowrap rounded-md bg-primary p-2 text-center text-white"
+      }
+    >
+      <p className={"text-2xs font-bold"}>{repairShop.name}</p>
+    </Link>
   ) : null;
 }

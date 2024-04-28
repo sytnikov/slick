@@ -4,9 +4,9 @@ import BrowseMap from "@/components/browse-map/BrowseMap";
 
 import BrowseSearch from "@/components/browse-page/BrowseSearch";
 import RepairShopCard from "@/components/cards/RepairShopCard";
+import NoResults from "@/components/browse-page/NoResults";
 
 import { RepairShop } from "@/types";
-import ClearFiltersButton from "@/components/browse-page/ClearFiltersButton";
 
 export default async function Browse({
   searchParams,
@@ -41,16 +41,7 @@ export default async function Browse({
               </div>
             ))
           ) : (
-            <div
-              className={
-                "flex h-full w-full flex-col items-center justify-center gap-4 text-lg"
-              }
-            >
-              No shops found
-              <div>
-                <ClearFiltersButton buttonVariant={"secondary"} />
-              </div>
-            </div>
+            <NoResults />
           )}
         </div>
       </div>

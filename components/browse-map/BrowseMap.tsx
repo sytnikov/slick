@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  GoogleMap,
-  InfoWindow,
-  MarkerF,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { useSearchParams } from "next/navigation";
+
+import { GoogleMap, useJsApiLoader, OverlayView } from "@react-google-maps/api";
 
 import getGeolocation from "@/services/geolocationService";
 
@@ -27,7 +24,10 @@ interface MapComponentProps {
 
 function MapComponent({ shops }: MapComponentProps) {
   const [coordinates, setCoordinates] = useState<Location[]>([]);
-  const [center, setCenter] = useState({ lat: 51.1657, lng: 10.4515 });
+  const [center, setCenter] = useState({ lat: 61.497753, lng: 23.760954 });
+  const [zoom, setZoom] = useState(7);
+
+  const searchParams = useSearchParams();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -44,34 +44,33 @@ function MapComponent({ shops }: MapComponentProps) {
       setCoordinates(filteredCoords);
 
       if (filteredCoords.length > 0) {
-        // setCenter(filteredCoords[0]);
-        setCenter(center);
+        setCenter(filteredCoords[0]);
+        setZoom(searchParams.toString().length > 0 ? 12 : 7);
       }
     };
 
     fetchCoordinates();
-  }, [shops]);
+  }, [shops, searchParams]);
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={7}
+      zoom={zoom}
       options={mapOptions}
     >
-      {coordinates.map((location, index) => (
-        <MarkerF
-          key={index}
+      {coordinates.map((location) => (
+        <OverlayView
+          key={location.name}
           position={{ lat: location.lat, lng: location.lng }}
+          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         >
-          <InfoWindow position={{ lat: location.lat, lng: location.lng }}>
-            <PreviewCard
-              repairShop={
-                shops?.find((shop) => shop.name === location.name) || null
-              }
-            />
-          </InfoWindow>
-        </MarkerF>
+          <PreviewCard
+            repairShop={
+              shops?.find((shop) => shop.name === location.name) || null
+            }
+          />
+        </OverlayView>
       ))}
     </GoogleMap>
   ) : null;
