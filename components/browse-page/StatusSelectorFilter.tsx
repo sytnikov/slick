@@ -28,7 +28,7 @@ export default function StatusSelectorFilter({
     <select
       title="Select status"
       className="rounded-md border-2 p-2"
-      value={new URLSearchParams(searchParams).get("service") || ""}
+      value={new URLSearchParams(searchParams).get("status") || ""}
       onChange={(event) => handleSearch(event.target.value)}
     >
       <option value="" disabled>

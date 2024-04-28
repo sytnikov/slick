@@ -188,9 +188,10 @@ export const mapStyles = [
 
 export const containerStyle = {
   width: "100%",
-  height: "100%",
-  borderRadius: "8px",
+  minHeight: "100vh",
+  borderRadius: "1rem",
   overflow: "hidden",
+  border: "1px solid #e5e7eb",
 };
 
 export const mapOptions = {

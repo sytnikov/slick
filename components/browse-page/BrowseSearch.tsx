@@ -5,8 +5,13 @@ import ServiceSelectorFilter from "./ServiceSelectorFilter";
 import TownSelectorFilter from "./TownSelectorFilter";
 import ClearFiltersButton from "./ClearFiltersButton";
 import StatusSelectorFilter from "./StatusSelectorFilter";
+import { RepairShop } from "@/types";
 
-export default async function BrowseSearch() {
+interface BrowseSearchProps {
+  shops: RepairShop[];
+}
+
+export default async function BrowseSearch({ shops }: BrowseSearchProps) {
   const cities = await getAllCities();
   const statusOptions = await getAllStatuses();
 
@@ -17,10 +22,10 @@ export default async function BrowseSearch() {
           className={"mb-4 flex w-full flex-row items-center justify-between"}
         >
           <h3 className={"text-md font-bold"}>Browse shops</h3>
-          <ClearFiltersButton />
+          <ClearFiltersButton buttonVariant={"ghost"} />
         </div>
         <div className={"mb-4"}>
-          <SearchByName />
+          <SearchByName shops={shops} />
         </div>
         <div className={"flex flex-row justify-start gap-2"}>
           <TownSelectorFilter cities={cities} />

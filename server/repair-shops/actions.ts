@@ -132,6 +132,7 @@ export async function getAllStatuses(): Promise<string[]> {
 export async function getShopsByFilter(filters: {
   city?: string;
   status?: string;
+  name?: string;
   service?: string;
 }): Promise<RepairShop[]> {
   const supabase = createClient();
@@ -144,6 +145,10 @@ export async function getShopsByFilter(filters: {
 
   if (filters.status) {
     repairShopQuery = repairShopQuery.eq("status", filters.status);
+  }
+
+  if (filters.name) {
+    repairShopQuery = repairShopQuery.ilike("name", `%${filters.name}%`);
   }
 
   if (filters.service) {
