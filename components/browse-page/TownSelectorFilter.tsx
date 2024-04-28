@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { FinnishTowns } from "@/utils/towns";
 
-export default function CitySelector() {
+export default function TownSelectorFilter() {
   const [selectedCity, setSelectedCity] = useState("");
 
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function CitySelector() {
   return (
     <select
       title="Select town"
-      className="select select-bordered border-accent"
+      className="rounded-md border-2 p-2"
       value={selectedCity}
       onChange={handleSelectionChange}
     >

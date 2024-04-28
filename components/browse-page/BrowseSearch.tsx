@@ -1,15 +1,19 @@
-import CitySelector from "./CitySelector";
+import SearchByName from "./SearchByName";
+import ServiceSelectorFilter from "./ServiceSelectorFilter";
+import TownSelectorFilter from "./TownSelectorFilter";
 
 export default async function BrowseSearch() {
   return (
-    <div className={"bg-green flex flex-row gap-1 rounded-xl p-4"}>
-      <input
-        type="text"
-        title={"Search box"}
-        placeholder={"Masan paja"}
-        className={"w-full rounded-xl border-2 border-accent p-2"}
-      />
-      <CitySelector />
+    <div className={"rounded-xl2 m-auto mt-4 flex w-full flex-col gap-2 p-4"}>
+      <div
+        className={
+          "flex w-full flex-row gap-6 rounded-md border-2 bg-white p-4"
+        }
+      >
+        <SearchByName />
+        <TownSelectorFilter />
+        <ServiceSelectorFilter />
+      </div>
     </div>
   );
 }

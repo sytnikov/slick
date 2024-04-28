@@ -4,11 +4,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "placehold.co", // Correct hostname
-        // Remove port and pathname if not necessary
+        hostname: "placehold.co",
       },
     ],
-    dangerouslyAllowSVG: true, // Add this line to allow SVG images
+    dangerouslyAllowSVG: true,
   },
 };
 
