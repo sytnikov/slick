@@ -1,19 +1,12 @@
-import { getShopServices } from "@/server/shop-services/actions";
+import { ShopService } from "@/types";
 
 interface CardServiceListProps {
-  shopID: number;
+  services: ShopService[];
 }
 
-/**
- * In this component we want to get the services of a shop by its ID.
- * Then display the first 4 services in a list, after that display count of the remaining services.
- * ie. "Screen Repair, Battery Replacement, Water Damage, Charging Port, and 3 more services"
- */
-
 export default async function CardServiceList({
-  shopID,
+  services,
 }: CardServiceListProps) {
-  const services = await getShopServices(shopID);
   return (
     <>
       {services.length === 0 ? (

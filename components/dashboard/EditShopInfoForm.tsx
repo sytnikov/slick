@@ -3,6 +3,7 @@ import { SubmitButton } from "../buttons/SubmitButton";
 import { saveChangesMadeToRepairShop } from "@/server/repair-shops/actions";
 
 import { RepairShop } from "@/types";
+import UploadShopBanner from "./UploadShopBanner";
 
 interface EditShopInfoFormProps {
   repairShop: RepairShop;
@@ -106,19 +107,11 @@ export default async function EditShopInfoForm({
           Save changes
         </SubmitButton>
       </form>
-      {/**
-       * TODO: Implement a way to handle file uploads for shop logo and banner
-       */}
+
       <div className={"flex w-full flex-row justify-between"}>
-        <div className={"flex flex-row items-center gap-4"}>
-          <div className="flex flex-col">
-            <label htmlFor="shopLogo">Shop Logo</label>
-            <input type="file" id="shopLogo" name="shopLogo" />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="shopBanner">Shop Banner</label>
-            <input type="file" id="shopBanner" name="shopBanner" />
-          </div>
+        <div className={"flex flex-col items-start"}>
+          <p className={"mb-2"}>Upload banner</p>
+          <UploadShopBanner shopId={repairShop.id} />
         </div>
       </div>
     </>

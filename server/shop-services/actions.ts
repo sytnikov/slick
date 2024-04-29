@@ -31,7 +31,7 @@ export async function getShopServiceById(
   return service || {};
 }
 
-export async function getShopServices(shopId: number) {
+export async function getShopServices(shopId: number): Promise<ShopService[]> {
   const supabase = await createClient();
   const { data: shopServices } = await supabase
     .from("Shop Services")

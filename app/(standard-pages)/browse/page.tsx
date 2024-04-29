@@ -37,6 +37,7 @@ export default async function Browse({
                   name={shop.name}
                   status={shop.status}
                   description={shop.description}
+                  imageURL={shop.banner_img_url}
                 />
               </div>
             ))

@@ -10,7 +10,7 @@ export default function PreviewCard({ repairShop }: PreviewCardProps) {
     <Link
       href={`/repair-shops/${repairShop.id}`}
       className={
-        "inline-block text-nowrap rounded-md bg-primary p-2 text-center text-white"
+        "inline-block text-nowrap rounded-md bg-black p-2 text-center text-white"
       }
     >
       <p className={"text-2xs font-bold"}>{repairShop.name}</p>

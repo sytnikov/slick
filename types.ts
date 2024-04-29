@@ -9,6 +9,7 @@ export interface RepairShop {
   closing_time: string;
   city: string;
   status: string;
+  banner_img_url: string;
 }
 
 export interface UserProfile {

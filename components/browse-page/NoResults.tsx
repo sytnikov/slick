@@ -6,7 +6,7 @@ export default function NoResults() {
   return (
     <div
       className={
-        "flex w-full flex-col items-center justify-center rounded-lg border-2 border-gray-200 bg-gray-100 p-16"
+        "m-auto flex w-[75%] flex-col items-center justify-center rounded-lg border-2 border-gray-200 bg-gray-100 p-16"
       }
     >
       <h4 className={"mb-2 text-xl font-bold"}>No results found</h4>

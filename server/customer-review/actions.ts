@@ -1,6 +1,6 @@
 "use server";
 
-import { CustomerReview, CustomerReviewWithDetails } from "@/types";
+import { CustomerReviewWithDetails } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
 export async function getRepairShopReviews(

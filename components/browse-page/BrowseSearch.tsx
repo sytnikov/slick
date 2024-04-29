@@ -22,7 +22,10 @@ export default async function BrowseSearch({ shops }: BrowseSearchProps) {
           className={"mb-4 flex w-full flex-row items-center justify-between"}
         >
           <h3 className={"text-md font-bold"}>Browse shops</h3>
-          <ClearFiltersButton buttonVariant={"ghost"} buttonText={"Clear"} />
+          <ClearFiltersButton
+            buttonVariant={"ghost"}
+            buttonText={"Clear filters"}
+          />
         </div>
         <div className={"mb-4"}>
           <SearchByName shops={shops} />

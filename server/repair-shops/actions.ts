@@ -175,3 +175,18 @@ export async function getShopsByFilter(filters: {
 
   return repairShops || [];
 }
+
+export async function getShopBannerImageUrl(shopId: number): Promise<string> {
+  const supabase = createClient();
+  const { data: shop } = await supabase
+    .from("Repair Shops")
+    .select("banner_img_url")
+    .eq("id", shopId)
+    .single();
+
+  if (!shop || !shop.banner_img_url) {
+    return "https://placehold.co/600x300";
+  }
+
+  return `${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/Shop%20Banners/${shop.banner_img_url}`;
+}

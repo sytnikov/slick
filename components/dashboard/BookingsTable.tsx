@@ -38,8 +38,8 @@ function Minimenu() {
 export default function IncomingBookings({ bookings }: BookingsTableProps) {
   const sortedBookingsByDate = [...bookings].sort((a, b) => {
     return (
-      new Date(a.booking_start_date).getTime() -
-      new Date(b.booking_start_date).getTime()
+      new Date(b.booking_start_date).getTime() -
+      new Date(a.booking_start_date).getTime()
     );
   });
 
