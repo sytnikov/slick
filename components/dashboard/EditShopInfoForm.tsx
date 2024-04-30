@@ -1,9 +1,11 @@
 import { SubmitButton } from "../buttons/SubmitButton";
 
 import { saveChangesMadeToRepairShop } from "@/server/repair-shops/actions";
+import { getShopBannerImageUrl } from "@/server/repair-shops/actions";
+
+import UploadShopBanner from "./UploadShopBanner";
 
 import { RepairShop } from "@/types";
-import UploadShopBanner from "./UploadShopBanner";
 
 interface EditShopInfoFormProps {
   repairShop: RepairShop;
@@ -12,6 +14,8 @@ interface EditShopInfoFormProps {
 export default async function EditShopInfoForm({
   repairShop,
 }: EditShopInfoFormProps) {
+  const bannerImage = await getShopBannerImageUrl(repairShop.id);
+
   const saveUserChanges = async (formData: FormData) => {
     "use server";
     await saveChangesMadeToRepairShop(formData, repairShop.id);
@@ -108,10 +112,13 @@ export default async function EditShopInfoForm({
         </SubmitButton>
       </form>
 
-      <div className={"flex w-full flex-row justify-between"}>
+      <div className={"flex w-full flex-row gap-12"}>
         <div className={"flex flex-col items-start"}>
           <p className={"mb-2"}>Upload banner</p>
-          <UploadShopBanner shopId={repairShop.id} />
+          <UploadShopBanner
+            shopId={repairShop.id}
+            uploadedImage={bannerImage}
+          />
         </div>
       </div>
     </>

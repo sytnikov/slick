@@ -1,7 +1,5 @@
-import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
-import Link from "next/link";
-
 import React from "react";
+import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
 
 const repairShopDashboardLayout = ({
   children,

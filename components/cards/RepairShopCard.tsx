@@ -41,7 +41,6 @@ export default async function RepairShopCard({
         </div>
         <div className="h-full p-4">
           <h2 className="mb-4 text-xl font-semibold">{name}</h2>
-          <h2 className="mb-4 text-xl font-semibold">{imageURL}</h2>
           <div className={"mb-3"}>
             <CardServiceList services={services} />
           </div>
