@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+
+import { createClient } from "@/utils/supabase/server";
 
 import { SubmitButton } from "@/components/buttons/SubmitButton";
 import { Button } from "@/components/ui/button";
 
-export default function LogIn({
+export default async function LogIn({
   searchParams,
 }: {
   searchParams: { message: string };
@@ -26,7 +27,7 @@ export default function LogIn({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/user-dashboard");
+    return redirect("/");
   };
 
   return (

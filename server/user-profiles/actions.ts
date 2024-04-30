@@ -23,3 +23,22 @@ export async function saveChangesMadeToUserProfile(
 
   return data;
 }
+
+export async function getUserProfileAvatar(userID: number): Promise<string> {
+  const supabase = createClient();
+  const { data: user, error } = await supabase
+    .from("User Profiles")
+    .select("avatar_url")
+    .eq("id", userID)
+    .single();
+
+  if (error || !user || !user.avatar_url) {
+    console.error(
+      "Failed to fetch shop or shop does not have a banner image.",
+      error,
+    );
+    return "";
+  }
+
+  return `${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/User%20Avatars/${encodeURIComponent(user.avatar_url)}`;
+}

@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { BookingWithDetails } from "@/types";
-import { Button } from "@/components/ui/button";
+import { getUserProfileAvatar } from "@/server/user-profiles/actions";
 import {
   getUser,
   getUsersBookings,
 } from "@/server/user-authentication/actions";
 
+import { BookingWithDetails } from "@/types";
+import UploadUserAvatar from "@/components/dashboard/UploadUserAvatar";
+
 export default async function UserDashboard() {
   const user = await getUser();
   const userBookings = await getUsersBookings();
+
+  const uploadedImage = await getUserProfileAvatar(user.id);
 
   if (!user) {
     return redirect("/login");
@@ -19,7 +23,7 @@ export default async function UserDashboard() {
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-20">
       <div className="w-full">
-        <div className="bg-purple-950 py-6 text-center font-bold text-white">
+        <div className="bg-green-950 py-6 text-center font-bold text-white">
           This is a protected page that you can only see as an authenticated
           user
         </div>
@@ -38,11 +42,15 @@ export default async function UserDashboard() {
               <p>Service booking: {booking.service_booked}</p>
             </div>
           ))}
-          <div className={"mb-8 flex w-full justify-center"}>
-            <Button asChild variant="default" size="lg">
-              <Link href="/browse">Browse Shops</Link>
-            </Button>
+          <div className={"flex flex-row gap-8"}>
+            <Link href="/browse">
+              <div>Browse Shops</div>
+            </Link>
+            <Link href="/">
+              <div>Home</div>
+            </Link>
           </div>
+          <UploadUserAvatar userId={user.id} uploadedImage={uploadedImage} />
         </main>
       </div>
     </div>

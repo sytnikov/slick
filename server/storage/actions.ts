@@ -32,6 +32,35 @@ export const uploadNewShopBanner = async (event: any, shopId: number) => {
   toast.success("Image uploaded and repair shop updated successfully!");
 };
 
+export const uploadNewUserAvatar = async (event: any, userId: number) => {
+  const supabase = createClient();
+  const file = event.target.files[0];
+  const bucket = "User Avatars";
+
+  const uniqueFileName = `${Date.now()}-${file.name}`;
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(uniqueFileName, file);
+
+  if (error) {
+    console.log("Error uploading file: ", error.message);
+    return;
+  }
+
+  const { data: updateData, error: updateError } = await supabase
+    .from("User Profiles")
+    .update({ avatar_url: data.path })
+    .eq("id", userId);
+
+  if (updateError) {
+    console.log("Error updating user profile: ", updateError.message);
+    return;
+  }
+
+  toast.success("Image uploaded and user profile updated successfully!");
+};
+
 export const deleteUserBannerImage = async (
   uploadedImage: string,
   shopId: number,
@@ -61,4 +90,35 @@ export const deleteUserBannerImage = async (
   }
 
   toast.success("Image deleted and repair shop updated successfully!");
+};
+
+// delete user avatar
+
+export const deleteUserAvatar = async (
+  uploadedImage: string,
+  userId: number,
+) => {
+  const supabase = createClient();
+  const bucket = "User Avatars";
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .remove([uploadedImage]);
+
+  if (error) {
+    console.log("Error deleting file: ", error.message);
+    return;
+  }
+
+  const { data: updateData, error: updateError } = await supabase
+    .from("User Profiles")
+    .update({ avatar_url: null })
+    .eq("id", userId);
+
+  if (updateError) {
+    console.log("Error updating user profile: ", updateError.message);
+    return;
+  }
+
+  toast.success("Image deleted and user profile updated successfully!");
 };

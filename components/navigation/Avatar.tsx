@@ -1,7 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
+import { getUserProfileAvatar } from "@/server/user-profiles/actions";
+
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +20,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SubmitButton } from "../buttons/SubmitButton";
-import { Button } from "../ui/button";
 
 export async function Avatar() {
   const supabase = await createClient();
@@ -35,19 +37,30 @@ export async function Avatar() {
   const signOut = async () => {
     "use server";
 
-    console.log("signing out");
     const supabase = await createClient();
     await supabase.auth.signOut();
     return redirect("/login");
   };
 
+  const userAvatar = await getUserProfileAvatar(userProfile.id);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex flex-row items-center justify-center rounded-full bg-purple-400 p-2">
-          <p>{userProfile.first_name[0]}</p>
-          <p>{userProfile.surname[0]}</p>
-        </div>
+        {userProfile.avatar_url ? (
+          <Image
+            src={userAvatar}
+            alt={"User Avatar"}
+            className={"h-12 w-12 rounded-full object-cover"}
+            width={32}
+            height={32}
+          />
+        ) : (
+          <div className="flex flex-row items-center justify-center rounded-full bg-purple-400 p-2">
+            <p>{userProfile.first_name[0]}</p>
+            <p>{userProfile.surname[0]}</p>
+          </div>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -86,7 +99,7 @@ export async function Avatar() {
         <DropdownMenuSeparator />
         <form action={signOut}>
           <DropdownMenuItem>
-            <Button variant={"secondary"} size={"sm"}>
+            <Button variant={"secondary"} size={"sm"} className={"w-full"}>
               Log out
             </Button>
           </DropdownMenuItem>

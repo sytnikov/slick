@@ -19,6 +19,7 @@ export interface UserProfile {
   surname: string;
   phone_number: string;
   shop_owner: boolean;
+  avatar_url: string;
 }
 
 export interface ShopService {
