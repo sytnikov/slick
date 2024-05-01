@@ -21,7 +21,7 @@ export default function UploadUserAvatar({
   uploadedImage,
 }: UploadUserAvatarProps) {
   const handleUserDeleteBannerImage = async () => {
-    deleteUserAvatar(uploadedImage, userId);
+    deleteUserAvatar(userId);
   };
 
   return (

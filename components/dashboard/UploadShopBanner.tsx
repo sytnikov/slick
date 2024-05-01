@@ -21,7 +21,7 @@ export default function UploadShopBanner({
   uploadedImage,
 }: UploadShopBannerProps) {
   const handleUserDeleteBannerImage = async () => {
-    await deleteUserBannerImage(uploadedImage, shopId);
+    await deleteUserBannerImage(shopId);
   };
 
   return (

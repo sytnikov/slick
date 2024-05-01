@@ -61,25 +61,33 @@ export const uploadNewUserAvatar = async (event: any, userId: number) => {
   toast.success("Image uploaded and user profile updated successfully!");
 };
 
-export const deleteUserBannerImage = async (
-  uploadedImage: string,
-  shopId: number,
-) => {
+export const deleteUserBannerImage = async (shopId: number) => {
   const supabase = createClient();
   const bucket = "Shop Banners";
 
-  // TODO: The file isn't being removed from the storage bucket, could be a naming thing
+  // Get the repair shop
+  const { data: repairShop, error: getError } = await supabase
+    .from("Repair Shops")
+    .select("banner_img_url")
+    .eq("id", shopId)
+    .single();
 
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .remove([uploadedImage]);
-
-  if (error) {
-    console.log("Error deleting file: ", error.message);
+  if (getError) {
+    console.log("Error getting repair shop: ", getError.message);
     return;
   }
 
-  const { data: updateData, error: updateError } = await supabase
+  const { data, error: deleteError } = await supabase.storage
+    .from(bucket)
+    .remove([repairShop.banner_img_url]);
+
+  if (deleteError) {
+    console.log("Error deleting file: ", deleteError.message);
+    return;
+  }
+
+  // Update the repair shop
+  const { data: updatedShop, error: updateError } = await supabase
     .from("Repair Shops")
     .update({ banner_img_url: null })
     .eq("id", shopId);
@@ -94,23 +102,33 @@ export const deleteUserBannerImage = async (
 
 // delete user avatar
 
-export const deleteUserAvatar = async (
-  uploadedImage: string,
-  userId: number,
-) => {
+export const deleteUserAvatar = async (userId: number) => {
   const supabase = createClient();
   const bucket = "User Avatars";
 
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .remove([uploadedImage]);
+  // Get the user profile
+  const { data: userProfile, error: getError } = await supabase
+    .from("User Profiles")
+    .select("avatar_url")
+    .eq("id", userId)
+    .single();
 
-  if (error) {
-    console.log("Error deleting file: ", error.message);
+  if (getError) {
+    console.log("Error getting user profile: ", getError.message);
     return;
   }
 
-  const { data: updateData, error: updateError } = await supabase
+  const { data, error: deleteError } = await supabase.storage
+    .from(bucket)
+    .remove([userProfile.avatar_url]);
+
+  if (deleteError) {
+    console.log("Error deleting file: ", deleteError.message);
+    return;
+  }
+
+  // Update the user profile
+  const { data: updatedProfile, error: updateError } = await supabase
     .from("User Profiles")
     .update({ avatar_url: null })
     .eq("id", userId);
