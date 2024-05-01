@@ -118,6 +118,21 @@ export async function addNewService(formData: FormData) {
   const shopID = formData.get("shop_id");
 
   const supabase = await createClient();
+
+  const { data: existingServices, error: getServiceError } = await supabase
+    .from("Shop Services")
+    .select("*")
+    .eq("service_name", serviceName)
+    .eq("shop_id", shopID);
+
+  if (getServiceError) {
+    throw new Error(getServiceError.message);
+  }
+
+  if (existingServices.length > 0) {
+    throw new Error("A service with this name already exists.");
+  }
+
   const { data, error } = await supabase.from("Shop Services").insert([
     {
       service_name: serviceName,
