@@ -25,20 +25,23 @@ export default function TownSelectorFilter({
   };
 
   return (
-    <select
-      title="Select town"
-      className="rounded-md border-2 p-2"
-      value={new URLSearchParams(searchParams).get("city") || ""}
-      onChange={(event) => handleSearch(event.target.value)}
-    >
-      <option value="" disabled>
-        Filter by town
-      </option>
-      {cities.map((town) => (
-        <option key={town} value={town}>
-          {town}
-        </option>
-      ))}
-    </select>
+    <div className={"flex flex-col gap-2"}>
+      <label htmlFor="town" className={"opacity-50"}>
+        Select town
+      </label>
+      <select
+        title="Select town"
+        className="rounded-md border-2 p-2"
+        value={new URLSearchParams(searchParams).get("city") || ""}
+        onChange={(event) => handleSearch(event.target.value)}
+      >
+        <option value="">All towns</option>
+        {cities.map((town) => (
+          <option key={town} value={town}>
+            {town}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

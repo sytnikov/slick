@@ -30,7 +30,7 @@ export default async function BrowseSearch({ shops }: BrowseSearchProps) {
         <div className={"mb-4"}>
           <SearchByName shops={shops} />
         </div>
-        <div className={"flex flex-row justify-start gap-2"}>
+        <div className={"flex flex-row justify-start gap-8"}>
           <TownSelectorFilter cities={cities} />
           <ServiceSelectorFilter />
           <StatusSelectorFilter statusOptions={statusOptions} />

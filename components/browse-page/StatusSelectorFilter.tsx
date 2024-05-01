@@ -25,20 +25,23 @@ export default function StatusSelectorFilter({
   };
 
   return (
-    <select
-      title="Select status"
-      className="rounded-md border-2 p-2"
-      value={new URLSearchParams(searchParams).get("status") || ""}
-      onChange={(event) => handleSearch(event.target.value)}
-    >
-      <option value="" disabled>
-        Filter by status
-      </option>
-      {statusOptions.map((status) => (
-        <option key={status} value={status}>
-          {status}
-        </option>
-      ))}
-    </select>
+    <div className={"flex flex-col gap-2"}>
+      <label htmlFor="status" className={"opacity-50"}>
+        Select status
+      </label>
+      <select
+        title="Select status"
+        className="rounded-md border-2 p-2"
+        value={new URLSearchParams(searchParams).get("status") || ""}
+        onChange={(event) => handleSearch(event.target.value)}
+      >
+        <option value="">All status</option>
+        {statusOptions.map((status) => (
+          <option key={status} value={status}>
+            {status}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

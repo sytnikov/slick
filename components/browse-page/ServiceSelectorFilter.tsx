@@ -23,20 +23,23 @@ export default function ServiceSelectorFilter() {
   };
 
   return (
-    <select
-      title="Select service"
-      className="rounded-md border-2 p-2"
-      value={new URLSearchParams(searchParams).get("service") || ""}
-      onChange={(event) => handleSearch(event.target.value)}
-    >
-      <option value="" disabled>
-        Filter by service
-      </option>
-      {services.map((service) => (
-        <option key={service} value={service}>
-          {service}
-        </option>
-      ))}
-    </select>
+    <div className={"flex flex-col gap-2"}>
+      <label htmlFor="service" className={"opacity-50"}>
+        Select service
+      </label>
+      <select
+        title="Select service"
+        className="rounded-md border-2 p-2"
+        value={new URLSearchParams(searchParams).get("service") || ""}
+        onChange={(event) => handleSearch(event.target.value)}
+      >
+        <option value="">All services</option>
+        {services.map((service) => (
+          <option key={service} value={service}>
+            {service}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

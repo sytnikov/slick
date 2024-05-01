@@ -2,12 +2,15 @@ import { getShopsByFilter } from "@/server/repair-shops/actions";
 
 import BrowseMap from "@/components/browse-map/BrowseMap";
 
+import PageLayout from "@/components/layouts/PageLayout";
 import BrowseSearch from "@/components/browse-page/BrowseSearch";
 import RepairShopCard from "@/components/cards/RepairShopCard";
 import NoResults from "@/components/browse-page/NoResults";
 
 import { RepairShop } from "@/types";
-import PageLayout from "@/components/layouts/PageLayout";
+
+// this ensures that the page is revalidated every 0 seconds, fresh data is fetched on every request
+export const revalidate = 0;
 
 export default async function Browse({
   searchParams,

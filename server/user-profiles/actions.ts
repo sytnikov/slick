@@ -33,10 +33,6 @@ export async function getUserProfileAvatar(userID: number): Promise<string> {
     .single();
 
   if (error || !user || !user.avatar_url) {
-    console.error(
-      "Failed to fetch shop or shop does not have a banner image.",
-      error,
-    );
     return "";
   }
 

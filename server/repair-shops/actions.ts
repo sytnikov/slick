@@ -185,10 +185,6 @@ export async function getShopBannerImageUrl(shopId: number): Promise<string> {
     .single();
 
   if (error || !shop || !shop.banner_img_url) {
-    console.error(
-      "Failed to fetch shop or shop does not have a banner image.",
-      error,
-    );
     return "";
   }
 

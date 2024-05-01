@@ -1,12 +1,11 @@
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 import {
   getShopById,
   getSpecificShopServices,
 } from "@/server/repair-shops/actions";
 import SelectTimeModal from "@/components/booking/SelectTimeModal";
 import PageLayout from "@/components/layouts/PageLayout";
+
+export const revalidate = 0;
 
 export default async function RepairShopPage({
   params,
