@@ -1,9 +1,14 @@
+import PageLayout from "@/components/layouts/PageLayout";
+
 import {
   getShopById,
   getSpecificShopServices,
 } from "@/server/repair-shops/actions";
-import SelectTimeModal from "@/components/booking/SelectTimeModal";
-import PageLayout from "@/components/layouts/PageLayout";
+
+import RepairShopHeader from "@/components/shop-page/RepairShopHeader";
+import RepairShopServices from "@/components/shop-page/RepairShopServices";
+import RepairShopReview from "@/components/shop-page/RepairShopReview";
+import RepairShopLocationMap from "@/components/shop-page/RepairShopLocationMap";
 
 export const revalidate = 0;
 
@@ -17,28 +22,27 @@ export default async function RepairShopPage({
 
   return (
     <PageLayout>
-      <main className="flex w-full flex-1 flex-col items-center gap-20">
-        <div className="flex max-w-4xl flex-1 animate-fadeInUp flex-col gap-20 px-3 opacity-0">
-          <main className="flex flex-1 flex-col justify-center">
-            <h2>Welcome to {shop.name}</h2>
-            <p>{shop.description}</p>
-            <div>
-              <h3>Services: </h3>
-              <ul>
-                {services.map((service) => (
-                  <li key={service.id}>
-                    <div className={"mb-3 border-2 p-4"}>
-                      <h4>{service.service_name}</h4>
-                      <p>Duration: {service.duration} minutes</p>
-                      <p>Price: {service.price} EUR</p>
-                      <SelectTimeModal shop={shop} service={service} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </main>
+      <main className="flex w-full max-w-[70%] flex-1 flex-col items-center">
+        <RepairShopHeader
+          id={shop.id}
+          shopName={shop.name}
+          shopCity={shop.city}
+          shopStreetAddress={shop.street_address}
+        />
+        <div
+          className={
+            "flex w-full flex-col items-start justify-start gap-4 pb-8 pt-8"
+          }
+        >
+          <h1 className={"text-4xl"}>About us</h1>
+          <div className={"w-[65%]"}>
+            <p className={"text-xl opacity-75"}>{shop.description}</p>
+          </div>
         </div>
+        <div className={"w-full border-b-2 border-gray-200"} />
+        <RepairShopServices shopServices={services} />
+        <RepairShopReview shopID={shop.id} />
+        <RepairShopLocationMap shop={shop} />
       </main>
     </PageLayout>
   );

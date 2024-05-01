@@ -44,7 +44,12 @@ export default async function RepairShopCard({
           <div className={"mb-3"}>
             <CardServiceList services={services} />
           </div>
-          <p className={"font-light opacity-50"}>{description}</p>
+          <p
+            className={"truncate font-light opacity-50"}
+            style={{ maxWidth: "600px" }}
+          >
+            {description}
+          </p>
         </div>
       </div>
     </Link>

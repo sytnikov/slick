@@ -5,12 +5,14 @@ import { useSearchParams } from "next/navigation";
 
 import { GoogleMap, useJsApiLoader, OverlayView } from "@react-google-maps/api";
 
-import { getGeolocation } from "@/services/geolocationService";
+import { getSingleGeolocation } from "@/services/geolocationService";
 
 import { RepairShop } from "@/types";
 
-import { containerStyle, mapOptions } from "./mapStyles";
 import PreviewCard from "../cards/PreviewCard";
+import { mapOptions } from "../browse-map/mapStyles";
+
+import { smallContainerStyles } from "../browse-map/smallMapStyles";
 
 interface Location {
   name: string;
@@ -19,13 +21,12 @@ interface Location {
 }
 
 interface MapComponentProps {
-  shops: RepairShop[] | null;
+  shop: RepairShop | null;
 }
 
-function MapComponent({ shops }: MapComponentProps) {
-  const [coordinates, setCoordinates] = useState<Location[]>([]);
+function MapComponent({ shop }: MapComponentProps) {
   const [center, setCenter] = useState({ lat: 61.497753, lng: 23.760954 });
-  const [zoom, setZoom] = useState(7);
+  const [zoom, setZoom] = useState(12);
 
   const searchParams = useSearchParams();
 
@@ -36,42 +37,33 @@ function MapComponent({ shops }: MapComponentProps) {
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      let coords = await getGeolocation(shops);
-      const filteredCoords: Location[] = coords.filter(
-        (coord): coord is Location => coord !== null,
-      );
-
-      setCoordinates(filteredCoords);
-
-      if (filteredCoords.length > 0) {
-        setCenter(filteredCoords[0]);
-        setZoom(searchParams.toString().length > 0 ? 12 : 7);
+      if (shop) {
+        const coord = await getSingleGeolocation(shop);
+        if (coord) {
+          setCenter(coord);
+          setZoom(searchParams.toString().length > 0 ? 12 : 7);
+        }
       }
     };
 
     fetchCoordinates();
-  }, [shops, searchParams]);
+  }, [shop, searchParams]);
 
   return isLoaded ? (
     <GoogleMap
-      mapContainerStyle={containerStyle}
+      mapContainerStyle={smallContainerStyles}
       center={center}
-      zoom={zoom}
+      zoom={15}
       options={mapOptions}
     >
-      {coordinates.map((location) => (
+      {shop && (
         <OverlayView
-          key={location.name}
-          position={{ lat: location.lat, lng: location.lng }}
+          position={{ lat: center.lat, lng: center.lng }}
           mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         >
-          <PreviewCard
-            repairShop={
-              shops?.find((shop) => shop.name === location.name) || null
-            }
-          />
+          <PreviewCard repairShop={shop} />
         </OverlayView>
-      ))}
+      )}
     </GoogleMap>
   ) : null;
 }
