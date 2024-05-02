@@ -1,11 +1,17 @@
-import { ShopService } from "@/types";
+import { getBookingsForRepairShop } from "@/server/bookings/actions";
+import SelectTimeModal from "@/components/booking/SelectTimeModal";
+import { RepairShop, ShopService } from "@/types";
 
 interface RepairShopServicesProps {
   shopServices: ShopService[];
+  repairShop: RepairShop;
 }
-export default function RepairShopServices({
+export default async function RepairShopServices({
   shopServices,
+  repairShop,
 }: RepairShopServicesProps) {
+  const bookings = await getBookingsForRepairShop(repairShop.id);
+
   return (
     <div className={"flex w-full flex-col items-start justify-start pb-8 pt-8"}>
       <h1 className={"text-3xl"}>What services do we offer</h1>
@@ -23,17 +29,21 @@ export default function RepairShopServices({
                 <div
                   className={"flex flex-row items-start justify-start gap-2 "}
                 >
-                  <p>Duration: </p>
-                  <p>{service.duration} </p>
-                  <p>(min)</p>
+                  <p>Price: </p>
+                  <p>
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "EUR",
+                    }).format(service.price)}
+                  </p>
                 </div>
               </div>
-              <div
-                className={"flex w-[10%] flex-col items-start justify-center"}
-              >
-                <p className={"text-xs opacity-50"}>price</p>
-                <p className={"text-xl"}>{service.price}€</p>
-              </div>
+
+              <SelectTimeModal
+                shop={repairShop}
+                service={service}
+                bookings={bookings}
+              />
             </div>
           ))}
         </div>

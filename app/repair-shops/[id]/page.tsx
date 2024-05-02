@@ -40,7 +40,7 @@ export default async function RepairShopPage({
           </div>
         </div>
         <div className={"w-full border-b-2 border-gray-200"} />
-        <RepairShopServices shopServices={services} />
+        <RepairShopServices shopServices={services} repairShop={shop} />
         <RepairShopReview shopID={shop.id} />
         <RepairShopLocationMap shop={shop} />
       </main>

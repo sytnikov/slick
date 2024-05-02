@@ -14,24 +14,35 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "../ui/button";
 
 import generateSlots from "@/utils/booking-system/generate-slots";
 import { groupTimeSlots } from "@/utils/booking-system/date-utils";
 
-import { RepairShop, ShopService } from "@/types";
+import { Booking, RepairShop, ShopService } from "@/types";
 
 interface SelectTimeModalProps {
   shop: RepairShop;
   service: ShopService;
+  bookings: Booking[];
 }
 
 export default function SeletTimeModal({
   shop,
   service,
+  bookings,
 }: SelectTimeModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>("");
 
-  const timeSlots = generateSlots(shop.opening_time, shop.closing_time);
+  // TODO: Filter out booked slots, present them as disabled
+
+  const timeSlots = generateSlots(shop.opening_time, shop.closing_time, [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ]);
 
   const groupedSlots = groupTimeSlots(
     timeSlots,
@@ -42,7 +53,7 @@ export default function SeletTimeModal({
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <div className={"rounded bg-black p-2 text-white"}>Select time</div>
+        <Button>Book now</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

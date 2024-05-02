@@ -10,7 +10,7 @@ export default async function RepairShopReview({
 
   return (
     <div
-      className={"flex w-full flex-col items-center justify-center pb-8 pt-8"}
+      className={"mb-16 mt-16 flex w-full flex-col items-center justify-center"}
     >
       <h2 className={"mb-4 text-3xl"}>What have customers been saying?</h2>
 
