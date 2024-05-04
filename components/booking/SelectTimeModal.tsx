@@ -19,12 +19,12 @@ import { Button } from "../ui/button";
 import generateSlots from "@/utils/booking-system/generate-slots";
 import { groupTimeSlots } from "@/utils/booking-system/date-utils";
 
-import { Booking, RepairShop, ShopService } from "@/types";
+import { Booking, BookingWithDetails, RepairShop, ShopService } from "@/types";
 
 interface SelectTimeModalProps {
   shop: RepairShop;
   service: ShopService;
-  bookings: Booking[];
+  bookings: BookingWithDetails[];
 }
 
 export default function SeletTimeModal({

@@ -9,39 +9,13 @@ export async function getRepairShopReviews(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("Customer Reviews")
-    .select("*")
+    .select(`*, user_id("*")`)
     .eq("repair_shop_id", shopID);
 
-  if (!data) {
-    console.log("No reviews found for shop with ID:", shopID);
-    return [];
-  }
-
-  const enhancedCustomerReviews = await Promise.all(
-    data.map(async (review) => {
-      // Fetch user profile
-      const { data: userProfile, error: profileError } = await supabase
-        .from("User Profiles")
-        .select("first_name, surname")
-        .eq("user_id", review.customer_id)
-        .single();
-
-      if (profileError) {
-        console.error("Error fetching user profile:", profileError);
-        return { ...review, customer_name: "Unknown Customer" };
-      }
-
-      return {
-        ...review,
-        customer_name: `${userProfile.first_name} ${userProfile.surname}`,
-      };
-    }),
-  );
-
-  if (error) {
+  if (error || !data) {
     console.error("Error fetching reviews:", error);
     return [];
   }
 
-  return enhancedCustomerReviews;
+  return data;
 }

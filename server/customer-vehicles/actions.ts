@@ -38,11 +38,12 @@ export async function getVehicleById(
   return data;
 }
 
+// this isn't used anywhere at the moment, more of just a proof of concept...
 export async function getUserProfileFromVehicleID() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Customer Vehicles")
-    .select("*, User Profiles(*)");
+    .select(`*, associated_user("*")`);
 
   if (error) {
     console.error("Error fetching user vehicles:", error);

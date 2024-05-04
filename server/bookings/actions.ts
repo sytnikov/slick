@@ -11,7 +11,7 @@ export async function getBookingsForRepairShop(
   const supabase = await createClient();
   const { data: bookings, error: bookingsError } = await supabase
     .from("Bookings")
-    .select("*")
+    .select(`*, shop_service_id(*), user_id(*)`)
     .eq("shop_id", shopID);
 
   if (bookingsError || !bookings) {
@@ -19,112 +19,7 @@ export async function getBookingsForRepairShop(
     return [];
   }
 
-  const enhancedBookings = await Promise.all(
-    bookings.map(async (booking) => {
-      // Fetch service name
-      const { data: shopService, error: serviceError } = await supabase
-        .from("Shop Services")
-        .select("service_name")
-        .eq("id", booking.shop_service_id)
-        .single();
-
-      if (serviceError) {
-        console.error("Error fetching service details:", serviceError);
-        return { ...booking, service_booked: "Unknown Service" };
-      }
-
-      // Fetch user profile
-      const { data: userProfile, error: profileError } = await supabase
-        .from("User Profiles")
-        .select("first_name, surname")
-        .eq("user_id", booking.user_id)
-        .single();
-
-      if (profileError) {
-        console.error("Error fetching user profile:", profileError);
-        return { ...booking, customer_name: "Unknown Customer" };
-      }
-
-      // Fetch repair shop details
-
-      const { data: repairShop, error: shopError } = await supabase
-        .from("Repair Shops")
-        .select("name")
-        .eq("id", shopID)
-        .single();
-
-      if (shopError) {
-        console.error("Error fetching repair shop details:", shopError);
-        return { ...booking, shop_name: "Unknown Shop" };
-      }
-
-      return {
-        ...booking,
-        shop_name: repairShop ? repairShop.name : "Shop details not found",
-        service_booked: shopService
-          ? shopService.service_name
-          : "Service details not found",
-        customer_name: userProfile
-          ? `${userProfile.first_name} ${userProfile.surname}`
-          : "Profile details not found",
-      };
-    }),
-  );
-
-  return enhancedBookings;
-}
-
-export async function getBookingsForUser(
-  userID: string,
-): Promise<BookingWithDetails[]> {
-  const supabase = await createClient();
-  const { data: bookings, error: bookingsError } = await supabase
-    .from("Bookings")
-    .select("*")
-    .eq("user_id", userID);
-
-  if (bookingsError || !bookings) {
-    console.error("Error fetching bookings:", bookingsError);
-    return [];
-  }
-
-  const enhancedBookings = await Promise.all(
-    bookings.map(async (booking) => {
-      // Fetch service name
-      const { data: shopService, error: serviceError } = await supabase
-        .from("Shop Services")
-        .select("service_name")
-        .eq("id", booking.shop_service_id)
-        .single();
-
-      if (serviceError) {
-        console.error("Error fetching service details:", serviceError);
-        return { ...booking, service_booked: "Unknown Service" };
-      }
-
-      // Fetch repair shop details
-      const { data: repairShop, error: shopError } = await supabase
-        .from("Repair Shops")
-        .select("name")
-        .eq("id", booking.shop_id)
-        .single();
-
-      if (shopError) {
-        console.error("Error fetching repair shop details:", shopError);
-        return { ...booking, shop_name: "Unknown Shop" };
-      }
-
-      return {
-        ...booking,
-        shop_name: repairShop ? repairShop.name : "Shop details not found",
-        service_booked: shopService
-          ? shopService.service_name
-          : "Service details not found",
-      };
-    }),
-  );
-
-  return enhancedBookings;
+  return bookings;
 }
 
 export async function calculateBookingRevenuesForPastYear(
@@ -151,4 +46,19 @@ export async function calculateBookingRevenuesForPastYear(
 
   // the only reason for reversing the array is to display the months in the correct order
   return bookingRevenue.reverse();
+}
+
+export async function getUserBookingsWithDetails(userID: string | number) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("Bookings")
+    .select(`*, shop_service_id("*"), shop_id("*")`)
+    .eq("user_id", userID);
+
+  if (error) {
+    console.error("Error fetching user bookings:", error);
+    return [];
+  }
+
+  return data;
 }

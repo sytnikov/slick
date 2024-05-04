@@ -22,7 +22,9 @@ export default async function RepairShopReview({
               "flex flex-col items-start justify-start gap-2 rounded-md border-2 border-gray-200 bg-white p-4"
             }
           >
-            <p className={"text-lg font-bold"}>{review.customer_name}</p>
+            <p className={"text-lg font-bold"}>
+              {review.user_id.first_name} {review.user_id.surname}
+            </p>
             <p className={"text-lg"}>{review.review}</p>
           </div>
         ))}

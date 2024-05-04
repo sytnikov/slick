@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getBookingsForUser } from "@/server/bookings/actions";
+import { getUserBookingsWithDetails } from "@/server/bookings/actions";
 import { getUserProfileAvatar } from "@/server/user-profiles/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
-import { BookingWithDetails } from "@/types";
 import UploadUserAvatar from "@/components/dashboard/UploadUserAvatar";
+
+import { BookingWithDetails } from "@/types";
 
 export default async function UserDashboard() {
   const user = await getUser();
-  const userBookings = await getBookingsForUser(user.user_id);
   const uploadedImage = await getUserProfileAvatar(user.id);
+  const userBookings = await getUserBookingsWithDetails(user.user_id);
 
   if (!user) {
     return redirect("/login");
@@ -34,9 +35,9 @@ export default async function UserDashboard() {
           <h3>Here are your bookings: </h3>
           {userBookings.map((booking: BookingWithDetails) => (
             <div className={"border-2 p-4"} key={booking.id}>
-              <h3>Booking at {booking.shop_name}</h3>
+              <h3>Booking at {booking.shop_id.name}</h3>
               <p>Booking date: {booking.booking_start_date}</p>
-              <p>Service booking: {booking.service_booked}</p>
+              <p>Service booking: {booking.shop_service_id.service_name}</p>
             </div>
           ))}
           <div className={"flex flex-row gap-8"}>

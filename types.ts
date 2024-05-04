@@ -41,10 +41,11 @@ export interface Booking {
   vehicle_id?: number;
 }
 
-export interface BookingWithDetails extends Booking {
-  service_booked: string;
-  customer_name: string;
-  shop_name: string;
+export interface BookingWithDetails
+  extends Omit<Booking, "shop_service_id" | "shop_id" | "user_id"> {
+  shop_service_id: ShopService;
+  shop_id: RepairShop;
+  user_id: UserProfile;
 }
 
 export interface CustomerVehicle {
@@ -61,12 +62,13 @@ export interface CustomerVehicle {
 export interface CustomerReview {
   id: number;
   repair_shop_id: number;
-  customer_id: number;
+  user_id: number;
   service_booked: string;
   review: string;
   rating: number;
 }
 
-export interface CustomerReviewWithDetails extends CustomerReview {
-  customer_name: string;
+export interface CustomerReviewWithDetails
+  extends Omit<CustomerReview, "user_id"> {
+  user_id: UserProfile;
 }

@@ -6,7 +6,7 @@ interface LatestReviewsProps {
 }
 
 export default async function LatestReviews({ shopID }: LatestReviewsProps) {
-  const data = await getRepairShopReviews(shopID);
+  const customerReviews = await getRepairShopReviews(shopID);
 
   return (
     <div className={"min-h-full flex-grow rounded-md bg-white p-10"}>
@@ -14,7 +14,7 @@ export default async function LatestReviews({ shopID }: LatestReviewsProps) {
         <p className={"text-md text-xl font-bold"}>Latest reviews</p>
         <Button variant={"secondary"}>See all reviews</Button>
       </div>
-      {data.map((review) => (
+      {customerReviews.map((review) => (
         <div
           key={review.id}
           className={
@@ -22,7 +22,9 @@ export default async function LatestReviews({ shopID }: LatestReviewsProps) {
           }
         >
           <div className={"flex flex-col"}>
-            <p className={"text-md mb-2 font-bold"}>{review.customer_name}</p>
+            <p className={"text-md mb-2 font-bold"}>
+              {review.user_id.first_name} {review.user_id.surname}
+            </p>
             <p className={"text-md"}>{review.review}</p>
           </div>
           <div className={"flex flex-col"}>

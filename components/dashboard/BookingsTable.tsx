@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -7,12 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
-import { BookingWithDetails } from "@/types";
-import Link from "next/link";
 import { formatDate } from "@/utils/booking-system/date-utils";
+import { BookingWithDetails } from "@/types";
 
 interface BookingsTableProps {
   bookings: BookingWithDetails[];
@@ -96,14 +96,14 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
               "text-md flex w-[20%] items-center justify-center border-b-2 p-2"
             }
           >
-            {booking.customer_name}
+            {booking.user_id.first_name} {booking.user_id.surname}
           </div>
           <div
             className={
               "text-md flex w-[20%] items-center justify-center border-b-2 p-2"
             }
           >
-            {booking.service_booked}
+            {booking.shop_service_id.service_name}
           </div>
           <div
             className={

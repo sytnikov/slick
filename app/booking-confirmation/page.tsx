@@ -2,7 +2,6 @@ import { getShopById } from "@/server/repair-shops/actions";
 import { getUser } from "@/server/user-authentication/actions";
 import { getShopServiceById } from "@/server/shop-services/actions";
 import {
-  getUserProfileFromVehicleID,
   getUserVehicles,
   getVehicleById,
 } from "@/server/customer-vehicles/actions";
@@ -23,17 +22,12 @@ export default async function BookingConfirmation({
 }) {
   const shop = await getShopById(searchParams.shop);
   const user = await getUser();
+  const slot = searchParams.slot;
   const service = await getShopServiceById(searchParams.service);
   const userVehicles = await getUserVehicles(user.user_id);
-  const slot = searchParams.slot;
   const selectedVehicleId = searchParams.vehicle;
 
   const vehicleInformation = await getVehicleById(selectedVehicleId);
-
-  // this is just to see if I can get the user profile using the foreign key
-
-  const test = await getUserProfileFromVehicleID();
-  console.log("test", test);
 
   return (
     <PageLayout>
