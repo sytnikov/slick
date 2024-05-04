@@ -1,9 +1,13 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 import { BookingWithDetails } from "@/types";
 import { startOfMonth, parseISO, differenceInCalendarMonths } from "date-fns";
 
 import { createClient } from "@/utils/supabase/client";
+import { formatDateTime } from "@/utils/booking-system/date-utils";
+import { data } from "autoprefixer";
 
 export async function getBookingsForRepairShop(
   shopID: number,
@@ -63,4 +67,33 @@ export async function getUserBookingsWithDetails(
   }
 
   return data;
+}
+
+export async function makeBooking(formData: FormData) {
+  const shopServiceID = formData.get("shop_service_id");
+  const userID = formData.get("user_id");
+  const bookingStart = formatDateTime(formData.get("booking_start") as string);
+  const price = formData.get("price");
+  const shopID = formData.get("shop_id");
+  const vehicleID = formData.get("vehicle_id");
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("Bookings").insert([
+    {
+      shop_service_id: shopServiceID,
+      user_id: userID,
+      booking_start_date: bookingStart,
+      shop_id: shopID,
+      price: price,
+      vehicle_id: vehicleID,
+    },
+  ]);
+
+  if (error) {
+    console.error("Error creating booking:", error);
+    throw new Error(error.message);
+  }
+
+  return redirect("/browse");
 }

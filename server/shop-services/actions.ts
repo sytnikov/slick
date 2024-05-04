@@ -1,9 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
-
 import { createClient } from "@/utils/supabase/client";
-import { formatDateTime } from "@/utils/booking-system/date-utils";
 import { ShopService } from "@/types";
 
 export async function getServicesByIds(
@@ -39,36 +36,6 @@ export async function getShopServices(shopId: number): Promise<ShopService[]> {
     .eq("shop_id", shopId);
 
   return shopServices || [];
-}
-
-export async function makeBooking(formData: FormData) {
-  const shopServiceID = formData.get("shop_service_id");
-  const userID = formData.get("user_id");
-  const bookingStart = formatDateTime(formData.get("booking_start") as string);
-  const price = formData.get("price");
-  const shopID = formData.get("shop_id");
-  const duration = formData.get("duration");
-  const vehicleID = formData.get("vehicle_id");
-
-  const supabase = await createClient();
-
-  const { error } = await supabase.from("Bookings").insert([
-    {
-      shop_service_id: shopServiceID,
-      user_id: userID,
-      booking_start_date: bookingStart,
-      shop_id: shopID,
-      duration: duration,
-      price: price,
-      vehicle_id: vehicleID,
-    },
-  ]);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return redirect("/user-dashboard");
 }
 
 export async function updateShopService(formData: FormData) {

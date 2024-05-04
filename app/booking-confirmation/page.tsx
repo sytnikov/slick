@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import PageLayout from "@/components/layouts/PageLayout";
 import SelectVehicle from "@/components/booking/SelectVehicle";
+import { makeBooking } from "@/server/bookings/actions";
 
 export default async function BookingConfirmation({
   searchParams,
@@ -29,6 +30,11 @@ export default async function BookingConfirmation({
 
   const selectedVehicleDetails = await getVehicleById(selectedVehicleId);
 
+  const createNewBooking = async (formData: FormData) => {
+    "use server";
+    await makeBooking(formData);
+  };
+
   return (
     <PageLayout>
       <main
@@ -42,6 +48,48 @@ export default async function BookingConfirmation({
             "mx-auto flex w-[50%] flex-col items-center justify-center rounded-xl bg-gray-100 p-12"
           }
         >
+          <input
+            type="text"
+            title={""}
+            name={"shop_id"}
+            value={shop.id}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
+            name={"shop_service_id"}
+            value={service.id}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
+            name={"user_id"}
+            value={user.user_id}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
+            name={"booking_start"}
+            value={slot}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
+            name={"vehicle_id"}
+            value={selectedVehicleId}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
+            name={"price"}
+            value={service.price}
+            hidden
+          />
           <h1 className={"mb-4 text-2xl"}>You booking at {shop.name}</h1>
           <p>Booking time: {slot}</p>
           <p>Service being booked: {service.service_name}</p>
@@ -60,7 +108,7 @@ export default async function BookingConfirmation({
           <div
             className={"mt-8 flex w-full flex-row items-center justify-center"}
           >
-            <Button>Submit</Button>
+            <Button formAction={createNewBooking}>Submit</Button>
           </div>
         </form>
       </main>
