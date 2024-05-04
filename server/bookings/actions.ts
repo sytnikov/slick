@@ -2,7 +2,6 @@
 
 import { BookingWithDetails } from "@/types";
 import { startOfMonth, parseISO, differenceInCalendarMonths } from "date-fns";
-import { generatePast12Months } from "@/utils/booking-system/date-utils";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -68,6 +67,59 @@ export async function getBookingsForRepairShop(
         customer_name: userProfile
           ? `${userProfile.first_name} ${userProfile.surname}`
           : "Profile details not found",
+      };
+    }),
+  );
+
+  return enhancedBookings;
+}
+
+export async function getBookingsForUser(
+  userID: string,
+): Promise<BookingWithDetails[]> {
+  const supabase = await createClient();
+  const { data: bookings, error: bookingsError } = await supabase
+    .from("Bookings")
+    .select("*")
+    .eq("user_id", userID);
+
+  if (bookingsError || !bookings) {
+    console.error("Error fetching bookings:", bookingsError);
+    return [];
+  }
+
+  const enhancedBookings = await Promise.all(
+    bookings.map(async (booking) => {
+      // Fetch service name
+      const { data: shopService, error: serviceError } = await supabase
+        .from("Shop Services")
+        .select("service_name")
+        .eq("id", booking.shop_service_id)
+        .single();
+
+      if (serviceError) {
+        console.error("Error fetching service details:", serviceError);
+        return { ...booking, service_booked: "Unknown Service" };
+      }
+
+      // Fetch repair shop details
+      const { data: repairShop, error: shopError } = await supabase
+        .from("Repair Shops")
+        .select("name")
+        .eq("id", booking.shop_id)
+        .single();
+
+      if (shopError) {
+        console.error("Error fetching repair shop details:", shopError);
+        return { ...booking, shop_name: "Unknown Shop" };
+      }
+
+      return {
+        ...booking,
+        shop_name: repairShop ? repairShop.name : "Shop details not found",
+        service_booked: shopService
+          ? shopService.service_name
+          : "Service details not found",
       };
     }),
   );

@@ -1,19 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { getBookingsForUser } from "@/server/bookings/actions";
 import { getUserProfileAvatar } from "@/server/user-profiles/actions";
-import {
-  getUser,
-  getUsersBookings,
-} from "@/server/user-authentication/actions";
+import { getUser } from "@/server/user-authentication/actions";
 
 import { BookingWithDetails } from "@/types";
 import UploadUserAvatar from "@/components/dashboard/UploadUserAvatar";
 
 export default async function UserDashboard() {
   const user = await getUser();
-  const userBookings = await getUsersBookings();
-
+  const userBookings = await getBookingsForUser(user.user_id);
   const uploadedImage = await getUserProfileAvatar(user.id);
 
   if (!user) {

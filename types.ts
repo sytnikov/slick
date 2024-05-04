@@ -38,6 +38,7 @@ export interface Booking {
   booking_start_date: string;
   price: number;
   status: string;
+  vehicle_id?: number;
 }
 
 export interface BookingWithDetails extends Booking {

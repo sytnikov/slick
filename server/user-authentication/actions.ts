@@ -44,63 +44,72 @@ export async function getRepairShopAssociatedWithUser(): Promise<RepairShop> {
 }
 
 // this is ugly, but we'll get back to this later...
+// export async function getUsersBookings(
+//   userID: number | string,
+// ): Promise<BookingWithDetails[]> {
+//   const supabase = await createClient();
 
-export async function getUsersBookings(): Promise<BookingWithDetails[]> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return redirect("/login");
-  }
-  const { data: bookings } = await supabase
-    .from("Bookings")
-    .select("*")
-    .eq("user_id", user.id);
+//   const { data: user } = await supabase
+//     .from("User Profiles")
+//     .select("*")
+//     .eq("user_id", userID)
+//     .single();
 
-  if (!bookings) {
-    throw new Error("No bookings found.");
-  }
+//   if (!user) {
+//     // throw new Error("No user found.");
+//     console.log("No user found.");
+//     return [];
+//   }
 
-  const shopIds = bookings.map((booking) => booking.shop_id);
-  const { data: shops } = await supabase
-    .from("Repair Shops")
-    .select("id, name")
-    .in("id", shopIds);
+//   const { data: bookings } = await supabase
+//     .from("Bookings")
+//     .select("*")
+//     .eq("user_id", userID);
 
-  if (!shops) {
-    throw new Error("No shops found.");
-  }
+//   if (!bookings) {
+//     console.log("No bookings found.");
+//     throw new Error("No bookings found.");
+//   }
 
-  const serviceIds = bookings.map((booking) => booking.shop_service_id);
-  const { data: services } = await supabase
-    .from("Services")
-    .select("id, name")
-    .in("id", serviceIds);
+//   const shopIds = bookings.map((booking) => booking.shop_id);
+//   const { data: shops } = await supabase
+//     .from("Repair Shops")
+//     .select("id, name")
+//     .in("id", shopIds);
 
-  if (!services) {
-    return [];
-  }
+//   if (!shops) {
+//     throw new Error("No shops found.");
+//   }
 
-  const shopLookup = shops.reduce((acc, shop) => {
-    // @ts-ignore
-    acc[shop.id] = shop.name;
-    return acc;
-  }, {});
+//   const serviceIds = bookings.map((booking) => booking.shop_service_id);
+//   const { data: services } = await supabase
+//     .from("Services")
+//     .select("id, name")
+//     .in("id", serviceIds);
 
-  const serviceLookup = services.reduce((acc, service) => {
-    // @ts-ignore
-    acc[service.id] = service.name;
-    return acc;
-  }, {});
+//   if (!services) {
+//     return [];
+//   }
 
-  const bookingsWithDetails = bookings.map((booking) => ({
-    ...booking,
-    // @ts-ignore
-    shopName: shopLookup[booking.shop_id],
-    // @ts-ignore
-    serviceName: serviceLookup[booking.shop_service_id],
-  }));
+//   const shopLookup = shops.reduce((acc, shop) => {
+//     // @ts-ignore
+//     acc[shop.id] = shop.name;
+//     return acc;
+//   }, {});
 
-  return bookingsWithDetails;
-}
+//   const serviceLookup = services.reduce((acc, service) => {
+//     // @ts-ignore
+//     acc[service.id] = service.name;
+//     return acc;
+//   }, {});
+
+//   const bookingsWithDetails = bookings.map((booking) => ({
+//     ...booking,
+//     // @ts-ignore
+//     shopName: shopLookup[booking.shop_id],
+//     // @ts-ignore
+//     serviceName: serviceLookup[booking.shop_service_id],
+//   }));
+
+//   return bookingsWithDetails;
+// }

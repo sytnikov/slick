@@ -84,15 +84,17 @@ export default function SeletTimeModal({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction>
-            <Link
-              href={`/booking-confirmation?service=${encodeURIComponent(
-                service.id,
-              )}&slot=${encodeURIComponent(
-                selectedTime,
-              )}&shop=${encodeURIComponent(shop.id)}`}
-            >
-              {selectedTime ? `Select ${selectedTime}` : "Continue"}
-            </Link>
+            {selectedTime && (
+              <Link
+                href={`/booking-confirmation?service=${encodeURIComponent(
+                  service.id,
+                )}&slot=${encodeURIComponent(
+                  selectedTime,
+                )}&shop=${encodeURIComponent(shop.id)}`}
+              >
+                Select {selectedTime}
+              </Link>
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

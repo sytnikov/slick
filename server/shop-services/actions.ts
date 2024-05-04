@@ -48,6 +48,7 @@ export async function makeBooking(formData: FormData) {
   const price = formData.get("price");
   const shopID = formData.get("shop_id");
   const duration = formData.get("duration");
+  const vehicleID = formData.get("vehicle_id");
 
   const supabase = await createClient();
 
@@ -59,6 +60,7 @@ export async function makeBooking(formData: FormData) {
       shop_id: shopID,
       duration: duration,
       price: price,
+      vehicle_id: vehicleID,
     },
   ]);
 
