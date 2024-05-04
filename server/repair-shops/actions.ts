@@ -3,6 +3,7 @@
 import { RepairShop, ShopService } from "@/types";
 
 import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
 export async function getAllRepairShops(): Promise<RepairShop[]> {
   const supabase = await createClient();
@@ -189,4 +190,28 @@ export async function getShopBannerImageUrl(shopId: number): Promise<string> {
   }
 
   return `${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/Shop%20Banners/${encodeURIComponent(shop.banner_img_url)}`;
+}
+
+export async function createRepairShop(
+  formData: FormData,
+): Promise<RepairShop> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("Repair Shops").insert({
+    associated_user: formData.get("associated_user"),
+    name: formData.get("name"),
+    description: formData.get("description"),
+    street_address: formData.get("street_address"),
+    postal_code: formData.get("postal_code"),
+    city: formData.get("city"),
+    opening_time: formData.get("opening_time"),
+    closing_time: formData.get("closing_time"),
+    number_of_employees: formData.get("number_of_employees"),
+  });
+
+  if (error) {
+    console.error("Error creating repair shop:", error);
+    return {} as RepairShop;
+  }
+
+  return redirect("/shop-dashboard");
 }

@@ -2,10 +2,11 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/server";
-import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/buttons/SubmitButton";
+import { Button } from "@/components/ui/button";
 import PageLayout from "@/components/layouts/PageLayout";
+
+import { createClient } from "@/utils/supabase/server";
 
 export default function SignUp({
   searchParams,
@@ -29,7 +30,8 @@ export default function SignUp({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      console.log(error);
+      // return redirect("/login?message=Could not authenticate user");
     }
 
     return redirect(
