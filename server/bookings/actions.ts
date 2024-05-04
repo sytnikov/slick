@@ -48,7 +48,9 @@ export async function calculateBookingRevenuesForPastYear(
   return bookingRevenue.reverse();
 }
 
-export async function getUserBookingsWithDetails(userID: string | number) {
+export async function getUserBookingsWithDetails(
+  userID: string | number,
+): Promise<BookingWithDetails[]> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Bookings")

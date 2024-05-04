@@ -27,7 +27,7 @@ export default async function BookingConfirmation({
   const userVehicles = await getUserVehicles(user.user_id);
   const selectedVehicleId = searchParams.vehicle;
 
-  const vehicleInformation = await getVehicleById(selectedVehicleId);
+  const selectedVehicleDetails = await getVehicleById(selectedVehicleId);
 
   return (
     <PageLayout>
@@ -46,15 +46,16 @@ export default async function BookingConfirmation({
           <p>Booking time: {slot}</p>
           <p>Service being booked: {service.service_name}</p>
           <p>Service provider: {shop.name}</p>
+          <p>
+            Selected vehicle:
+            {selectedVehicleId
+              ? `${selectedVehicleDetails?.make} ${selectedVehicleDetails?.model}`
+              : "No vehicle selected"}
+          </p>
           <p className={"mt-4 opacity-50"}>
             Would you like to specifify which vehicle?
           </p>
-          {selectedVehicleId && (
-            <p>
-              Selected vehicle: {vehicleInformation?.make}{" "}
-              {vehicleInformation?.model}
-            </p>
-          )}
+
           <SelectVehicle userVehicles={userVehicles} />
           <div
             className={"mt-8 flex w-full flex-row items-center justify-center"}

@@ -21,7 +21,7 @@ export async function getUserVehicles(
 }
 
 export async function getVehicleById(
-  vehicleId: string,
+  vehicleId: number | string,
 ): Promise<CustomerVehicle | null> {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -29,21 +29,6 @@ export async function getVehicleById(
     .select("*")
     .eq("id", vehicleId)
     .single();
-
-  if (error) {
-    console.error("Error fetching user vehicles:", error);
-    return null;
-  }
-
-  return data;
-}
-
-// this isn't used anywhere at the moment, more of just a proof of concept...
-export async function getUserProfileFromVehicleID() {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("Customer Vehicles")
-    .select(`*, associated_user("*")`);
 
   if (error) {
     console.error("Error fetching user vehicles:", error);
