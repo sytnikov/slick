@@ -1,6 +1,7 @@
 import { getShopById } from "@/server/repair-shops/actions";
 import { getUser } from "@/server/user-authentication/actions";
 import { getShopServiceById } from "@/server/shop-services/actions";
+import { makeBooking } from "@/server/bookings/actions";
 import {
   getUserVehicles,
   getVehicleById,
@@ -9,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import PageLayout from "@/components/layouts/PageLayout";
 import SelectVehicle from "@/components/booking/SelectVehicle";
-import { makeBooking } from "@/server/bookings/actions";
 
 export default async function BookingConfirmation({
   searchParams,

@@ -86,7 +86,7 @@ export async function makeBooking(formData: FormData) {
       booking_start_date: bookingStart,
       shop_id: shopID,
       price: price,
-      vehicle_id: vehicleID,
+      vehicle_id: vehicleID !== "" ? vehicleID : null,
     },
   ]);
 
