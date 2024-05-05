@@ -2,10 +2,12 @@ import React from "react";
 import { redirect } from "next/navigation";
 
 import { SubmitButton } from "@/components/buttons/SubmitButton";
-import { createClient } from "@/utils/supabase/server";
-import { UserProfile } from "@/types";
 import PageLayout from "@/components/layouts/PageLayout";
 import ShopOwnerToggle from "@/components/sign-up/ShopOwnerToggle";
+
+import { createClient } from "@/utils/supabase/server";
+
+import { UserProfile } from "@/types";
 
 export default function CompleteProfile({
   searchParams,
