@@ -1,6 +1,7 @@
 import Link from "next/link";
-import PageLayout from "@/components/layouts/PageLayout";
+
 import { Button } from "@/components/ui/button";
+import PageLayout from "@/components/layouts/PageLayout";
 
 export default function page() {
   return (
