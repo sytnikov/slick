@@ -7,6 +7,7 @@ export interface RepairShop {
   postal_code: string;
   opening_time: string;
   closing_time: string;
+  days_closed: string;
   city: string;
   status: string;
   banner_img_url: string;
@@ -36,6 +37,7 @@ export interface Booking {
   user_id: string;
   shop_service_id: number;
   booking_start_date: string;
+  booking_end_date: string;
   price: number;
   status: string;
   vehicle_id?: number;

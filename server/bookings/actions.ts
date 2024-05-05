@@ -6,8 +6,6 @@ import { BookingWithDetails } from "@/types";
 import { startOfMonth, parseISO, differenceInCalendarMonths } from "date-fns";
 
 import { createClient } from "@/utils/supabase/client";
-import { formatDateTime } from "@/utils/booking-system/date-utils";
-import { data } from "autoprefixer";
 
 export async function getBookingsForRepairShop(
   shopID: number,
@@ -72,7 +70,8 @@ export async function getUserBookingsWithDetails(
 export async function makeBooking(formData: FormData) {
   const shopServiceID = formData.get("shop_service_id");
   const userID = formData.get("user_id");
-  const bookingStart = formatDateTime(formData.get("booking_start") as string);
+  const bookingStart = formData.get("booking_start") as string;
+  const bookingEnd = formData.get("booking_end") as string;
   const price = formData.get("price");
   const shopID = formData.get("shop_id");
   const vehicleID = formData.get("vehicle_id");
@@ -84,6 +83,7 @@ export async function makeBooking(formData: FormData) {
       shop_service_id: shopServiceID,
       user_id: userID,
       booking_start_date: bookingStart,
+      booking_end_date: bookingEnd,
       shop_id: shopID,
       price: price,
       vehicle_id: vehicleID !== "" ? vehicleID : null,
@@ -95,5 +95,5 @@ export async function makeBooking(formData: FormData) {
     throw new Error(error.message);
   }
 
-  return redirect("/browse");
+  return redirect("/");
 }

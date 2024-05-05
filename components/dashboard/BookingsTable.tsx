@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
-import { formatDate } from "@/utils/booking-system/date-utils";
+import { formatTimestampToDate } from "@/utils/booking-system/date-utils";
 import { BookingWithDetails } from "@/types";
 
 interface BookingsTableProps {
@@ -89,7 +89,7 @@ export default function IncomingBookings({ bookings }: BookingsTableProps) {
               "text-md flex w-[20%] items-center justify-center border-b-2 p-2"
             }
           >
-            {formatDate(booking.booking_start_date)}
+            {formatTimestampToDate(booking.booking_start_date)}
           </div>
           <div
             className={

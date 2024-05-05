@@ -14,12 +14,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../ui/button";
 
 import generateSlots from "@/utils/booking-system/generate-slots";
-import { groupTimeSlots } from "@/utils/booking-system/date-utils";
 
-import { Booking, BookingWithDetails, RepairShop, ShopService } from "@/types";
+import { BookingWithDetails, RepairShop, ShopService } from "@/types";
+import { formatTimestampToDate } from "@/utils/booking-system/date-utils";
 
 interface SelectTimeModalProps {
   shop: RepairShop;
@@ -34,26 +33,18 @@ export default function SeletTimeModal({
 }: SelectTimeModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>("");
 
-  // TODO: Filter out booked slots, present them as disabled
-
-  const timeSlots = generateSlots(shop.opening_time, shop.closing_time, [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-  ]);
-
-  const groupedSlots = groupTimeSlots(
-    timeSlots,
-    shop.opening_time,
-    shop.closing_time,
-  );
+  const timeSlots = generateSlots(bookings, shop);
 
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button>Book now</Button>
+        <div
+          className={
+            "flex flex-row items-center justify-center rounded-md bg-black p-2 text-white"
+          }
+        >
+          Book now
+        </div>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -61,30 +52,54 @@ export default function SeletTimeModal({
             Select time for {service.service_name}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {Object.entries(groupedSlots).map(([date, slots], index) => (
-              <div key={index} className={"mb-2 overflow-scroll"}>
-                <h3>{date}</h3>
-                <div className={"grid grid-cols-4 gap-2"}>
-                  {slots.map((time: string, index: number) => (
-                    <div
-                      key={index}
-                      onClick={() => setSelectedTime(`${date} ${time}`)}
-                      className={`flex items-center justify-center rounded ${selectedTime === `${date} ${time}` ? "bg-black text-primary-foreground" : " bg-gray-200 hover:bg-gray-300"}`}
-                    >
-                      {time}
-                    </div>
-                  ))}
+            <div className={"h-[700px] overflow-scroll"}>
+              {timeSlots.map((daySlots, dayIndex) => (
+                <div key={dayIndex} className="mb-2 overflow-scroll">
+                  {daySlots.length > 0 && (
+                    <h3 className="mb-3">
+                      {formatTimestampToDate(daySlots[0].time)}
+                    </h3>
+                  )}
+                  <div className="grid grid-cols-4 gap-2">
+                    {daySlots.map((slot, slotIndex) => (
+                      <div
+                        key={slotIndex}
+                        onClick={() => {
+                          if (slot.booked) return;
+                          setSelectedTime(slot.time);
+                        }}
+                        className={`flex cursor-pointer items-center justify-center rounded p-2 ${
+                          selectedTime === slot.time
+                            ? "bg-black text-white"
+                            : slot.booked
+                              ? "cursor-not-allowed bg-gray-200 text-white"
+                              : "bg-gray-200 hover:bg-gray-300"
+                        }`}
+                        style={{ opacity: slot.booked ? 0.5 : 1 }}
+                        title={
+                          slot.booked
+                            ? "This slot is already booked"
+                            : "Click to book this slot"
+                        }
+                      >
+                        {new Date(slot.time).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setSelectedTime("")}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction>
-            {selectedTime && (
+          {selectedTime && (
+            <AlertDialogAction>
               <Link
                 href={`/booking-confirmation?service=${encodeURIComponent(
                   service.id,
@@ -92,10 +107,14 @@ export default function SeletTimeModal({
                   selectedTime,
                 )}&shop=${encodeURIComponent(shop.id)}`}
               >
-                Select {selectedTime}
+                Select {formatTimestampToDate(selectedTime)} at{" "}
+                {new Date(selectedTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </Link>
-            )}
-          </AlertDialogAction>
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

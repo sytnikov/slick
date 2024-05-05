@@ -1,4 +1,15 @@
-import { format, subMonths } from "date-fns";
+import { RepairShop } from "@/types";
+import { format, getDay, parseISO, subMonths } from "date-fns";
+
+export const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -13,66 +24,16 @@ export interface TimeSlotsGroup {
   [date: string]: string[];
 }
 
-// New function to generate and group time slots
-export function groupTimeSlots(
-  timeSlots: string[][],
-  openingTime: string,
-  closingTime: string,
-): TimeSlotsGroup {
-  return timeSlots.flat().reduce((acc: TimeSlotsGroup, slot) => {
-    const [date, time] = slot.split(" ");
-    const formattedDate = formatDate(date);
-    if (!acc[formattedDate]) {
-      acc[formattedDate] = [];
-    }
-    acc[formattedDate].push(time);
-    return acc;
-  }, {} as TimeSlotsGroup);
-}
+// format a timsstamp to a date string, ie. Monday, 15th March 2024
 
-// convert to timstamp
-
-export function formatDateTime(input: string) {
-  // Example input: "Saturday, April 20 13:00"
-  const months = {
-    January: 0,
-    February: 1,
-    March: 2,
-    April: 3,
-    May: 4,
-    June: 5,
-    July: 6,
-    August: 7,
-    September: 8,
-    October: 9,
-    November: 10,
-    December: 11,
-  };
-
-  // Extract the parts of the date
-  const parts = input.match(/(\w+), (\w+) (\d+) (\d+):(\d+)/);
-  if (!parts) {
-    throw new Error("Invalid date format");
-  }
-
-  // Extract components from the matched parts
-  const [, , month, day, hours, minutes] = parts;
-
-  // Get the current year from the system
-  const currentYear = new Date().getFullYear();
-
-  // Create a Date object
-  const date = new Date(
-    //@ts-ignore
-    Date.UTC(currentYear, months[month], day, hours, minutes),
-  );
-
-  // Format to ISO string and adjust to desired format
-  // "2024-03-15T09:00:00Z" to "2024-03-15 09:00:00+00"
-  const isoString = date.toISOString(); // "YYYY-MM-DDTHH:mm:ss.sssZ"
-  const formattedDate = isoString.replace("T", " ").slice(0, 19) + "+00";
-
-  return formattedDate;
+export function formatTimestampToDate(timestamp: string) {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 export function generatePast12Months() {
@@ -86,4 +47,52 @@ export function generatePast12Months() {
 
   // the only reason for reversing the array is to display the months in the correct order
   return months.reverse();
+}
+
+export function upcomingShopWorkWeek(
+  shop: RepairShop,
+): { date: string; openingTime: string; closingTime: string }[] {
+  const days = [];
+  const openingTime = shop.opening_time;
+  const closingTime = shop.closing_time;
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    days.push(format(date, "yyyy-MM-dd"));
+  }
+
+  const daysClosed: string[] = shop.days_closed
+    ? shop.days_closed.split(",")
+    : [];
+
+  const openDays = days
+    .filter((day) => {
+      const date = parseISO(day);
+      const dayOfWeek = daysOfWeek[getDay(date)];
+      return !daysClosed.includes(dayOfWeek);
+    })
+    .map((day) => {
+      return {
+        date: `${day}T${openingTime}`,
+        openingTime: `${day}T${openingTime}`,
+        closingTime: `${day}T${closingTime}`,
+      };
+    });
+
+  return openDays;
+}
+
+export default function calculateBookingEndDate(
+  startDate: string,
+  duration: number,
+) {
+  const start = new Date(startDate);
+
+  const end = new Date(start.getTime() + duration * 60000);
+
+  const timeZoneOffset = start.getTimezoneOffset() * 60000; // offset in milliseconds
+  const localTime = new Date(end.getTime() - timeZoneOffset).toISOString();
+
+  return localTime.replace("Z", "");
 }

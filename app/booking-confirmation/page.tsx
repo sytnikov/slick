@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import PageLayout from "@/components/layouts/PageLayout";
 import SelectVehicle from "@/components/booking/SelectVehicle";
+import calculateBookingEndDate from "@/utils/booking-system/date-utils";
 
 export default async function BookingConfirmation({
   searchParams,
@@ -23,7 +24,7 @@ export default async function BookingConfirmation({
 }) {
   const shop = await getShopById(searchParams.shop);
   const user = await getUser();
-  const slot = searchParams.slot;
+  const slot = searchParams.slot.slice(0, 23);
   const service = await getShopServiceById(searchParams.service);
   const userVehicles = await getUserVehicles(user.user_id);
   const selectedVehicleId = searchParams.vehicle;
@@ -79,6 +80,13 @@ export default async function BookingConfirmation({
           <input
             type="text"
             title={""}
+            name={"booking_end"}
+            value={calculateBookingEndDate(slot, service.duration)}
+            hidden
+          />
+          <input
+            type="text"
+            title={""}
             name={"vehicle_id"}
             value={selectedVehicleId}
             hidden
@@ -92,6 +100,8 @@ export default async function BookingConfirmation({
           />
           <h1 className={"mb-4 text-2xl"}>You booking at {shop.name}</h1>
           <p>Booking time: {slot}</p>
+          <p>Booking duration: {service.duration}</p>
+          <p>Booking end: {calculateBookingEndDate(slot, service.duration)}</p>
           <p>Service being booked: {service.service_name}</p>
           <p>Service provider: {shop.name}</p>
           <p>

@@ -1,63 +1,57 @@
+import { formatInTimeZone, toZonedTime } from "date-fns-tz";
+import { BookingWithDetails, RepairShop } from "@/types";
+import { upcomingShopWorkWeek } from "./date-utils";
+
 export default function generateSlots(
-  openingTime: string,
-  closingTime: string,
-  openOnDays: string[],
+  existingBookings: BookingWithDetails[],
+  shop: RepairShop,
 ) {
-  const interval = 30;
-  const daysToGenerate = 7;
-  const slotsWithDates = [];
+  const slotInterval = 30;
+  const daysToGenerate = upcomingShopWorkWeek(shop);
+  const timeZone = "Europe/Helsinki";
+  const dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
 
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const bookingIntervals = existingBookings.map((booking) => {
+    const start = toZonedTime(new Date(booking.booking_start_date), timeZone);
+    const end = toZonedTime(new Date(booking.booking_end_date), timeZone);
+    return {
+      start: start.getTime(),
+      end: end.getTime(),
+    };
+  });
 
-  for (let day = 0; day < daysToGenerate; day++) {
-    const currentDate = new Date(Date.now() + day * 24 * 60 * 60 * 1000);
-    const currentDayOfWeek = daysOfWeek[currentDate.getDay()];
+  const slots = daysToGenerate.map((day) => {
+    const slots = [];
+    const openingHour = parseInt(shop.opening_time.slice(0, 2), 10);
+    const openingMinute = parseInt(shop.opening_time.slice(3, 5), 10);
+    const closingHour = parseInt(shop.closing_time.slice(0, 2), 10);
+    const closingMinute = parseInt(shop.closing_time.slice(3, 5), 10);
 
-    if (!openOnDays.includes(currentDayOfWeek)) {
-      continue;
-    }
+    const opening = new Date(day.date);
+    opening.setHours(openingHour, openingMinute, 0, 0);
+    const closing = new Date(day.date);
+    closing.setHours(closingHour, closingMinute, 0, 0);
 
-    const daySlots = [];
-    const dateStr = currentDate.toISOString().split("T")[0];
-
-    let currentTime = new Date(currentDate.getTime());
-    currentTime.setHours(
-      parseInt(openingTime.split(":")[0], 10),
-      parseInt(openingTime.split(":")[1], 10),
-      0,
-      0,
-    );
-
-    const closingDateTime = new Date(currentDate.getTime());
-    closingDateTime.setHours(
-      parseInt(closingTime.split(":")[0], 10),
-      parseInt(closingTime.split(":")[1], 10),
-      0,
-      0,
-    );
-
-    while (
-      new Date(currentTime.getTime() + interval * 60000) <= closingDateTime
+    for (
+      let i = opening.getTime();
+      i < closing.getTime();
+      i += slotInterval * 60 * 1000
     ) {
-      const slotTime =
-        currentTime.getHours().toString().padStart(2, "0") +
-        ":" +
-        currentTime.getMinutes().toString().padStart(2, "0");
+      const slot = new Date(i);
+      const slotTime = formatInTimeZone(slot, timeZone, dateFormat);
 
-      daySlots.push(`${dateStr} ${slotTime}`);
-      currentTime = new Date(currentTime.getTime() + interval * 60000);
+      // Check if the slot is booked
+      const isBooked = bookingIntervals.some(
+        (interval) => i >= interval.start && i < interval.end,
+      );
+      slots.push({
+        time: slotTime,
+        booked: isBooked,
+      });
     }
 
-    slotsWithDates.push(daySlots);
-  }
+    return slots;
+  });
 
-  return slotsWithDates;
+  return slots;
 }
