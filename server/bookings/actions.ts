@@ -95,5 +95,5 @@ export async function makeBooking(formData: FormData) {
     throw new Error(error.message);
   }
 
-  return redirect("/");
+  return redirect("/booking-complete");
 }
