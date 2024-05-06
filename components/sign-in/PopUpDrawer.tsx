@@ -11,10 +11,16 @@ import {
 import { Button } from "../ui/button";
 
 interface LoginDrawerProps {
-  children: React.ReactNode;
+  drawerHeader: string;
+  drawerDescription?: string;
+  children?: React.ReactNode;
 }
 
-export default function LoginDrawer({ children }: LoginDrawerProps) {
+export default function PopUpDrawer({
+  drawerHeader,
+  drawerDescription,
+  children,
+}: LoginDrawerProps) {
   return (
     <Drawer>
       <DrawerTrigger>
@@ -28,12 +34,13 @@ export default function LoginDrawer({ children }: LoginDrawerProps) {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <div className={"mb-4 flex flex-row items-center justify-center"}>
+          <div className={"mb-4 flex flex-col items-center justify-center"}>
             <DrawerTitle>
-              <h4 className={"text-2xl font-bold"}>
-                Hey, you need to log in first!
-              </h4>
+              <h4 className={"mb-2 text-2xl font-bold"}>{drawerHeader}</h4>
             </DrawerTitle>
+            {drawerDescription && (
+              <DrawerDescription>{drawerDescription}</DrawerDescription>
+            )}
           </div>
         </DrawerHeader>
         <div className={"flex w-full flex-row items-center justify-center p-4"}>

@@ -2,7 +2,7 @@ import { getUser } from "@/server/user-authentication/actions";
 import SelectTimeModal from "../booking/SelectTimeModal";
 
 import { BookingWithDetails, RepairShop, ShopService } from "@/types";
-import LoginDrawer from "../sign-in/LoginDrawer";
+import PopUpDrawer from "../sign-in/PopUpDrawer";
 import SmallLoginForm from "../sign-in/SmallLoginForm";
 
 interface ShopServiceCardProps {
@@ -17,6 +17,8 @@ export default async function ShopServiceCard({
   bookings,
 }: ShopServiceCardProps) {
   const user = await getUser();
+
+  const shopOwner = user?.shop_owner;
 
   return (
     <div
@@ -38,13 +40,26 @@ export default async function ShopServiceCard({
         </div>
       </div>
       {user ? (
-        <SelectTimeModal
-          shop={repairShop}
-          service={service}
-          bookings={bookings}
-        />
+        shopOwner ? (
+          <PopUpDrawer
+            drawerHeader={
+              "Hmm, it seems like you're not allowed to make bookings!"
+            }
+            drawerDescription={"Shop owners can't make bookings."}
+          />
+        ) : (
+          <SelectTimeModal
+            shop={repairShop}
+            service={service}
+            bookings={bookings}
+          />
+        )
       ) : (
-        <LoginDrawer children={<SmallLoginForm />} />
+        <PopUpDrawer
+          drawerHeader={"Hey, you need to log in first!"}
+          drawerDescription={"Log in to book a service."}
+          children={<SmallLoginForm />}
+        />
       )}
     </div>
   );
