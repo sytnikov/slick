@@ -3,7 +3,7 @@
 import { CustomerVehicle } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
-export async function getUserVehicles(
+export async function getCustomerVehicles(
   userId: string,
 ): Promise<CustomerVehicle[]> {
   const supabase = createClient();
@@ -20,7 +20,7 @@ export async function getUserVehicles(
   return data;
 }
 
-export async function getVehicleById(
+export async function getCustomerVehicleById(
   vehicleId: number | string,
 ): Promise<CustomerVehicle | null> {
   const supabase = createClient();
