@@ -1,8 +1,13 @@
 import React from "react";
 
+import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
+
 const userDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex min-h-screen flex-col items-center">{children}</main>
+    <main className="flex flex-row items-start justify-start">
+      <DashboardNavigation />
+      {children}
+    </main>
   );
 };
 
