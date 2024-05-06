@@ -2,6 +2,8 @@ import { getUser } from "@/server/user-authentication/actions";
 import SelectTimeModal from "../booking/SelectTimeModal";
 
 import { BookingWithDetails, RepairShop, ShopService } from "@/types";
+import LoginDrawer from "../sign-in/LoginDrawer";
+import SmallLoginForm from "../sign-in/SmallLoginForm";
 
 interface ShopServiceCardProps {
   service: ShopService;
@@ -35,13 +37,15 @@ export default async function ShopServiceCard({
           </p>
         </div>
       </div>
-
-      <SelectTimeModal
-        shop={repairShop}
-        service={service}
-        bookings={bookings}
-        user={user}
-      />
+      {user ? (
+        <SelectTimeModal
+          shop={repairShop}
+          service={service}
+          bookings={bookings}
+        />
+      ) : (
+        <LoginDrawer children={<SmallLoginForm />} />
+      )}
     </div>
   );
 }

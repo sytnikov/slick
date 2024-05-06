@@ -17,26 +17,19 @@ import {
 
 import generateSlots from "@/utils/booking-system/generate-slots";
 
-import {
-  BookingWithDetails,
-  RepairShop,
-  ShopService,
-  UserProfile,
-} from "@/types";
+import { BookingWithDetails, RepairShop, ShopService } from "@/types";
 import { formatTimestampToDate } from "@/utils/booking-system/date-utils";
 
 interface SelectTimeModalProps {
   shop: RepairShop;
   service: ShopService;
   bookings: BookingWithDetails[];
-  user: UserProfile | null;
 }
 
 export default function SeletTimeModal({
   shop,
   service,
   bookings,
-  user,
 }: SelectTimeModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>("");
 
@@ -53,6 +46,7 @@ export default function SeletTimeModal({
           Book now
         </div>
       </AlertDialogTrigger>
+
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
