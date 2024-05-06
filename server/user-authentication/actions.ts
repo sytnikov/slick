@@ -6,13 +6,13 @@ import { RepairShop, UserProfile } from "@/types";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function getUser(): Promise<UserProfile> {
+export async function getUser(): Promise<UserProfile | null> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return redirect("/login");
+    return null;
   }
   const { data: userProfile } = await supabase
     .from("User Profiles")

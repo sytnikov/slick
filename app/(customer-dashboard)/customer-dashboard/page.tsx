@@ -11,6 +11,11 @@ import { BookingWithDetails } from "@/types";
 
 export default async function UserDashboard() {
   const user = await getUser();
+
+  if (user == null) {
+    return redirect("/login");
+  }
+
   const uploadedImage = await getUserProfileAvatar(user.id);
   const customerBookings = await getCustomerBookingsWithDetails(user.user_id);
 

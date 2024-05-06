@@ -26,7 +26,7 @@ export default async function RepairShopDashboard() {
   const bookingRevenueFromPastYear =
     await calculateBookingRevenuesForPastYear(bookings);
 
-  if (!user.shop_owner || !repairShop) {
+  if (user === null || !repairShop) {
     return redirect("/login");
   }
 

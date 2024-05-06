@@ -1,5 +1,5 @@
 import { getBookingsForRepairShop } from "@/server/bookings/actions";
-import SelectTimeModal from "@/components/booking/SelectTimeModal";
+import ShopServiceCard from "../cards/ShopServiceCard";
 import { RepairShop, ShopService } from "@/types";
 
 interface RepairShopServicesProps {
@@ -18,33 +18,12 @@ export default async function RepairShopServices({
       {shopServices.length > 0 ? (
         <div className={"flex w-full flex-col gap-4"}>
           {shopServices.map((service) => (
-            <div
-              className={
-                "flex w-full flex-row items-center justify-between rounded-md border-b-2 border-gray-200 bg-white pb-4 pt-4"
-              }
+            <ShopServiceCard
               key={service.id}
-            >
-              <div className={"flex flex-col"}>
-                <h3 className={"text-xl"}>{service.service_name}</h3>
-                <div
-                  className={"flex flex-row items-start justify-start gap-2 "}
-                >
-                  <p>Price: </p>
-                  <p>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(service.price)}
-                  </p>
-                </div>
-              </div>
-
-              <SelectTimeModal
-                shop={repairShop}
-                service={service}
-                bookings={bookings}
-              />
-            </div>
+              service={service}
+              repairShop={repairShop}
+              bookings={bookings}
+            />
           ))}
         </div>
       ) : (

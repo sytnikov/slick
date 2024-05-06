@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import {
   getUser,
   getRepairShopAssociatedWithUser,
@@ -13,6 +15,10 @@ export default async function ShopSettings() {
   const user = await getUser();
   const repairShop = await getRepairShopAssociatedWithUser();
   const repairShopServices = await getShopServices(repairShop.id);
+
+  if (user == null || repairShop == null) {
+    return redirect("/login");
+  }
 
   return (
     <div

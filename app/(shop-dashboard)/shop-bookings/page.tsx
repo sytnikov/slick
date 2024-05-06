@@ -14,7 +14,7 @@ export default async function Page() {
   const repairShop = await getRepairShopAssociatedWithUser();
   const bookings = await getBookingsForRepairShop(repairShop.id);
 
-  if (!user.shop_owner || !repairShop) {
+  if (user === null || !repairShop) {
     return redirect("/login");
   }
 

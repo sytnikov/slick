@@ -11,6 +11,7 @@ export interface RepairShop {
   city: string;
   status: string;
   banner_img_url: string;
+  booking_buffer: number;
 }
 
 export interface UserProfile {
@@ -40,7 +41,8 @@ export interface Booking {
   booking_end_date: string;
   price: number;
   status: string;
-  vehicle_id?: number;
+  vehicle_id: number;
+  customer_notes: string;
 }
 
 export interface BookingWithDetails

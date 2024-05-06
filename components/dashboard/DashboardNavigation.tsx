@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { getUser } from "@/server/user-authentication/actions";
 
 export default async function DashboardNavigation() {
   const user = await getUser();
+
+  if (user == null) {
+    return redirect("/login");
+  }
 
   const commonNavigationLinks = [
     {
