@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getUserBookingsWithDetails } from "@/server/bookings/actions";
+import { getCustomerBookingsWithDetails } from "@/server/bookings/actions";
 import { getUserProfileAvatar } from "@/server/user-profiles/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
@@ -12,7 +12,7 @@ import { BookingWithDetails } from "@/types";
 export default async function UserDashboard() {
   const user = await getUser();
   const uploadedImage = await getUserProfileAvatar(user.id);
-  const userBookings = await getUserBookingsWithDetails(user.user_id);
+  const customerBookings = await getCustomerBookingsWithDetails(user.user_id);
 
   if (!user) {
     return redirect("/login");
@@ -33,7 +33,7 @@ export default async function UserDashboard() {
           </h1>
 
           <h3>Here are your bookings: </h3>
-          {userBookings.map((booking: BookingWithDetails) => (
+          {customerBookings.map((booking: BookingWithDetails) => (
             <div className={"border-2 p-4"} key={booking.id}>
               <h3>Booking at {booking.shop_id.name}</h3>
               <p>Booking date: {booking.booking_start_date}</p>

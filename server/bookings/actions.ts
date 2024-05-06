@@ -50,13 +50,13 @@ export async function calculateBookingRevenuesForPastYear(
   return bookingRevenue.reverse();
 }
 
-export async function getUserBookingsWithDetails(
+export async function getCustomerBookingsWithDetails(
   userID: string | number,
 ): Promise<BookingWithDetails[]> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Bookings")
-    .select(`*, shop_service_id("*"), shop_id("*")`)
+    .select(`*, shop_service_id("*"), shop_id("*"), user_id("*")`)
     .eq("user_id", userID);
 
   if (error) {
