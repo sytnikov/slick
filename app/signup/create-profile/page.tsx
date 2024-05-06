@@ -58,7 +58,7 @@ export default function CompleteProfile({
     if (shopOwner) {
       return redirect("/complete-repair-shop-signup");
     } else {
-      return redirect("/user-dashboard");
+      return redirect("/customer-dashboard");
     }
   };
 

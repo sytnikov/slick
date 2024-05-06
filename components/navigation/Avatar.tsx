@@ -66,7 +66,7 @@ export async function Avatar() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href={"/user-dashboard"}>
+          <Link href={"/customer-dashboard"}>
             <DropdownMenuItem>
               Dashboard
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
