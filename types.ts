@@ -84,3 +84,10 @@ export interface Message {
   sent_from: string;
   message: string;
 }
+
+// visual compoent props, for landing page, etc...
+
+export interface HeroSectionProps {
+  title: string;
+  description: string;
+}
