@@ -24,7 +24,7 @@ export default function ServiceSelectorFilter() {
 
   return (
     <div className={"flex flex-col gap-2"}>
-      <label htmlFor="service" className={"opacity-50"}>
+      <label htmlFor="service" className={"text-white"}>
         Select service
       </label>
       <select

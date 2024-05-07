@@ -26,7 +26,7 @@ export default function TownSelectorFilter({
 
   return (
     <div className={"flex flex-col gap-2"}>
-      <label htmlFor="town" className={"opacity-50"}>
+      <label htmlFor="town" className={"text-white"}>
         Select town
       </label>
       <select

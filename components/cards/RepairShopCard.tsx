@@ -29,7 +29,7 @@ export default async function RepairShopCard({
       <div className="card mr-6 h-full overflow-hidden rounded-xl border-2 border-gray-100 bg-white">
         <div className={"relative"}>
           <Image
-            src={imageSource}
+            src={imageSource || "https://placehold.co/600x400"}
             alt="Shop image"
             width={800}
             height={500}

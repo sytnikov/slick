@@ -9,7 +9,6 @@ import NoResults from "@/components/browse-page/NoResults";
 
 import { RepairShop } from "@/types";
 
-// this ensures that the page is revalidated every 0 seconds, fresh data is fetched on every request
 export const revalidate = 0;
 
 export default async function Browse({
@@ -26,7 +25,7 @@ export default async function Browse({
 
   return (
     <PageLayout>
-      <main className="flex min-w-full flex-row items-start justify-start p-2">
+      <main className="flex min-w-full flex-row items-start justify-start">
         <div className="min-h-screen min-w-[50%]">
           <BrowseSearch shops={shops} />
           <div

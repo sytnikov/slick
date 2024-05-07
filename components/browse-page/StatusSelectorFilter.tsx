@@ -26,7 +26,7 @@ export default function StatusSelectorFilter({
 
   return (
     <div className={"flex flex-col gap-2"}>
-      <label htmlFor="status" className={"opacity-50"}>
+      <label htmlFor="status" className={"text-white"}>
         Select status
       </label>
       <select
