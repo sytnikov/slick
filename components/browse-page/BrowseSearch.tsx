@@ -18,14 +18,14 @@ export default async function BrowseSearch({ shops }: BrowseSearchProps) {
   return (
     <div
       className={
-        "rounded-xl2 m-auto flex w-full flex-col gap-2 bg-green-500 p-4"
+        "rounded-xl2 m-auto flex w-full flex-col gap-2 rounded-md bg-gray-100 p-4"
       }
     >
       <div className={"flex w-full flex-col p-4"}>
         <div
           className={"mb-4 flex w-full flex-row items-center justify-between"}
         >
-          <h3 className={"text-xl font-bold text-white"}>Browse shops</h3>
+          <h3 className={"text-xl font-bold "}>Browse shops</h3>
           <ClearFiltersButton
             buttonVariant={"secondary"}
             buttonText={"Clear filters"}
