@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { RepairShop } from "@/types";
 import { useMemo } from "react";
@@ -17,7 +18,7 @@ export default function SearchByName({ shops }: SearchByNameProps) {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         handleSearch(name);
-      }, 300);
+      }, 500);
     };
   }, []);
 
@@ -34,7 +35,7 @@ export default function SearchByName({ shops }: SearchByNameProps) {
 
   return (
     <input
-      placeholder="Sawon Woimalaitos"
+      placeholder="Masan Paja"
       className={"w-full rounded-md border-2 p-4"}
       onChange={(event) => debouncedSearch(event.target.value)}
     />
