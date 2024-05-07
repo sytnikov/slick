@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Button, ButtonProps } from "../ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, XIcon } from "lucide-react";
 
 type LinkProps = {
   title: string;
@@ -44,9 +44,13 @@ export default function Navigation(props: NavigationProps) {
           <Button
             className="-mr-2 flex size-12 flex-col items-center justify-center lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          ></Button>
+          >
+            <XIcon className="size-6" />
+          </Button>
         </div>
-        <div className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]">
+        <div
+          className={`overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto] ${mobileMenuOpen ? "" : "hidden"} lg:block`}
+        >
           {links.map((link, index) => (
             <div
               key={`${link.title}-${index}`}
@@ -86,7 +90,7 @@ const NavItemDropdown = ({
       onMouseEnter={() => setDropdownOpen(true)}
       onMouseLeave={() => setDropdownOpen(false)}
     >
-      <button
+      <Button
         className="text-md focus-visible:ring-border-primary flex w-full items-center justify-between gap-2 py-3 text-left ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 lg:flex-none lg:justify-start lg:px-4 lg:py-2 lg:text-base"
         onClick={() => setDropdownOpen((prev) => !prev)}
       >
@@ -94,7 +98,7 @@ const NavItemDropdown = ({
         <div>
           <ChevronDown className="size-4" />
         </div>
-      </button>
+      </Button>
       {dropdownOpen && (
         <ul className="lg:border-border-primary bg-white lg:absolute lg:border lg:p-2 lg:[--y-close:25%]">
           {subLinks.map((subLink, index) => (
