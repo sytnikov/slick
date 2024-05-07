@@ -12,6 +12,7 @@ export interface RepairShop {
   status: string;
   banner_img_url: string;
   booking_buffer: number;
+  days_in_calendar: number;
 }
 
 export interface UserProfile {
@@ -75,4 +76,11 @@ export interface CustomerReview {
 export interface CustomerReviewWithDetails
   extends Omit<CustomerReview, "user_id"> {
   user_id: UserProfile;
+}
+
+export interface Message {
+  id: number;
+  timestamp: string;
+  sent_from: string;
+  message: string;
 }

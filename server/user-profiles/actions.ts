@@ -38,3 +38,19 @@ export async function getUserProfileAvatar(userID: number): Promise<string> {
 
   return `${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/User%20Avatars/${encodeURIComponent(user.avatar_url)}`;
 }
+
+export async function getUserProfileByID(userID: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("User Profiles")
+    .select("*")
+    .eq("user_id", userID)
+    .single();
+
+  if (error || !data) {
+    console.error("Error fetching user profile:", error);
+    return null;
+  }
+
+  return data;
+}

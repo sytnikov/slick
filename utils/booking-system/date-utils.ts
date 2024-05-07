@@ -55,8 +55,9 @@ export function upcomingShopWorkWeek(
   const days = [];
   const openingTime = shop.opening_time;
   const closingTime = shop.closing_time;
+  const daysToGenerate = shop.days_in_calendar;
 
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < daysToGenerate; i++) {
     const date = new Date();
     date.setDate(date.getDate() + i);
     days.push(format(date, "yyyy-MM-dd"));
@@ -91,7 +92,7 @@ export default function calculateBookingEndDate(
 
   const end = new Date(start.getTime() + duration * 60000);
 
-  const timeZoneOffset = start.getTimezoneOffset() * 60000; // offset in milliseconds
+  const timeZoneOffset = start.getTimezoneOffset() * 60000;
   const localTime = new Date(end.getTime() - timeZoneOffset).toISOString();
 
   return localTime.replace("Z", "");
