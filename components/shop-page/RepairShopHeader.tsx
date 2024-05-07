@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { getShopBannerImageUrl } from "@/server/repair-shops/actions";
 
-import AddToFaveriots from "../buttons/AddToFaveriots";
+import AddToFaveriotes from "../buttons/AddToFavorites";
 
 interface RepairShopHeaderProps {
   shopID: number;
@@ -41,7 +41,7 @@ export default async function RepairShopHeader({
           </p>
           <h1 className={"text-5xl text-white"}>{shopName}</h1>
         </div>
-        <AddToFaveriots shopID={shopID} />
+        <AddToFaveriotes shopID={shopID} />
       </div>
 
       <div

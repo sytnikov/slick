@@ -2,12 +2,11 @@ import {
   getCustomerFavorites,
   addRepairShopToFavorites,
   removeRepairShopFromFavorites,
-} from "@/server/faveriots/actions";
+} from "@/server/favorites/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
 import { HeartIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { daysOfWeek } from "@/utils/booking-system/date-utils";
 
 export default async function AddToFaveriots({ shopID }: { shopID: number }) {
   const user = await getUser();
