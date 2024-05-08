@@ -1,7 +1,7 @@
-import { getUserChats, userChats } from "@/server/messaging/actions";
-import { getUser } from "@/server/user-authentication/actions";
-import { getUserProfileByID } from "@/server/user-profiles/actions";
 import { redirect } from "next/navigation";
+import { getUser } from "@/server/user-authentication/actions";
+import ChatWindow from "@/components/dashboard/ChatWindow";
+import SendMessage from "@/components/dashboard/SendMessage";
 
 export default async function ShopInbox() {
   const user = await getUser();
@@ -9,9 +9,6 @@ export default async function ShopInbox() {
   if (user === null) {
     return redirect("/login");
   }
-
-  const messages = await userChats(user.user_id);
-  const userProfile = await getUserProfileByID(user.user_id);
 
   return (
     <div
@@ -28,13 +25,17 @@ export default async function ShopInbox() {
         <div></div>
       </div>
       <div
-        className={"flex h-screen w-full flex-col items-center justify-start"}
+        className={"flex h-screen w-full flex-col items-start justify-start"}
       >
         <div
           className={
             "flex h-[10%] w-full flex-col items-start justify-center bg-white pl-8"
           }
-        ></div>
+        >
+          Chat window
+        </div>
+        <ChatWindow userID={user.user_id} />
+        <SendMessage userID={user.user_id} />
       </div>
     </div>
   );
