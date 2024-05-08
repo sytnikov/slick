@@ -16,7 +16,6 @@ export default function ChatWindow({ userID }: InboxListProps) {
   useEffect(() => {
     const fetchMessages = async () => {
       const chats = await getUserChats(userID);
-      console.log("Chats:", chats);
       setMessages(chats);
     };
 
