@@ -10,31 +10,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addNewVehicle } from "@/server/customer-vehicles/actions";
+import { updateVehicle } from "@/server/customer-vehicles/actions";
 import { Textarea } from "../ui/textarea";
+import { Pencil } from "lucide-react";
+import { CustomerVehicle } from "@/types";
 
-type AddNewVehicleModalProps = {
-  customerId: string;
+type UpdateVehicleModalProps = {
+  vehicle: CustomerVehicle;
 };
 
-export default function AddNewVehicleModal({
-  customerId,
-}: AddNewVehicleModalProps) {
-  const handleAddNewVehicle = async (formData: FormData) => {
+export default function UpdateVehicleModal({
+  vehicle,
+}: UpdateVehicleModalProps) {
+  const handleUpdateVehicle = async (formData: FormData) => {
     "use server";
-    addNewVehicle(formData, customerId);
+    updateVehicle(formData);
+    console.log('formData:', formData)
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Add vehicle</Button>
+        <Pencil size={20} strokeWidth={1.75} />
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add a new vehicle</DialogTitle>
+          <DialogTitle>Update a vehicle</DialogTitle>
           <DialogDescription>
-            Provide the details of the new vehicle below.
+            Change necessary fields, then click on Update vehicle to save the changes. 
           </DialogDescription>
         </DialogHeader>
         <form className="grid gap-4 py-4">
@@ -43,7 +46,8 @@ export default function AddNewVehicleModal({
             <Input
               id="make"
               name="make"
-              placeholder="Toyota"
+              defaultValue={vehicle.make}
+              placeholder="Enter vehicle make"
               className="col-span-3"
               required
             ></Input>
@@ -53,7 +57,8 @@ export default function AddNewVehicleModal({
             <Input
               id="model"
               name="model"
-              placeholder="Corolla"
+              defaultValue={vehicle.model}
+              placeholder="Enter vehicle model"
               className="col-span-3"
               required
             ></Input>
@@ -63,7 +68,8 @@ export default function AddNewVehicleModal({
             <Input
               id="yearManufactured"
               name="yearManufactured"
-              placeholder="2019"
+              defaultValue={vehicle.year_manufactured}
+              placeholder="Enter production year"
               className="col-span-3"
               required
             ></Input>
@@ -73,7 +79,8 @@ export default function AddNewVehicleModal({
             <Input
               id="registrationNumber"
               name="registrationNumber"
-              placeholder="AAA-123"
+              defaultValue={vehicle.registration_number}
+              placeholder="Enter registration number"
               className="col-span-3"
               required
             ></Input>
@@ -83,14 +90,21 @@ export default function AddNewVehicleModal({
             <Textarea
               id="description"
               name="description"
-              placeholder="Any notes to be added"
+              defaultValue={vehicle.description}
+              placeholder="Add any description"
               className="col-span-3"
             ></Textarea>
           </div>
+          <Input
+              type="hidden"
+              id="vehicle_id"
+              name="vehicle_id"
+              defaultValue={vehicle.id}
+            ></Input>
           <DialogFooter>
             <DialogTrigger>
-              <Button type="submit" formAction={handleAddNewVehicle}>
-                Add new vehicle
+              <Button type="submit" formAction={handleUpdateVehicle}>
+                Update vehicle
               </Button>
             </DialogTrigger>
           </DialogFooter>
