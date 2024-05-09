@@ -81,8 +81,10 @@ export interface CustomerReviewWithDetails
 export interface Message {
   id: number;
   timestamp: string;
-  sent_from: string;
+  sender: string;
+  receiver: string;
   message: string;
+  conversation_id: number;
 }
 
 // visual compoent props, for landing page, etc...

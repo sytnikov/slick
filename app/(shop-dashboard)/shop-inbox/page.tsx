@@ -1,7 +1,12 @@
 import { redirect } from "next/navigation";
+
+import { NewMessageModal } from "@/components/messaging/NewMessageModal";
+import ChatWindow from "@/components/messaging/ChatWindow";
+import SendMessage from "@/components/messaging/SendMessage";
+import UserChats from "@/components/messaging/UserChats";
+import NewMessage from "@/components/messaging/NewMessageForm";
+
 import { getUser } from "@/server/user-authentication/actions";
-import ChatWindow from "@/components/dashboard/ChatWindow";
-import SendMessage from "@/components/dashboard/SendMessage";
 
 export default async function ShopInbox() {
   const user = await getUser();
@@ -22,7 +27,10 @@ export default async function ShopInbox() {
         >
           <h1 className={"text-2xl"}>Messages</h1>
         </div>
-        <div></div>
+        <div>
+          <NewMessageModal children={<NewMessage userID={user.user_id} />} />
+          <UserChats userID={user.user_id} />
+        </div>
       </div>
       <div
         className={"flex h-screen w-full flex-col items-start justify-start"}
@@ -34,7 +42,7 @@ export default async function ShopInbox() {
         >
           Chat window
         </div>
-        <ChatWindow userID={user.user_id} />
+        <ChatWindow />
         <SendMessage userID={user.user_id} />
       </div>
     </div>
