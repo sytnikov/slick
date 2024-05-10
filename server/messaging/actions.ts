@@ -2,42 +2,6 @@
 
 import { createClient } from "@/utils/supabase/client";
 
-// get all messages in a conversation
-
-export async function getConversationMessages(conversation_id: string) {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("Messages")
-    .select("*")
-    .eq("conversation_id", conversation_id)
-    .order("created_at", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching chats:", error);
-    return [];
-  }
-
-  return data;
-}
-
-// get all messages user is a part of, either as sender or reciever
-
-export async function getUserMessages(userID: string) {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("Messages")
-    .select("*")
-    .or(`sender.eq.${userID},receiver.eq.${userID}`)
-    .order("created_at", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching chats:", error);
-    return [];
-  }
-
-  return data;
-}
-
 // send a message
 
 export async function sendMessage(
@@ -62,4 +26,23 @@ export async function sendMessage(
   }
 
   return data;
+}
+
+// get all messages
+
+export async function getUserMessages(userID: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("Messages")
+    .select("*")
+    .or(`sender.eq.${userID},receiver.eq.${userID}`);
+
+  if (error) {
+    console.error("Error fetching chats:", error);
+    return [];
+  }
+
+  const messages = data || [];
+
+  return messages;
 }

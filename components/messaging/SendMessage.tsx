@@ -6,9 +6,11 @@ import { useSearchParams } from "next/navigation";
 import { sendMessage } from "@/server/messaging/actions";
 import { Button } from "../ui/button";
 
-export default function SendMessage({ userID }: { userID: string }) {
+export default function SendMessage() {
   const [message, setMessage] = useState("");
+
   const conversationID = useSearchParams().get("conversation");
+
   const sender = useSearchParams().get("sender");
   const receiver = useSearchParams().get("receiver");
 

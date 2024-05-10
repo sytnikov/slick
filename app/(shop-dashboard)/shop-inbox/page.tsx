@@ -7,6 +7,7 @@ import UserChats from "@/components/messaging/UserChats";
 import NewMessage from "@/components/messaging/NewMessageForm";
 
 import { getUser } from "@/server/user-authentication/actions";
+import { getUserMessages } from "@/server/messaging/actions";
 
 export default async function ShopInbox() {
   const user = await getUser();
@@ -14,6 +15,8 @@ export default async function ShopInbox() {
   if (user === null) {
     return redirect("/login");
   }
+
+  const messages = await getUserMessages(user.user_id);
 
   return (
     <div
@@ -29,7 +32,7 @@ export default async function ShopInbox() {
         </div>
         <div>
           <NewMessageModal children={<NewMessage userID={user.user_id} />} />
-          <UserChats userID={user.user_id} />
+          <UserChats messages={messages} />
         </div>
       </div>
       <div
@@ -42,8 +45,8 @@ export default async function ShopInbox() {
         >
           Chat window
         </div>
-        <ChatWindow />
-        <SendMessage userID={user.user_id} />
+        <ChatWindow messages={messages} />
+        <SendMessage />
       </div>
     </div>
   );
