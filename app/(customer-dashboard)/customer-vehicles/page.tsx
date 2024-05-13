@@ -6,6 +6,7 @@ import { getUser } from "@/server/user-authentication/actions";
 import { CustomerVehicle } from "@/types";
 import AddNewVehicleModal from "@/components/customer-dashboard/AddNewVehicleModal";
 import VehiclesTable from "@/components/customer-dashboard/VehiclesTable";
+import AddNewVehicleModalNoDialogForm from "@/components/customer-dashboard/AddNewVehicleModalNoDialogForm";
 
 export default async function CustomerVehicles() {
   const user = await getUser();
@@ -18,13 +19,16 @@ export default async function CustomerVehicles() {
 
   return (
     <div
-      className={"flex min-h-screen h-full w-full flex-col items-start justify-start p-12 bg-slate-100"}
+      className={
+        "flex h-full min-h-screen w-full flex-col items-start justify-start bg-slate-100 p-12"
+      }
     >
-      <div className={"flex w-full flex-row justify-between items-start"}>
+      <div className={"flex w-full flex-row items-start justify-between"}>
         <p className={"mb-6 animate-fadeInUp text-3xl font-bold"}>Vehicles</p>
-        <AddNewVehicleModal customerId={user.user_id}/>
+        <AddNewVehicleModal customerId={user.user_id} />
       </div>
-      <VehiclesTable vehicles={customerVehicles}/>
+      <VehiclesTable vehicles={customerVehicles} />
+      <AddNewVehicleModalNoDialogForm customerId={user.user_id}/>
     </div>
   );
 }

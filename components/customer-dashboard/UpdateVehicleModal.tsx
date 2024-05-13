@@ -25,7 +25,6 @@ export default function UpdateVehicleModal({
   const handleUpdateVehicle = async (formData: FormData) => {
     "use server";
     updateVehicle(formData);
-    console.log('formData:', formData)
   };
 
   return (

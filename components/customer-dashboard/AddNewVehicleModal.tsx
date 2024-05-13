@@ -1,12 +1,27 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,15 +35,15 @@ type AddNewVehicleModalProps = {
 export default function AddNewVehicleModal({
   customerId,
 }: AddNewVehicleModalProps) {
+
   const handleAddNewVehicle = async (formData: FormData) => {
-    "use server";
-    addNewVehicle(formData, customerId);
+    // addNewVehicle(formData, customerId);
   };
 
   return (
-    <Dialog>
+      <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Add vehicle</Button>
+        <Button variant="outline" disabled>Add vehicle</Button>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
