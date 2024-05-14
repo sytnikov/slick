@@ -1,17 +1,21 @@
+import { Conversation } from "@/types";
+import getConversationHeader from "@/utils/messaging/message-utils";
+
 interface ConversationItemProps {
-  last_message: string;
+  selectedConversation: Conversation;
+  currentUserID: string;
 }
 
-export default async function ConversationItem({
-  last_message,
+export default function ConversationItem({
+  selectedConversation,
+  currentUserID,
 }: ConversationItemProps) {
+  const header = getConversationHeader(selectedConversation, currentUserID);
+
   return (
-    <div
-      className={
-        "flex w-full flex-row items-center justify-start border-b-2 border-gray-200"
-      }
-    >
-      <p>{last_message}</p>
-    </div>
+    <>
+      <div>{header}</div>
+      <div>{selectedConversation.last_message_id.message}</div>
+    </>
   );
 }

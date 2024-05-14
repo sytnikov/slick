@@ -43,10 +43,14 @@ export default async function ShopInbox({
         </div>
         <div>
           <NewMessageModal children={<NewMessage userID={user.user_id} />} />
-          <UserConversations
-            conversations={conversations}
-            currentUserID={user.user_id}
-          />
+          {conversations === null ? (
+            <p>No conversations...</p>
+          ) : (
+            <UserConversations
+              conversations={conversations}
+              currentUserID={user.user_id}
+            />
+          )}
         </div>
       </div>
       <div
