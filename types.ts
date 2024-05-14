@@ -87,6 +87,14 @@ export interface Message {
   conversation_id: number;
 }
 
+export interface Conversation {
+  id: number;
+  created_at: string;
+  sender: UserProfile;
+  receiver: UserProfile;
+  last_message_id: Message;
+}
+
 // visual compoent props, for landing page, etc...
 
 export interface HeroSectionProps {

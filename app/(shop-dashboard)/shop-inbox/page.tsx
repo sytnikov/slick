@@ -3,20 +3,31 @@ import { redirect } from "next/navigation";
 import { NewMessageModal } from "@/components/messaging/NewMessageModal";
 import ChatWindow from "@/components/messaging/ChatWindow";
 import SendMessage from "@/components/messaging/SendMessage";
-import UserChats from "@/components/messaging/UserChats";
+import UserConversations from "@/components/messaging/UserConversations";
 import NewMessage from "@/components/messaging/NewMessageForm";
 
 import { getUser } from "@/server/user-authentication/actions";
-import { getUserMessages } from "@/server/messaging/actions";
+import {
+  getConversationByID,
+  getUserConversations,
+} from "@/server/messaging/actions";
 
-export default async function ShopInbox() {
+export default async function ShopInbox({
+  searchParams,
+}: {
+  searchParams: { conversation_id: string };
+}) {
   const user = await getUser();
 
   if (user === null) {
     return redirect("/login");
   }
 
-  const messages = await getUserMessages(user.user_id);
+  const conversations = await getUserConversations(user.user_id);
+
+  const selectedConversation = await getConversationByID(
+    searchParams.conversation_id,
+  );
 
   return (
     <div
@@ -32,7 +43,10 @@ export default async function ShopInbox() {
         </div>
         <div>
           <NewMessageModal children={<NewMessage userID={user.user_id} />} />
-          <UserChats messages={messages} />
+          <UserConversations
+            conversations={conversations}
+            currentUserID={user.user_id}
+          />
         </div>
       </div>
       <div
@@ -45,8 +59,11 @@ export default async function ShopInbox() {
         >
           Chat window
         </div>
-        <ChatWindow messages={messages} />
-        <SendMessage />
+        <ChatWindow conversationID={searchParams.conversation_id} />
+        <SendMessage
+          sender={user.user_id}
+          selectedConversation={selectedConversation}
+        />
       </div>
     </div>
   );

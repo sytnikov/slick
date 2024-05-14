@@ -1,5 +1,3 @@
-import { sendMessage } from "@/server/messaging/actions";
-
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
@@ -18,7 +16,7 @@ export default async function NewMessage({
     const message = formData.get("message") as string;
     const conversation_id = formData.get("conversation-id") as string;
 
-    await sendMessage(sender, receiver, message, conversation_id);
+    // await sendMessage(sender, receiver, message, conversation_id);
   };
 
   return (

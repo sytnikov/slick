@@ -1,32 +1,23 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-
+import { getConversationMessages } from "@/server/messaging/actions";
 import { Message } from "@/types";
-import { getConversationMessages } from "@/utils/messaging/message-utils";
 
 interface ChatWindowProps {
-  messages: Message[];
+  conversationID?: string;
 }
-
-export default function ChatWindow({ messages }: ChatWindowProps) {
-  const conversationID = useSearchParams().get("conversation");
-
-  const conversationMessages = getConversationMessages(
-    conversationID,
-    messages,
-  );
-
+export default async function ChatWindow({ conversationID }: ChatWindowProps) {
+  const messages = await getConversationMessages(conversationID);
   return (
     <div
       className={
         "flex w-[50%] flex-col items-center justify-center border-2 p-8"
       }
     >
-      {conversationMessages.map((message, index) => (
-        <p key={index}>{message.message}</p>
+      <h3>{conversationID}</h3>
+      {messages.map((message: Message) => (
+        <div key={message.id} className={"border-2 p-4"}>
+          <p>{message.message}</p>
+        </div>
       ))}
-      <p>Amount of chats: ({conversationMessages.length})</p>
     </div>
   );
 }

@@ -1,50 +1,39 @@
-"use client";
-
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-
 import { sendMessage } from "@/server/messaging/actions";
 import { Button } from "../ui/button";
+import { Conversation } from "@/types";
 
-export default function SendMessage() {
-  const [message, setMessage] = useState("");
+interface SendMessageProps {
+  sender: string;
+  selectedConversation: Conversation | null;
+}
+export default async function SendMessage({
+  selectedConversation,
+  sender,
+}: SendMessageProps) {
+  const receiver = selectedConversation?.receiver;
 
-  const conversationID = useSearchParams().get("conversation");
-
-  const sender = useSearchParams().get("sender");
-  const receiver = useSearchParams().get("receiver");
-
-  const handleSendMessage = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (message === "") {
-      return;
-    }
-
+  const sendUserMessage = async (formData: FormData) => {
+    "use server";
     await sendMessage(
-      sender as string,
-      receiver as string,
-      message,
-      conversationID as string,
+      formData,
+      sender,
+      receiver?.user_id,
+      selectedConversation?.id,
     );
-    setMessage("");
   };
 
   return (
-    <form
-      className={"flex flex-col justify-start border-2 p-12"}
-      onSubmit={handleSendMessage}
-    >
+    <form className={"flex flex-col justify-start border-2 p-12"}>
       <label htmlFor={"message"}>Message</label>
       <input
         type="text"
         name={"message"}
         title={"message"}
         className={"mb-4"}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
       />
-      <Button type="submit">Send message </Button>
+      <Button type="submit" formAction={sendUserMessage}>
+        Send message
+      </Button>
     </form>
   );
 }
