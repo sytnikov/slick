@@ -1,11 +1,9 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 import { createClient } from "@/utils/supabase/client";
-
-import { Conversation } from "@/types";
 import ConversationItem from "./ConversationItem";
+import { Conversation } from "@/types";
 
 interface UserConversationProps {
   conversations: Conversation[];
@@ -46,13 +44,9 @@ export default function UserConversations({
   return (
     <div className={"flex flex-col gap-2"}>
       {conversations.map((conversation, index) => (
-        <div
-          key={index}
-          onClick={handleConversationClick(conversation.id)}
-          className={"border-2 p-4"}
-        >
+        <div key={index} onClick={handleConversationClick(conversation.id)}>
           <ConversationItem
-            selectedConversation={conversation}
+            conversation={conversation}
             currentUserID={currentUserID}
           />
         </div>

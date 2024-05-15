@@ -1,21 +1,21 @@
+import getConversationPartnerID from "@/utils/messaging/message-utils";
+
 import { Conversation } from "@/types";
-import getConversationHeader from "@/utils/messaging/message-utils";
 
 interface ConversationItemProps {
-  selectedConversation: Conversation;
+  conversation: Conversation;
   currentUserID: string;
 }
 
 export default function ConversationItem({
-  selectedConversation,
+  conversation,
   currentUserID,
 }: ConversationItemProps) {
-  const header = getConversationHeader(selectedConversation, currentUserID);
+  const otherUserID = getConversationPartnerID(conversation, currentUserID);
 
   return (
-    <>
-      <div>{header}</div>
-      <div>{selectedConversation.last_message_id.message}</div>
-    </>
+    <div className={"border-2 p-4"}>
+      <div>{otherUserID}</div>
+    </div>
   );
 }
