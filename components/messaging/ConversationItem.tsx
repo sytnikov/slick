@@ -1,12 +1,10 @@
 "use client";
 
-import getConversationPartnerID from "@/utils/messaging/message-utils";
-
-import { Conversation, UserProfile } from "@/types";
-import { createClient } from "@/utils/supabase/client";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import useRealtime from "@/hooks/useRealtime";
+import { Conversation, UserProfile } from "@/types";
 
 interface ConversationItemProps {
   conversation: Conversation;
@@ -19,7 +17,6 @@ export default function ConversationItem({
 }: ConversationItemProps) {
   const [partner, setPartner] = useState<UserProfile>();
 
-  const router = useRouter();
   const { replace } = useRouter();
 
   useRealtime();
@@ -42,13 +39,17 @@ export default function ConversationItem({
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const isSelectedConversation = () => {
+    return searchParams.get("conversation_id") === conversation.id.toString();
+  };
+
   return (
     <div
-      className={"flex flex-col gap-2 bg-gray-200 p-4"}
+      className={`mb-2 mt-2 flex flex-col gap-2 p-4 ${isSelectedConversation() ? "bg-green-400" : "bg-gray-200"}`}
       onClick={handleConversationClick(conversation.id)}
     >
       <div>
-        {partner?.first_name} {partner?.surname}
+        {partner ? `${partner.first_name} ${partner.surname}` : "Loading..."}
       </div>
       <div>{conversation.last_message_id.message}</div>
     </div>

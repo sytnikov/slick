@@ -1,16 +1,16 @@
 import { redirect } from "next/navigation";
 
-import { NewMessageModal } from "@/components/messaging/NewMessageModal";
-import ChatWindow from "@/components/messaging/ChatWindow";
-import SendMessage from "@/components/messaging/SendMessage";
-import UserConversations from "@/components/messaging/UserConversations";
-import NewMessage from "@/components/messaging/NewMessageForm";
-
 import { getUser } from "@/server/user-authentication/actions";
 import {
   getConversationByID,
   getUserConversations,
 } from "@/server/messaging/actions";
+
+import { NewMessageModal } from "@/components/messaging/NewMessageModal";
+import ChatWindow from "@/components/messaging/ChatWindow";
+import SendMessage from "@/components/messaging/SendMessage";
+import UserConversations from "@/components/messaging/UserConversations";
+import NewConversation from "@/components/messaging/NewConversationForm";
 
 export default async function ShopInbox({
   searchParams,
@@ -42,7 +42,9 @@ export default async function ShopInbox({
           <h1 className={"text-2xl"}>Messages</h1>
         </div>
         <div>
-          <NewMessageModal children={<NewMessage userID={user.user_id} />} />
+          <NewMessageModal
+            children={<NewConversation userID={user.user_id} />}
+          />
           {conversations === null ? (
             <p>No conversations...</p>
           ) : (

@@ -12,7 +12,6 @@ export default async function ChatWindow({ conversationID }: ChatWindowProps) {
         "flex w-[50%] flex-col items-center justify-center border-2 p-8"
       }
     >
-      <h3>{conversationID}</h3>
       {messages.map((message: Message) => (
         <div key={message.id} className={"border-2 p-4"}>
           <p>{message.message}</p>

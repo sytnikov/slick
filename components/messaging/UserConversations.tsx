@@ -1,5 +1,6 @@
-import ConversationItem from "./ConversationItem";
 import { getUserProfileByID } from "@/server/user-profiles/actions";
+
+import ConversationItem from "./ConversationItem";
 
 import { Conversation } from "@/types";
 
@@ -13,7 +14,7 @@ export default async function UserConversations({
   currentUserID,
 }: UserConversationProps) {
   const getConversationPartner = (conversation: Conversation) => {
-    if (conversation.sender.id.toString() === currentUserID) {
+    if (conversation.sender.user_id.toString() === currentUserID) {
       return getUserProfileByID(conversation.receiver.user_id);
     } else {
       return getUserProfileByID(conversation.sender.user_id);
@@ -21,7 +22,7 @@ export default async function UserConversations({
   };
 
   return (
-    <div>
+    <>
       {conversations.map((conversation, index) => (
         <div key={index}>
           <ConversationItem
@@ -30,6 +31,6 @@ export default async function UserConversations({
           />
         </div>
       ))}
-    </div>
+    </>
   );
 }

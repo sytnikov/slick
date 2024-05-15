@@ -3,25 +3,6 @@
 import { Conversation, Message } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
-// get all messages
-
-export async function getUserMessages(userID: string): Promise<Message[]> {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("Messages")
-    .select(`*`)
-    .or(`sender.eq.${userID},receiver.eq.${userID}`);
-
-  if (error) {
-    console.error("Error fetching chats:", error);
-    return [];
-  }
-
-  const messages = data || [];
-
-  return messages;
-}
-
 // get all messages in a conversation
 
 export async function getConversationMessages(
@@ -81,8 +62,6 @@ export async function sendMessage(
     console.error("Error sending message:", error);
   }
 
-  // then update the conversation with the last message id
-
   const messageID = data?.[0].id;
   const { error: conversationError } = await supabase
     .from("Conversations")
@@ -113,4 +92,54 @@ export async function getConversationByID(
   }
 
   return data?.[0] || null;
+}
+
+// start a new conversation with a new user
+
+export async function startNewConversation(sender: string, formData: FormData) {
+  const supabase = createClient();
+
+  const message = formData.get("message") as string;
+  const receiver = formData.get("recipent") as string;
+
+  const conversation_id = Math.floor(Math.random() * 1000000);
+
+  // Step 1: Create a new conversation entry
+  const { data: conversationData, error: conversationError } = await supabase
+    .from("Conversations")
+    .insert([{ receiver, sender, last_message_id: null, id: conversation_id }])
+    .select(`*`);
+
+  if (conversationError) {
+    console.error("Error starting conversation:", conversationError);
+    return null;
+  }
+
+  const conversation = conversationData?.[0];
+
+  // Step 2: Create a new message entry and add the conversation ID to the conversation_id field
+  const { data: messageData, error: messageError } = await supabase
+    .from("Messages")
+    .insert([{ message, sender, receiver, conversation_id }])
+    .select(`*`);
+
+  if (messageError) {
+    console.error("Error sending message:", messageError);
+    return null;
+  }
+
+  const messageEntry = messageData?.[0];
+
+  // Step 3: Update the conversation entry with the last message ID
+  const { error: updateError } = await supabase
+    .from("Conversations")
+    .update({ last_message_id: messageEntry.id })
+    .match({ id: conversation_id });
+
+  if (updateError) {
+    console.error("Error updating conversation:", updateError);
+    return null;
+  }
+
+  return conversation;
 }

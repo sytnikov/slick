@@ -1,6 +1,5 @@
 "use server";
 
-import { Conversation } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
 export async function saveChangesMadeToUserProfile(
@@ -40,7 +39,7 @@ export async function getUserProfileAvatar(userID: number): Promise<string> {
   return `${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/User%20Avatars/${encodeURIComponent(user.avatar_url)}`;
 }
 
-export async function getUserProfileByID(userID: string) {
+export async function getUserProfileByID(userID: string): Promise<any> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("User Profiles")
@@ -50,6 +49,20 @@ export async function getUserProfileByID(userID: string) {
 
   if (error || !data) {
     console.error("Error fetching user profile:", error);
+    return null;
+  }
+
+  return data;
+}
+
+// return all user profiles
+
+export async function getAllUserProfiles() {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("User Profiles").select("*");
+
+  if (error) {
+    console.error("Error fetching user profiles:", error);
     return null;
   }
 
