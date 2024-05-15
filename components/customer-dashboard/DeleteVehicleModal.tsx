@@ -1,5 +1,3 @@
-"use client"
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,21 +9,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { CustomerVehicle } from "@/types";
 import { TrashIcon } from "lucide-react";
-import { SubmitButton } from "../buttons/SubmitButton";
-import { deleteVehicle } from "@/server/customer-vehicles/actions";
-import { toast } from "../ui/use-toast";
 
 type DeleteVehicleModalProps = {
-  vehicle: CustomerVehicle;
+  children: React.ReactNode;
 };
 
 export default function DeleteVehicleModal({
-  vehicle,
+  children,
 }: DeleteVehicleModalProps) {
-  
-
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -33,14 +25,18 @@ export default function DeleteVehicleModal({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure you want to delete the vehicle?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Are you sure you want to delete the vehicle?
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your vehicle record.
+            This action cannot be undone. This will permanently delete your
+            vehicle record.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Delete
+          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            {children}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

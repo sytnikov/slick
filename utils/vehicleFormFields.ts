@@ -1,4 +1,4 @@
-export const addVehicleFields = [
+export const vehicleFields = [
   {
     id: "make",
     name: "make",

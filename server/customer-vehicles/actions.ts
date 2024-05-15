@@ -1,6 +1,6 @@
 "use server";
 
-import { FormDataType } from "@/components/customer-dashboard/AddNewVehicleModalNoDialogForm";
+import { FormDataType } from "@/components/customer-dashboard/AddNewVehicleForm";
 import { CustomerVehicle } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
@@ -65,13 +65,12 @@ export async function addNewVehicle(formData: FormDataType, customerId: string) 
   return data
 }
 
-export async function updateVehicle(formData: FormData) {
-  const make = formData.get("make")
-  const model = formData.get("model")
-  const yearManufactured = formData.get("yearManufactured")
-  const description = formData.get("description")
-  const registrationNumber = formData.get("registrationNumber")
-  const vehicleId = formData.get("vehicle_id")
+export async function updateVehicle(formData: FormDataType, vehicleId: number) {
+  const make = formData.make
+  const model = formData.model
+  const yearManufactured = formData.yearManufactured
+  const registrationNumber = formData.registrationNumber
+  const description = formData.description
   
   const supabase = createClient()
   const { data, error } = await supabase
@@ -92,10 +91,8 @@ export async function updateVehicle(formData: FormData) {
   return data
 }
 
-export async function deleteVehicle(formData: FormData) {
-  const vehicleId = formData.get("vehicleId")
-  console.log('vehicleId:', vehicleId)
-  const supabase = await createClient();
+export async function deleteVehicle(vehicleId: number) {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from("Customer Vehicles")
     .delete()
@@ -104,6 +101,5 @@ export async function deleteVehicle(formData: FormData) {
   if (error) {
     throw new Error(error.message);
   }
-
   return data;
 }

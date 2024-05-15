@@ -7,9 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TrashIcon } from "lucide-react";
 import { CustomerVehicle } from "@/types";
 import UpdateVehicleModal from "./UpdateVehicleModal";
+import UpdateVehicleForm from "./UpdateVehicleForm";
+import DeleteVehicleModal from "./DeleteVehicleModal";
+import DeleteVehicle from "./DeleteVehicle";
 
 type VehiclesTableProps = {
   vehicles: CustomerVehicle[];
@@ -39,9 +41,12 @@ export default function VehiclesTable({ vehicles }: VehiclesTableProps) {
             <TableCell>{vehicle.description}</TableCell>
             <TableCell>
               <div className="flex gap-2">
-                <UpdateVehicleModal vehicle={vehicle}/>
-                
-                <TrashIcon size={20} strokeWidth={1.75}/>
+                <UpdateVehicleModal
+                  children={<UpdateVehicleForm vehicle={vehicle} />}
+                />
+                <DeleteVehicleModal
+                  children={<DeleteVehicle vehicleId={vehicle.id} />}
+                />
               </div>
             </TableCell>
           </TableRow>

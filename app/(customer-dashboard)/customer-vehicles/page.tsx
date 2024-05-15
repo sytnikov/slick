@@ -3,10 +3,9 @@ import { redirect } from "next/navigation";
 import { getCustomerVehicles } from "@/server/customer-vehicles/actions";
 import { getUser } from "@/server/user-authentication/actions";
 
-import { CustomerVehicle } from "@/types";
 import AddNewVehicleModal from "@/components/customer-dashboard/AddNewVehicleModal";
 import VehiclesTable from "@/components/customer-dashboard/VehiclesTable";
-import AddNewVehicleModalNoDialogForm from "@/components/customer-dashboard/AddNewVehicleModalNoDialogForm";
+import AddNewVehicleForm from "@/components/customer-dashboard/AddNewVehicleForm";
 
 export default async function CustomerVehicles() {
   const user = await getUser();
@@ -25,10 +24,11 @@ export default async function CustomerVehicles() {
     >
       <div className={"flex w-full flex-row items-start justify-between"}>
         <p className={"mb-6 animate-fadeInUp text-3xl font-bold"}>Vehicles</p>
-        <AddNewVehicleModal customerId={user.user_id} />
+        <AddNewVehicleModal
+          children={<AddNewVehicleForm customerId={user.user_id} />}
+        />
       </div>
       <VehiclesTable vehicles={customerVehicles} />
-      <AddNewVehicleModalNoDialogForm customerId={user.user_id}/>
     </div>
   );
 }

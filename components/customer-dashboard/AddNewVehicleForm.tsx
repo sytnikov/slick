@@ -8,21 +8,15 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addNewVehicle } from "@/server/customer-vehicles/actions";
-import { toast } from "../ui/use-toast";
-import { addVehicleFields } from "@/utils/vehicleFormFields";
-
-type AddNewVehicleModalProps = {
-  customerId: string;
-};
+import { vehicleFields } from "@/utils/vehicleFormFields";
+import { SubmitButton } from "../buttons/SubmitButton";
 
 const FormSchema = z.object({
   make: z.string().min(3, {
@@ -33,18 +27,22 @@ const FormSchema = z.object({
   }),
   yearManufactured: z.string().min(4).max(4),
   registrationNumber: z.string().min(7, {
-    message: "Registration number example: AAA-123."
+    message: "Registration number example: AAA-123.",
   }),
   description: z.string().max(150, {
-    message: "The description is too long."
-  })
+    message: "The description is too long.",
+  }),
 });
 
 export type FormDataType = z.infer<typeof FormSchema>;
 
-export default function AddNewVehicleModalNoDialogForm({
+type AddNewVehicleFormProps = {
+  customerId: string;
+};
+
+export default function AddNewVehicleForm({
   customerId,
-}: AddNewVehicleModalProps) {
+}: AddNewVehicleFormProps) {
   const form = useForm<FormDataType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -57,14 +55,7 @@ export default function AddNewVehicleModalNoDialogForm({
   });
 
   const handleAddNewVehicle = async (formData: FormDataType) => {
-    try {
-      addNewVehicle(formData, customerId);
-
-    }
-    catch (e) {
-
-    }
-    
+    await addNewVehicle(formData, customerId);
   };
 
   return (
@@ -73,7 +64,7 @@ export default function AddNewVehicleModalNoDialogForm({
         onSubmit={form.handleSubmit(handleAddNewVehicle)}
         className="space-y-6"
       >
-        {addVehicleFields.map((vehicle) => (
+        {vehicleFields.map((vehicle) => (
           <React.Fragment key={vehicle.id}>
             <FormField
               control={form.control}
@@ -96,8 +87,13 @@ export default function AddNewVehicleModalNoDialogForm({
             />
           </React.Fragment>
         ))}
-
-        <Button type="submit">Add vehicle</Button>
+        <SubmitButton
+          type="submit"
+          pendingText="Adding..."
+          className="mb-2 h-10 rounded-md text-sm bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+        >
+          Add vehicle
+        </SubmitButton>
       </form>
     </Form>
   );
