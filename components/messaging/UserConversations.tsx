@@ -1,8 +1,6 @@
-"use client";
-
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
 import ConversationItem from "./ConversationItem";
+import { getUserProfileByID } from "@/server/user-profiles/actions";
+
 import { Conversation } from "@/types";
 
 interface UserConversationProps {
@@ -10,44 +8,25 @@ interface UserConversationProps {
   currentUserID: string;
 }
 
-export default function UserConversations({
+export default async function UserConversations({
   conversations,
   currentUserID,
 }: UserConversationProps) {
-  const router = useRouter();
-  const { replace } = useRouter();
-
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const changes = createClient()
-    .channel("messages")
-    .on(
-      "postgres_changes",
-      {
-        schema: "public",
-        event: "*",
-        table: "Messages",
-      },
-      (payload) => {
-        router.refresh();
-      },
-    )
-    .subscribe();
-
-  const handleConversationClick = (conversationID: number) => () => {
-    const params = new URLSearchParams(searchParams);
-    params.set("conversation_id", conversationID.toString());
-    replace(`${pathname}?${params.toString()}`);
+  const getConversationPartner = (conversation: Conversation) => {
+    if (conversation.sender.id.toString() === currentUserID) {
+      return getUserProfileByID(conversation.receiver.user_id);
+    } else {
+      return getUserProfileByID(conversation.sender.user_id);
+    }
   };
 
   return (
-    <div className={"flex flex-col gap-2"}>
+    <div>
       {conversations.map((conversation, index) => (
-        <div key={index} onClick={handleConversationClick(conversation.id)}>
+        <div key={index}>
           <ConversationItem
             conversation={conversation}
-            currentUserID={currentUserID}
+            conversationPartner={getConversationPartner(conversation)}
           />
         </div>
       ))}
