@@ -16,14 +16,18 @@ export default async function BrowseSearch({ shops }: BrowseSearchProps) {
   const statusOptions = await getAllStatuses();
 
   return (
-    <div className={"rounded-xl2 m-auto flex w-full flex-col gap-2 p-4"}>
-      <div className={"flex w-full flex-col rounded-md bg-white p-4"}>
+    <div
+      className={
+        "rounded-xl2 m-auto flex w-full flex-col gap-2 rounded-md bg-gray-100 p-4"
+      }
+    >
+      <div className={"flex w-full flex-col p-4"}>
         <div
           className={"mb-4 flex w-full flex-row items-center justify-between"}
         >
-          <h3 className={"text-md font-bold"}>Browse shops</h3>
+          <h3 className={"text-xl font-bold "}>Browse shops</h3>
           <ClearFiltersButton
-            buttonVariant={"ghost"}
+            buttonVariant={"secondary"}
             buttonText={"Clear filters"}
           />
         </div>

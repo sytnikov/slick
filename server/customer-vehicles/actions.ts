@@ -55,15 +55,17 @@ export async function addNewVehicle(formData: FormDataType, customerId: string) 
       year_manufactured: yearManufactured,
       description: description,
       registration_number: registrationNumber,
-      associated_user: customerId
-    }])
-  
+      associated_user: customerId,
+    },
+  ]);
+
   if (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 
-  return data
+  return data;
 }
+
 
 export async function updateVehicle(formData: FormDataType, vehicleId: number) {
   const make = formData.make
@@ -82,10 +84,10 @@ export async function updateVehicle(formData: FormDataType, vehicleId: number) {
       description: description,
       registration_number: registrationNumber,
     })
-    .eq("id", vehicleId)
-  
+    .eq("id", vehicleId);
+
   if (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 
   return data
@@ -101,5 +103,6 @@ export async function deleteVehicle(vehicleId: number) {
   if (error) {
     throw new Error(error.message);
   }
+  
   return data;
 }

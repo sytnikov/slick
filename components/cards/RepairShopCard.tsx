@@ -1,10 +1,13 @@
+import Link from "next/link";
+import Image from "next/image";
+
 import { getShopBannerImageUrl } from "@/server/repair-shops/actions";
 import { getShopServices } from "@/server/shop-services/actions";
 
-import Image from "next/image";
+import { useGetStorageAssets } from "@/hooks/useGetStorageAssets";
+
 import CardStatusBadge from "./CardStatusBadge";
 import CardServiceList from "./CardServiceList";
-import Link from "next/link";
 
 interface RepairShopCardProps {
   shopID: number;
@@ -24,16 +27,23 @@ export default async function RepairShopCard({
   const services = await getShopServices(shopID);
   const imageSource = await getShopBannerImageUrl(shopID);
 
+  const { getSpecificWebsiteAsset } = useGetStorageAssets();
+
+  const placeholderImage = getSpecificWebsiteAsset(
+    "Browse",
+    "placeholder.jpeg",
+  );
+
   return (
     <Link href={`/repair-shops/${shopID}`}>
       <div className="card mr-6 h-full overflow-hidden rounded-xl border-2 border-gray-100 bg-white">
         <div className={"relative"}>
           <Image
-            src={imageSource}
+            src={imageSource || placeholderImage}
             alt="Shop image"
             width={800}
             height={500}
-            className={"h-[200px] object-cover"}
+            className={"h-[200px] w-full object-cover"}
           />
           <div className={"absolute right-5 top-5"}>
             <CardStatusBadge status={status as any} />

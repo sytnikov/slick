@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { Button } from "../ui/button";
 import { BellIcon } from "@radix-ui/react-icons";
 
@@ -17,13 +15,6 @@ export default function DashboardUserBar({ user }: DashboardUserBarProps) {
       }
     >
       <div className={"flex flex-row items-center gap-4"}>
-        <Image
-          src="https:/placehold.co/30"
-          alt="Placeholder"
-          width={50}
-          height={50}
-          className={"rounded-sm"}
-        />
         Welcome back, {user.first_name} {user.surname} 👋
       </div>
 

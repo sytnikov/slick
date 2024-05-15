@@ -1,17 +1,33 @@
-import { getUserChats, userChats } from "@/server/messaging/actions";
-import { getUser } from "@/server/user-authentication/actions";
-import { getUserProfileByID } from "@/server/user-profiles/actions";
 import { redirect } from "next/navigation";
 
-export default async function ShopInbox() {
+import { getUser } from "@/server/user-authentication/actions";
+import {
+  getConversationByID,
+  getUserConversations,
+} from "@/server/messaging/actions";
+
+import { NewMessageModal } from "@/components/messaging/NewMessageModal";
+import ChatWindow from "@/components/messaging/ChatWindow";
+import SendMessage from "@/components/messaging/SendMessage";
+import UserConversations from "@/components/messaging/UserConversations";
+import NewConversation from "@/components/messaging/NewConversationForm";
+
+export default async function ShopInbox({
+  searchParams,
+}: {
+  searchParams: { conversation_id: string };
+}) {
   const user = await getUser();
 
   if (user === null) {
     return redirect("/login");
   }
 
-  const messages = await userChats(user.user_id);
-  const userProfile = await getUserProfileByID(user.user_id);
+  const conversations = await getUserConversations(user.user_id);
+
+  const selectedConversation = await getConversationByID(
+    searchParams.conversation_id,
+  );
 
   return (
     <div
@@ -25,16 +41,35 @@ export default async function ShopInbox() {
         >
           <h1 className={"text-2xl"}>Messages</h1>
         </div>
-        <div></div>
+        <div>
+          <NewMessageModal
+            children={<NewConversation userID={user.user_id} />}
+          />
+          {conversations === null ? (
+            <p>No conversations...</p>
+          ) : (
+            <UserConversations
+              conversations={conversations}
+              currentUserID={user.user_id}
+            />
+          )}
+        </div>
       </div>
       <div
-        className={"flex h-screen w-full flex-col items-center justify-start"}
+        className={"flex h-screen w-full flex-col items-start justify-start"}
       >
         <div
           className={
             "flex h-[10%] w-full flex-col items-start justify-center bg-white pl-8"
           }
-        ></div>
+        >
+          Chat window
+        </div>
+        <ChatWindow conversationID={searchParams.conversation_id} />
+        <SendMessage
+          sender={user.user_id}
+          selectedConversation={selectedConversation}
+        />
       </div>
     </div>
   );

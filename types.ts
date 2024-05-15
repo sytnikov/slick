@@ -81,6 +81,23 @@ export interface CustomerReviewWithDetails
 export interface Message {
   id: number;
   timestamp: string;
-  sent_from: string;
+  sender: string;
+  receiver: string;
   message: string;
+  conversation_id: number;
+}
+
+export interface Conversation {
+  id: number;
+  created_at: string;
+  sender: UserProfile;
+  receiver: UserProfile;
+  last_message_id: Message;
+}
+
+// visual compoent props, for landing page, etc...
+
+export interface HeroSectionProps {
+  title: string;
+  description: string;
 }

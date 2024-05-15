@@ -24,10 +24,9 @@ export default async function RepairShopPage({
     <PageLayout>
       <main className="flex w-full max-w-[70%] flex-1 flex-col items-center">
         <RepairShopHeader
-          id={shop.id}
+          shopID={shop.id}
           shopName={shop.name}
           shopCity={shop.city}
-          shopStreetAddress={shop.street_address}
         />
         <div
           className={
@@ -39,7 +38,7 @@ export default async function RepairShopPage({
             <p className={"text-xl opacity-75"}>{shop.description}</p>
           </div>
         </div>
-        <div className={"w-full border-b-2 border-gray-200"} />
+        <div className={"borxpder-b-2 w-full border-gray-200"} />
         <RepairShopServices shopServices={services} repairShop={shop} />
         <RepairShopReview shopID={shop.id} />
         <RepairShopLocationMap shop={shop} />

@@ -1,25 +1,33 @@
-import Link from "next/link";
-
 import PageLayout from "@/components/layouts/PageLayout";
-import { Button } from "@/components/ui/button";
+import Feature from "@/components/marketing/Feature";
+import HeroVideoBackgound from "@/components/marketing/HeroVideoBackground";
 
 export default async function Index() {
   return (
     <PageLayout>
-      <div className="flex w-full flex-1 flex-col items-center gap-20">
-        <div className="flex max-w-4xl flex-1 animate-fadeInUp flex-col gap-20 px-3">
-          <main className="flex flex-1 flex-col justify-center">
-            <h1 className="mb-4 text-4xl font-bold">
-              Slick - a better way to fix your car
-            </h1>
-            <div className="flex items-center justify-center gap-4">
-              <Button asChild variant="default" size="default">
-                <Link href="/browse">Browse Shops</Link>
-              </Button>
-            </div>
-          </main>
-        </div>
-      </div>
+      <HeroVideoBackgound
+        title={"Slick - a better way to look after your car!"}
+        description={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse varius enim in eros elementum tristique. Duis cursus,
+        mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam
+        libero vitae erat.`}
+      />
+      <Feature
+        tagline={"A new era of car repair"}
+        heading={"Slick - a better way to look after your car!"}
+        description={
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat."
+        }
+        buttons={[
+          { title: "Log In", variant: "secondary", size: "default", href: "/" },
+          {
+            title: "Sign Up",
+            variant: "default",
+            size: "default",
+            href: "/sign-up",
+          },
+        ]}
+      />
     </PageLayout>
   );
 }

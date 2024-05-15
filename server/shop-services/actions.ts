@@ -113,5 +113,6 @@ export async function addNewService(formData: FormData) {
     throw new Error(error.message);
   }
 
+  console.log("new service added: ", data);
   return data;
 }

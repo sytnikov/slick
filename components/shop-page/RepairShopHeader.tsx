@@ -3,64 +3,54 @@ import Image from "next/image";
 
 import { getShopBannerImageUrl } from "@/server/repair-shops/actions";
 
-import { HeartIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import AddToFaveriotes from "../buttons/AddToFavorites";
 
 interface RepairShopHeaderProps {
-  id: number;
+  shopID: number;
   shopName: string;
   shopCity: string;
-  shopStreetAddress: string;
 }
 export default async function RepairShopHeader({
-  id,
+  shopID,
   shopName,
   shopCity,
-  shopStreetAddress,
 }: RepairShopHeaderProps) {
-  const imageSource = await getShopBannerImageUrl(id);
+  const imageSource = await getShopBannerImageUrl(shopID);
 
   return (
-    <>
+    <div
+      className={
+        "relative mt-4 flex min-h-[50vh] w-full flex-col items-center justify-center overflow-hidden rounded-xl border-2"
+      }
+    >
+      <Image
+        src={imageSource}
+        alt={shopName}
+        width={800}
+        height={400}
+        className={"absolute left-0 top-0 h-full w-full object-cover"}
+      />
       <div
         className={
-          "relative mt-4 flex min-h-[50vh] w-full flex-col items-center justify-center overflow-hidden rounded-xl border-2"
+          "absolute bottom-0 z-10 flex h-[20%] w-[95%] flex-row items-center justify-between"
         }
       >
-        <Image
-          src={imageSource}
-          alt={shopName}
-          width={800}
-          height={400}
-          className={"absolute left-0 top-0 h-full w-full object-cover"}
-        />
-        <div
-          className={
-            "absolute bottom-0 z-10 flex h-[20%] w-[95%] flex-row items-center justify-between"
-          }
-        >
-          <div className={"flex flex-col gap-2"}>
-            <p className={"text-white"}>
-              {shopName} - {shopCity}
-            </p>
-            <h1 className={"text-5xl text-white"}>{shopName}</h1>
-          </div>
-          <Button variant={"secondary"}>
-            <div className={"mr-2"}>
-              <HeartIcon />
-            </div>
-            Save to favorites
-          </Button>
+        <div className={"flex flex-col gap-2"}>
+          <p className={"text-white"}>
+            {shopName} - {shopCity}
+          </p>
+          <h1 className={"text-5xl text-white"}>{shopName}</h1>
         </div>
-
-        <div
-          className={"absolute bottom-0 z-0 h-full w-full p-4 text-white"}
-          style={{
-            background:
-              "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2))",
-          }}
-        />
+        <AddToFaveriotes shopID={shopID} />
       </div>
-    </>
+
+      <div
+        className={"absolute bottom-0 z-0 h-full w-full p-4 text-white"}
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2))",
+        }}
+      />
+    </div>
   );
 }
