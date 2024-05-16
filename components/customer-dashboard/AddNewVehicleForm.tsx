@@ -38,10 +38,12 @@ export type FormDataType = z.infer<typeof FormSchema>;
 
 type AddNewVehicleFormProps = {
   customerId: string;
+  onSuccess: () => void;
 };
 
 export default function AddNewVehicleForm({
   customerId,
+  onSuccess,
 }: AddNewVehicleFormProps) {
   const form = useForm<FormDataType>({
     resolver: zodResolver(FormSchema),
@@ -55,7 +57,10 @@ export default function AddNewVehicleForm({
   });
 
   const handleAddNewVehicle = async (formData: FormDataType) => {
-    await addNewVehicle(formData, customerId);
+    const response = await addNewVehicle(formData, customerId);
+    if (response) {
+      onSuccess();
+    }
   };
 
   return (
@@ -90,7 +95,7 @@ export default function AddNewVehicleForm({
         <SubmitButton
           type="submit"
           pendingText="Adding..."
-          className="mb-2 h-10 rounded-md text-sm bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+          className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
         >
           Add vehicle
         </SubmitButton>

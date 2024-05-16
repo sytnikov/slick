@@ -39,10 +39,12 @@ export type FormDataType = z.infer<typeof FormSchema>;
 
 type UpdateVehicleFormProps = {
   vehicle: CustomerVehicle;
+  onSuccess: () => void;
 };
 
 export default function UpdateVehicleForm({
   vehicle,
+  onSuccess,
 }: UpdateVehicleFormProps) {
   const form = useForm<FormDataType>({
     resolver: zodResolver(FormSchema),
@@ -56,7 +58,10 @@ export default function UpdateVehicleForm({
   });
 
   const handleUpdateVehicle = async (formData: FormDataType) => {
-    await updateVehicle(formData, vehicle.id);
+    const response = await updateVehicle(formData, vehicle.id);
+    if (response) {
+      onSuccess();
+    }
   };
 
   return (
@@ -91,7 +96,7 @@ export default function UpdateVehicleForm({
         <SubmitButton
           type="submit"
           pendingText="Updating..."
-          className="mb-2 h-10 rounded-md text-sm bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+          className="mb-2 h-10 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
         >
           Update vehicle
         </SubmitButton>

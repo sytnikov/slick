@@ -8,7 +8,7 @@ type DeleteVehicleProps = {
 export default function DeleteVehicle({ vehicleId }: DeleteVehicleProps) {
   const handleDeleteVehicle = async () => {
     "use server";
-    await deleteVehicle(vehicleId);
+    const response = await deleteVehicle(vehicleId);
   };
 
   return (

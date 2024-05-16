@@ -1,3 +1,8 @@
+"use client";
+
+import React from "react";
+import { useState } from "react";
+
 import {
   Dialog,
   DialogContent,
@@ -15,10 +20,14 @@ type AddNewVehicleModalProps = {
 };
 
 export default function AddNewVehicleModal({
-  children
+  children,
 }: AddNewVehicleModalProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleSuccess = () => {
+    setIsOpen(false);
+  };
   return (
-      <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Add vehicle</Button>
       </DialogTrigger>
@@ -29,7 +38,9 @@ export default function AddNewVehicleModal({
             Provide the details of the new vehicle below.
           </DialogDescription>
         </DialogHeader>
-        {children}
+        {React.cloneElement(children as React.ReactElement<any>, {
+          onSuccess: handleSuccess,
+        })}
       </DialogContent>
     </Dialog>
   );
