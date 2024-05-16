@@ -17,11 +17,7 @@ export default async function CustomerVehicles() {
   const customerVehicles = await getCustomerVehicles(user.user_id);
 
   return (
-    <div
-      className={
-        "flex h-full min-h-screen w-full flex-col items-start justify-start bg-slate-100 p-12"
-      }
-    >
+    <>
       <div className={"flex w-full flex-row items-start justify-between"}>
         <p className={"mb-6 animate-fadeInUp text-3xl font-bold"}>Vehicles</p>
         <AddNewVehicleModal
@@ -29,6 +25,6 @@ export default async function CustomerVehicles() {
         />
       </div>
       <VehiclesTable vehicles={customerVehicles} />
-    </div>
+    </>
   );
 }

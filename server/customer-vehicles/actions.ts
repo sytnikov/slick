@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { FormDataType } from "@/components/customer-dashboard/AddNewVehicleForm";
 import { CustomerVehicle } from "@/types";
 import { createClient } from "@/utils/supabase/client";
@@ -63,9 +65,10 @@ export async function addNewVehicle(formData: FormDataType, customerId: string) 
     throw new Error(error.message);
   }
 
+  revalidatePath("/customer-vehicles")
+
   return data;
 }
-
 
 export async function updateVehicle(formData: FormDataType, vehicleId: number) {
   const make = formData.make
@@ -90,6 +93,8 @@ export async function updateVehicle(formData: FormDataType, vehicleId: number) {
     throw new Error(error.message);
   }
 
+  revalidatePath("/customer-vehicles")
+
   return data
 }
 
@@ -103,6 +108,8 @@ export async function deleteVehicle(vehicleId: number) {
   if (error) {
     throw new Error(error.message);
   }
+
+  revalidatePath("/customer-vehicles")
   
   return data;
 }

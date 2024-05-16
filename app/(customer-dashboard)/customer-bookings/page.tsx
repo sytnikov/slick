@@ -15,9 +15,7 @@ export default async function CustomerBookings() {
   const customerBookings = await getCustomerBookingsWithDetails(user.user_id);
 
   return (
-    <div
-      className={"flex h-full w-full flex-col items-start justify-start p-12"}
-    >
+    <>
       <div className={"flex w-full flex-row justify-between"}>
         <p className={"mb-6 animate-fadeInUp text-3xl font-bold"}>Bookings</p>
       </div>
@@ -30,6 +28,6 @@ export default async function CustomerBookings() {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
