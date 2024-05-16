@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { useGetStorageAssets } from "@/hooks/useGetStorageAssets";
+
 import useRealtime from "@/hooks/useRealtime";
 import { Conversation, UserProfile } from "@/types";
 
@@ -18,6 +20,7 @@ export default function ConversationItem({
   const [partner, setPartner] = useState<UserProfile>();
 
   const { replace } = useRouter();
+  const { getUserProfileImage } = useGetStorageAssets();
 
   useRealtime();
 
@@ -43,15 +46,26 @@ export default function ConversationItem({
     return searchParams.get("conversation_id") === conversation.id.toString();
   };
 
+  const profileImage = getUserProfileImage(partner?.avatar_url);
+
   return (
     <div
-      className={`mb-2 mt-2 flex flex-col gap-2 p-4 ${isSelectedConversation() ? "bg-green-400" : "bg-gray-200"}`}
+      className={`flex flex-row gap-2 p-4 ${isSelectedConversation() ? "bg-gray-200" : "bg-white"} `}
       onClick={handleConversationClick(conversation.id)}
     >
-      <div>
-        {partner ? `${partner.first_name} ${partner.surname}` : "Loading..."}
+      <img
+        src={profileImage}
+        alt={"Profile Picture"}
+        className={"h-12 w-12 rounded-full object-cover"}
+      />
+      <div className={"flex w-full flex-col"}>
+        <div className={"mb-2 font-semibold"}>
+          {partner ? `${partner.first_name} ${partner.surname}` : "Loading..."}
+        </div>
+        <div className={"font-light opacity-75"}>
+          {conversation.last_message_id.message.substring(0, 45) + "..."}
+        </div>
       </div>
-      <div>{conversation.last_message_id.message}</div>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export async function getConversationMessages(
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Messages")
-    .select(`*`)
+    .select(`*, receiver(*), sender(*)`)
     .eq("conversation_id", conversationID);
 
   if (error) {

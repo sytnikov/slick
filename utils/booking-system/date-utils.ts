@@ -11,12 +11,24 @@ export const daysOfWeek = [
   "Saturday",
 ];
 
+// fornmat timestamp to day of the week, day of the month and month, ie. Monday, 15th March
+
 export function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
+  });
+}
+
+// format a timestamp to a time string, ie. Monday, 15.3.2024 12:00
+
+export function formatTimeStampToTime(timestamp: string) {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 

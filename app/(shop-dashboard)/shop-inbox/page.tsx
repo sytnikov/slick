@@ -65,7 +65,10 @@ export default async function ShopInbox({
         >
           Chat window
         </div>
-        <ChatWindow conversationID={searchParams.conversation_id} />
+        <ChatWindow
+          conversationID={searchParams.conversation_id}
+          currentUserID={user.user_id}
+        />
         <SendMessage
           sender={user.user_id}
           selectedConversation={selectedConversation}

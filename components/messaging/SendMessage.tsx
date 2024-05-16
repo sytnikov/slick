@@ -1,6 +1,7 @@
 import { sendMessage } from "@/server/messaging/actions";
 import { Button } from "../ui/button";
 import { Conversation } from "@/types";
+import { SendIcon } from "lucide-react";
 
 interface SendMessageProps {
   sender: string;
@@ -23,16 +24,15 @@ export default async function SendMessage({
   };
 
   return (
-    <form className={"flex flex-col justify-start border-2 p-12"}>
-      <label htmlFor={"message"}>Message</label>
-      <input
-        type="text"
+    <form className={"mb-8 flex w-full flex-row items-end justify-start gap-4"}>
+      <textarea
         name={"message"}
         title={"message"}
-        className={"mb-4"}
+        placeholder={"Type your message here..."}
+        className={"h-16 w-full rounded-lg border-2 p-4 text-lg"}
       />
-      <Button type="submit" formAction={sendUserMessage}>
-        Send message
+      <Button type="submit" formAction={sendUserMessage} className={"gap-4"}>
+        <SendIcon size={24} /> Send
       </Button>
     </form>
   );
