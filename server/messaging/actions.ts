@@ -85,11 +85,14 @@ export async function sendMessage(
   return data;
 }
 
-// get single conversation by ID
-
 export async function getConversationByID(
   conversationID: string,
 ): Promise<Conversation | null> {
+  if (!conversationID) {
+    console.error("Error: conversationID is undefined");
+    return null;
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("Conversations")

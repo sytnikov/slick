@@ -1,10 +1,10 @@
 type Status = "Slow" | "Normal" | "Busy";
 
-interface CardBadgeProps {
+interface ShopStatusBadgeProps {
   status: Status;
 }
 
-export default function CardStatusBadge({ status }: CardBadgeProps) {
+export default function ShopStatusBadge({ status }: ShopStatusBadgeProps) {
   const statusColors: Record<Status, string> = {
     Slow: "bg-gray-100",
     Normal: "bg-gray-100",

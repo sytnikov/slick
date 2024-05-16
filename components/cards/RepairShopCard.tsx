@@ -6,7 +6,7 @@ import { getShopServices } from "@/server/shop-services/actions";
 
 import { useGetStorageAssets } from "@/hooks/useGetStorageAssets";
 
-import CardStatusBadge from "./CardStatusBadge";
+import ShopStatusBadge from "./ShopStatusBadge";
 import CardServiceList from "./CardServiceList";
 
 interface RepairShopCardProps {
@@ -46,7 +46,7 @@ export default async function RepairShopCard({
             className={"h-[200px] w-full object-cover"}
           />
           <div className={"absolute right-5 top-5"}>
-            <CardStatusBadge status={status as any} />
+            <ShopStatusBadge status={status as any} />
           </div>
         </div>
         <div className="h-full p-4">

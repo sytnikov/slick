@@ -50,7 +50,7 @@ export default function ConversationItem({
 
   return (
     <div
-      className={`flex flex-row gap-2 p-4 ${isSelectedConversation() ? "bg-gray-200" : "bg-white"} `}
+      className={`flex flex-row gap-2 p-4 ${isSelectedConversation() ? "bg-gray-200" : "bg-white"} border-b-2 border-t-2 border-gray-100`}
       onClick={handleConversationClick(conversation.id)}
     >
       <img

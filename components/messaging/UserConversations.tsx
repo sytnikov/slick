@@ -22,7 +22,7 @@ export default async function UserConversations({
   };
 
   return (
-    <div className={"mt-4 flex h-full flex-col gap-3 overflow-auto"}>
+    <div className={"flex flex-col gap-2"}>
       {conversations.map((conversation, index) => (
         <div key={index}>
           <ConversationItem

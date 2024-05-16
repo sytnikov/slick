@@ -41,38 +41,28 @@ export default async function ShopInbox({
     <div
       className={"flex min-h-screen w-screen flex-row items-center bg-gray-100"}
     >
-      <div className={"h-screen w-[20%] border-l-2 border-r-2 border-gray-200"}>
-        <div
-          className={
-            "flex h-[10%] w-full flex-row items-center justify-start bg-white pl-8"
-          }
-        >
-          <h1 className={"text-2xl"}>Messages</h1>
+      <div
+        className={
+          "h-screen w-[25%] border-l-2 border-r-2 border-gray-200 bg-white"
+        }
+      >
+        <div className={"flex h-[90%] flex-col overflow-auto pt-8"}>
+          <div>
+            {conversations === null ? (
+              <p>No conversations...</p>
+            ) : (
+              <UserConversations
+                conversations={conversations}
+                currentUserID={user.user_id}
+              />
+            )}
+          </div>
         </div>
-        <div>
-          <NewMessageModal
-            children={<NewConversation userID={user.user_id} />}
-          />
-          {conversations === null ? (
-            <p>No conversations...</p>
-          ) : (
-            <UserConversations
-              conversations={conversations}
-              currentUserID={user.user_id}
-            />
-          )}
-        </div>
+        <NewMessageModal children={<NewConversation userID={user.user_id} />} />
       </div>
       <div
         className={"flex h-screen w-full flex-col items-start justify-start"}
       >
-        <div
-          className={
-            "flex h-[10%] w-full flex-col items-start justify-center bg-white pl-8"
-          }
-        >
-          Chat window
-        </div>
         <ChatWindow
           conversationID={searchParams.conversation_id}
           currentUserID={user.user_id}

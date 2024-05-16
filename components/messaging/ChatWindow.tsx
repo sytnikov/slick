@@ -23,17 +23,19 @@ export default async function ChatWindow({
   return (
     <div
       className={
-        "flex h-full w-full flex-col items-center justify-end gap-4 p-8"
+        "flex h-full max-h-full w-full flex-grow flex-col-reverse items-center overflow-auto p-8"
       }
     >
-      {messages.map((message: Message) => (
-        <div key={message.id} className={"w-full"}>
-          <ChatBubble
-            message={message}
-            messageSender={getMessageSender(message)}
-          />
-        </div>
-      ))}
+      <div className={"flex w-full flex-col items-center"}>
+        {messages.map((message: Message) => (
+          <div key={message.id} className={"w-full"}>
+            <ChatBubble
+              message={message}
+              messageSender={getMessageSender(message)}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
