@@ -1,5 +1,6 @@
 "use server";
 
+import { FormDataType } from "@/components/customer-dashboard/AddNewVehicleForm";
 import { CustomerVehicle } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 
@@ -38,16 +39,17 @@ export async function getCustomerVehicleById(
   return data;
 }
 
-export async function addNewVehicle(formData: FormData, customerId: string) {
-  const make = formData.get("make");
-  const model = formData.get("model");
-  const yearManufactured = formData.get("yearManufactured");
-  const description = formData.get("description");
-  const registrationNumber = formData.get("registrationNumber");
-
-  const supabase = createClient();
-  const { data, error } = await supabase.from("Customer Vehicles").insert([
-    {
+export async function addNewVehicle(formData: FormDataType, customerId: string) {
+  const make = formData.make
+  const model = formData.model
+  const yearManufactured = formData.yearManufactured
+  const registrationNumber = formData.registrationNumber
+  const description = formData.description
+  
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from("Customer Vehicles")
+    .insert([{
       make: make,
       model: model,
       year_manufactured: yearManufactured,
@@ -61,20 +63,18 @@ export async function addNewVehicle(formData: FormData, customerId: string) {
     throw new Error(error.message);
   }
 
-  console.log(data);
-
   return data;
 }
 
-export async function updateVehicle(formData: FormData) {
-  const make = formData.get("make");
-  const model = formData.get("model");
-  const yearManufactured = formData.get("yearManufactured");
-  const description = formData.get("description");
-  const registrationNumber = formData.get("registrationNumber");
-  const vehicleId = formData.get("vehicle_id");
 
-  const supabase = createClient();
+export async function updateVehicle(formData: FormDataType, vehicleId: number) {
+  const make = formData.make
+  const model = formData.model
+  const yearManufactured = formData.yearManufactured
+  const registrationNumber = formData.registrationNumber
+  const description = formData.description
+  
+  const supabase = createClient()
   const { data, error } = await supabase
     .from("Customer Vehicles")
     .update({
@@ -90,5 +90,19 @@ export async function updateVehicle(formData: FormData) {
     throw new Error(error.message);
   }
 
+  return data
+}
+
+export async function deleteVehicle(vehicleId: number) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("Customer Vehicles")
+    .delete()
+    .eq("id", vehicleId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  
   return data;
 }
