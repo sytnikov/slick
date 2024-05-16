@@ -3,42 +3,69 @@ import Image from "next/image";
 import { useGetStorageAssets } from "@/hooks/useGetStorageAssets";
 import { formatTimeStampToTime } from "@/utils/booking-system/date-utils";
 
-import { Message } from "@/types";
+import { Message, MessageSender } from "@/types";
 
 interface ChatBubbleProps {
   message: Message;
-  currentUserID: string;
+  messageSender: MessageSender;
 }
-export default function ChatBubble({
+
+interface MessageContentProps {
+  message: string;
+  timestamp: string;
+  senderType: MessageSender["type"];
+  senderInfo: string;
+}
+
+function MessageContent({
   message,
-  currentUserID,
-}: ChatBubbleProps) {
-  console.log(message);
-  const { getUserProfileImage } = useGetStorageAssets();
-  const profileImage = getUserProfileImage(message.sender.avatar_url);
+  timestamp,
+  senderType,
+  senderInfo,
+}: MessageContentProps) {
+  const textColor =
+    senderType === "currentUser" ? "text-white" : "text-gray-900";
 
   return (
-    <div className="flex items-start gap-2.5 rounded-md border-2 border-green-300">
+    <div
+      className={`leading-1.5 flex w-full max-w-[320px] flex-col rounded-e-xl rounded-es-xl border-2 border-white ${senderType === "currentUser" ? "bg-green-500" : "bg-gray-200"} p-4`}
+    >
+      <div
+        className={`flex items-center space-x-2 rtl:space-x-reverse ${textColor}`}
+      >
+        <span className="text-sm font-semibold">{senderInfo}</span>
+        <span className="text-sm font-normal">{timestamp}</span>
+      </div>
+      <p className={`py-2.5 text-sm font-normal ${textColor}`}>{message}</p>
+    </div>
+  );
+}
+
+export default function ChatBubble({
+  message,
+  messageSender,
+}: ChatBubbleProps) {
+  const { getUserProfileImage } = useGetStorageAssets();
+  const profileImage = getUserProfileImage(message.sender.avatar_url);
+  const senderInfo = `${messageSender.userProfile.first_name} ${messageSender.userProfile.surname}`;
+
+  return (
+    <div
+      className={`flex items-start gap-2.5 ${messageSender.type === "currentUser" ? "justify-end" : "justify-start"}`}
+    >
       <Image
         className="h-8 w-8 rounded-full"
-        src="/docs/images/people/profile-picture-3.jpg"
+        src={profileImage}
         alt="Jese image"
         width={32}
         height={32}
       />
-      <div className="leading-1.5 flex w-full max-w-[320px] flex-col rounded-e-xl rounded-es-xl border-gray-200 bg-gray-100 p-4 dark:bg-gray-700">
-        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-          <span className="text-sm font-semibold text-gray-900 dark:text-white">
-            Bonnie Green
-          </span>
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-            {formatTimeStampToTime(message.created_at)}
-          </span>
-        </div>
-        <p className="py-2.5 text-sm font-normal text-gray-900 dark:text-white">
-          {message.message}
-        </p>
-      </div>
+      <MessageContent
+        message={message.message}
+        timestamp={formatTimeStampToTime(message.created_at)}
+        senderType={messageSender.type}
+        senderInfo={senderInfo}
+      />
     </div>
   );
 }

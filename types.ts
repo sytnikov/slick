@@ -87,6 +87,11 @@ export interface Message {
   conversation_id: number;
 }
 
+export interface MessageSender {
+  userProfile: UserProfile;
+  type: "currentUser" | "otherUser";
+}
+
 export interface Conversation {
   id: number;
   created_at: string;

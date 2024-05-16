@@ -1,24 +1,40 @@
 import { sendMessage } from "@/server/messaging/actions";
+
 import { Button } from "../ui/button";
-import { Conversation } from "@/types";
 import { SendIcon } from "lucide-react";
 
+import { Conversation } from "@/types";
+
 interface SendMessageProps {
-  sender: string;
+  currentUserID: string;
   selectedConversation: Conversation | null;
 }
 export default async function SendMessage({
   selectedConversation,
-  sender,
+  currentUserID,
 }: SendMessageProps) {
-  const receiver = selectedConversation?.receiver;
+  const getMessageReciever = (
+    selectedConversation: Conversation | null,
+  ): string | null => {
+    if (!selectedConversation) {
+      return null;
+    }
+
+    if (selectedConversation.sender.user_id.toString() === currentUserID) {
+      return selectedConversation.receiver.user_id;
+    } else {
+      return selectedConversation.sender.user_id;
+    }
+  };
+
+  const receiver = getMessageReciever(selectedConversation);
 
   const sendUserMessage = async (formData: FormData) => {
     "use server";
     await sendMessage(
       formData,
-      sender,
-      receiver?.user_id,
+      currentUserID,
+      receiver,
       selectedConversation?.id,
     );
   };

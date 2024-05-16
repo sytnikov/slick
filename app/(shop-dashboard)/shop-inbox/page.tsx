@@ -29,6 +29,14 @@ export default async function ShopInbox({
     searchParams.conversation_id,
   );
 
+  if (
+    conversations &&
+    conversations.length >= 1 &&
+    searchParams.conversation_id === undefined
+  ) {
+    return redirect(`/shop-inbox?conversation_id=${conversations[0].id}`);
+  }
+
   return (
     <div
       className={"flex min-h-screen w-screen flex-row items-center bg-gray-100"}
@@ -70,7 +78,7 @@ export default async function ShopInbox({
           currentUserID={user.user_id}
         />
         <SendMessage
-          sender={user.user_id}
+          currentUserID={user.user_id}
           selectedConversation={selectedConversation}
         />
       </div>
