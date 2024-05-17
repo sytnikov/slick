@@ -19,13 +19,13 @@ export default async function CustomerVehicles() {
 
   return (
     <>
-      <div className={"flex w-full flex-row items-start justify-between"}>
-        <p className={"mb-6 text-3xl font-bold"}>Vehicles</p>
-        <AddNewVehicleModal
-          children={<AddNewVehicleForm customerId={user.user_id} />}
-        />
+      <div className={"w-full rounded-md bg-white p-6"}>
+        <div className={"flex w-full flex-row items-start justify-between"}>
+          <p className={"mb-6 text-3xl font-bold"}>Vehicles</p>
+          <AddNewVehicleModal customerId={user.user_id} />
+        </div>
+        <VehiclesTable vehicles={customerVehicles} />
       </div>
-      <VehiclesTable vehicles={customerVehicles} />
     </>
   );
 }

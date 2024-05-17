@@ -13,13 +13,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
+import { CustomerVehicle } from "@/types";
+import UpdateVehicleForm from "./UpdateVehicleForm";
 
 type UpdateVehicleModalProps = {
-  children: React.ReactNode;
+  vehicle: CustomerVehicle;
 };
 
 export default function UpdateVehicleModal({
-  children,
+  vehicle,
 }: UpdateVehicleModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const handleSuccess = () => {
@@ -38,9 +40,7 @@ export default function UpdateVehicleModal({
             changes.
           </DialogDescription>
         </DialogHeader>
-        {React.cloneElement(children as React.ReactElement<any>, {
-          onSuccess: handleSuccess,
-        })}
+        <UpdateVehicleForm vehicle={vehicle} onSuccess={handleSuccess} />
       </DialogContent>
     </Dialog>
   );

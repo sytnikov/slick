@@ -41,12 +41,8 @@ export default function VehiclesTable({ vehicles }: VehiclesTableProps) {
             <TableCell>{vehicle.description}</TableCell>
             <TableCell>
               <div className="flex gap-2">
-                <UpdateVehicleModal
-                  children={<UpdateVehicleForm vehicle={vehicle} />}
-                />
-                <DeleteVehicleModal
-                  children={<DeleteVehicle vehicleId={vehicle.id} />}
-                />
+                <UpdateVehicleModal vehicle={vehicle} />
+                <DeleteVehicleModal vehicleId={vehicle.id} />
               </div>
             </TableCell>
           </TableRow>

@@ -10,13 +10,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { TrashIcon } from "lucide-react";
+import DeleteVehicle from "./DeleteVehicle";
 
 type DeleteVehicleModalProps = {
-  children: React.ReactNode;
+  vehicleId: number;
 };
 
 export default function DeleteVehicleModal({
-  children,
+  vehicleId,
 }: DeleteVehicleModalProps) {
   return (
     <AlertDialog>
@@ -36,7 +37,7 @@ export default function DeleteVehicleModal({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-            {children}
+            <DeleteVehicle vehicleId={vehicleId} />
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

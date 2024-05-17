@@ -14,13 +14,14 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
+import AddNewVehicleForm from "./AddNewVehicleForm";
 
 type AddNewVehicleModalProps = {
-  children: React.ReactNode;
+  customerId: string;
 };
 
 export default function AddNewVehicleModal({
-  children,
+  customerId,
 }: AddNewVehicleModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const handleSuccess = () => {
@@ -38,9 +39,7 @@ export default function AddNewVehicleModal({
             Provide the details of the new vehicle below.
           </DialogDescription>
         </DialogHeader>
-        {React.cloneElement(children as React.ReactElement<any>, {
-          onSuccess: handleSuccess,
-        })}
+        <AddNewVehicleForm customerId={customerId} onSuccess={handleSuccess} />
       </DialogContent>
     </Dialog>
   );
